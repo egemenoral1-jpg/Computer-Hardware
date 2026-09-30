@@ -12,9 +12,10 @@
 @keyframes heatwave { 0% { transform: scale(.7); opacity: .9; stroke: rgba(251,146,60,.8); } 100% { transform: scale(3.3); opacity: 0; stroke: rgba(45,212,191,.2); } }
 
 /* ısı zinciri */
-.ch-controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 14px 0 20px; }
-@media (max-width: 800px) { .ch-controls { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 520px) { .ch-controls { grid-template-columns: 1fr; } }
+.ch-controls > * { min-width: 0; }
+.ch-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 14px 0 20px; }
+@media (max-width: 800px) { .ch-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .ch-controls { grid-template-columns: minmax(0, 1fr); } }
 .ch-nodes { display: flex; align-items: stretch; gap: 6px; overflow-x: auto; padding-bottom: 6px; }
 .ch-node {
   flex: 1 0 118px; text-align: center; padding: 14px 8px; border-radius: 14px;
