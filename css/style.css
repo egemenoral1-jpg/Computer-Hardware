@@ -384,3 +384,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .block-info .analogy { padding: 10px 14px; border-radius: 10px; background: rgba(251,191,36,.08); border-left: 3px solid var(--warn); color: #e6d9a8; font-size: .94rem; margin: 12px 0; }
 .block-info ul { color: var(--muted); font-size: .93rem; margin-bottom: 0; }
 @media (max-width: 900px) { .block-info { position: static; } }
+
+/* ---------- küçük istatistik kutuları (.ps) ---------- */
+.ps { padding: 10px 14px; border-radius: 12px; background: rgba(255,255,255,.035); border: 1px solid var(--line); }
+.ps small { display: block; font: 600 .66rem var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.ps b { font: 700 1.4rem var(--mono); color: #fff; display: inline-block; }

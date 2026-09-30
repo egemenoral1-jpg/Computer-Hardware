@@ -163,6 +163,129 @@
     </div>
   </section>
 
+  <!-- ================= WARP ================= -->
+  <section class="section" id="warp">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">gpu'nun çalışma tarzı</span>
+        <h2>Warp: 32 thread, tek komut</h2>
+        <p>GPU'da thread'ler 32'şerli gruplara bölünür; bu gruba <strong>warp</strong> denir. Bir warp'taki 32 thread <em>aynı anda aynı komutu</em> çalıştırır, sadece verileri farklıdır. Bu tasarıma SIMT (tek komut, çok thread) deniyor. Peki thread'lerden bazıları <code>if</code>'in farklı kollarına girmek isterse?</p>
+      </div>
+
+      <div class="demo reveal" id="warpdemo">
+        <div class="demo-title"><span class="dot"></span> Demo: warp sapması (divergence)</div>
+        <div class="tabs" id="warp-tabs"></div>
+        <div class="warp-grid">
+          <pre class="code warp-code" id="warp-code"></pre>
+          <div>
+            <div class="warp-threads" id="warp-threads"></div>
+            <div class="warp-stats" id="warp-stats"></div>
+          </div>
+        </div>
+        <p class="demo-note" id="warp-note"></p>
+        <div class="btn-row mt1"><button class="btn sm" id="warp-replay">↻ Baştan oynat</button></div>
+      </div>
+
+      <div class="callout fun reveal">
+        <span class="callout-title">GPU koduna "dallanma sevmez" denmesinin sebebi</span>
+        Warp içinde herkes aynı yola girerse hiçbir kayıp yok. Ama thread'ler farklı kollara dağılırsa GPU kolları <em>sırayla</em> çalıştırır ve o sırada diğer thread'ler maskelenip bekler. Yani sapma arttıkça 1000 çekirdeğin verimi düşer. CPU'da dal tahmini bunun için çok gelişmiştir, GPU'da ise çözüm "mümkünse dallanma yazma".
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RENDER HATTI ================= -->
+  <section class="section" id="hat">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">bir kare nasıl çizilir</span>
+        <h2>Grafik hattı: üçgenden piksele</h2>
+        <p>3D bir oyundaki her şey (karakter, bina, silah) üçgenlerden oluşur. GPU'nun işi bu üçgenleri ekrandaki piksellere çevirmek. Aşağıda tek bir üçgenin yolculuğunu 5 adımda izle.</p>
+      </div>
+
+      <div class="demo reveal" id="rp">
+        <div class="demo-title"><span class="dot"></span> Demo: bir üçgenin piksellere dönüşmesi</div>
+        <div class="rp-steps" id="rp-steps"></div>
+        <div class="rp-stage">
+          <svg id="rp-svg" viewBox="0 0 480 320" role="img" aria-label="Üçgenin piksellere dönüşme animasyonu"></svg>
+          <div class="rp-text" id="rp-text"></div>
+        </div>
+        <div class="btn-row mt1">
+          <button class="btn sm ghost" id="rp-prev">← Geri</button>
+          <button class="btn sm" id="rp-next">İleri →</button>
+          <button class="btn sm ghost" id="rp-auto">Otomatik oynat</button>
+        </div>
+      </div>
+
+      <div class="grid c2">
+        <div class="card reveal">
+          <h3>Neden GPU'ya çok uygun?</h3>
+          <p>Bu hattın iki büyük adımı, yani <strong>vertex shader</strong> (her köşe için) ve <strong>fragment shader</strong> (her piksel için), tamamen bağımsız işlerdir. Milyonlarca köşe, milyonlarca piksel... Hepsi aynı küçük programı farklı verilerle çalıştırır. Tam bir GPU işi.</p>
+        </div>
+        <div class="card reveal d1">
+          <h3>Shader nedir?</h3>
+          <p>GPU'da çalışan küçük programlara <strong>shader</strong> denir. Bir karakterin derisinin nasıl parlayacağını, suyun nasıl yansıyacağını shader'lar belirler. Oyun yapanlar HLSL, GLSL gibi dillerle bunları yazar, sürücü de GPU'nun anlayacağı dile çevirir.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= VRAM ================= -->
+  <section class="section" id="vram">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">ekran kartının kendi hafızası</span>
+        <h2>VRAM ve bant genişliği</h2>
+        <p>Binlerce çekirdek aç kalırsa boşa çalışır. Onları doyurmak için GPU'nun kendine ait, çok geniş bir yola sahip hafızası var: <strong>VRAM</strong>. İki sayı önemli: <strong>miktar</strong> (kaç GB) ve <strong>bant genişliği</strong> (saniyede kaç GB akıtabilir).</p>
+      </div>
+
+      <div class="demo reveal" id="bwdemo">
+        <div class="demo-title"><span class="dot"></span> Demo: bant genişliği hesaplayıcı</div>
+        <p class="muted" style="margin-top:-4px">Formül basit: <strong>bus genişliği (bit) × bellek hızı (Gbps) ÷ 8</strong>. Yol şeridi sayısı × araçların hızı gibi düşün.</p>
+        <div class="bw-controls">
+          <div class="field"><label for="bw-bus">Bus genişliği</label>
+            <select id="bw-bus">
+              <option value="64">64 bit</option><option value="128">128 bit</option><option value="192">192 bit</option>
+              <option value="256" selected>256 bit</option><option value="384">384 bit</option><option value="512">512 bit</option>
+            </select></div>
+          <div class="field"><label for="bw-speed">Bellek hızı (pin başına)</label>
+            <select id="bw-speed">
+              <option value="14">14 Gbps (GDDR6)</option><option value="16">16 Gbps (GDDR6)</option><option value="18" selected>18 Gbps (GDDR6)</option>
+              <option value="21">21 Gbps (GDDR6X)</option><option value="24">24 Gbps (GDDR6X)</option><option value="28">28 Gbps (GDDR7)</option><option value="32">32 Gbps (GDDR7)</option>
+            </select></div>
+        </div>
+        <div class="btn-row presets" id="bw-presets"></div>
+        <div class="bw-bars" id="bw-bars"></div>
+        <p class="demo-note" id="bw-note"></p>
+      </div>
+
+      <div class="demo reveal" id="fbdemo">
+        <div class="demo-title"><span class="dot"></span> Demo: bir kare ne kadar yer kaplar?</div>
+        <div class="bw-controls">
+          <div class="field"><label for="fb-res">Çözünürlük</label>
+            <select id="fb-res">
+              <option value="1280x720">1280 × 720 (HD)</option><option value="1920x1080" selected>1920 × 1080 (Full HD)</option>
+              <option value="2560x1440">2560 × 1440 (2K)</option><option value="3840x2160">3840 × 2160 (4K)</option>
+            </select></div>
+        </div>
+        <div class="fb-out" id="fb-out"></div>
+      </div>
+
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th>Kullanım</th><th>Kabaca VRAM</th><th>Not</th></tr></thead>
+          <tbody>
+            <tr><td>1080p oyun</td><td>8 GB civarı</td><td>Yeni ağır oyunlarda yüksek doku ayarında sınırda kalabilir</td></tr>
+            <tr><td>1440p oyun</td><td>8 – 12 GB</td><td>12 GB genelde rahat</td></tr>
+            <tr><td>4K oyun</td><td>12 – 16 GB ve üzeri</td><td>Dokular ve ışın izleme çok VRAM yer</td></tr>
+            <tr><td>Video / 3D render</td><td>12 GB ve üzeri</td><td>Sahne büyüdükçe VRAM ihtiyacı artar</td></tr>
+            <tr><td>Yerel yapay zekâ modelleri</td><td>16 – 24 GB+</td><td>Modelin boyutu doğrudan VRAM'e sığmalı</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted reveal" style="font-size:.9rem">Bu değerler kabaca bir rehber. Oyuna, doku ayarına ve kullandığın yazılıma göre değişir.</p>
+    </div>
+  </section>
+
   <!-- @@more -->
 
   <section class="section" id="quiz">
@@ -188,5 +311,8 @@
 <script src="js/gpu-hero.js"></script>
 <script src="js/gpu-race.js"></script>
 <script src="js/gpu-arch.js"></script>
+<script src="js/gpu-warp.js"></script>
+<script src="js/gpu-pipeline.js"></script>
+<script src="js/gpu-vram.js"></script>
 </body>
 </html>

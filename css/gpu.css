@@ -48,3 +48,45 @@
 .quad-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .cd-b.cores { display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px; padding: 8px; }
 .cores i { display: block; aspect-ratio: 1; border-radius: 2px; background: var(--accent); opacity: .85; }
+
+/* ---------- warp ---------- */
+.warp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start; }
+@media (max-width: 800px) { .warp-grid { grid-template-columns: 1fr; } }
+.warp-code { margin: 0; min-height: 200px; }
+.warp-code .cl { display: block; padding: 1px 8px; border-radius: 4px; border-left: 3px solid transparent; color: #8a97bb; white-space: pre; }
+.warp-code .cl.on { background: rgba(var(--accent-rgb), .2); border-left-color: var(--accent); color: #fff; }
+.warp-threads { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+.th { aspect-ratio: 1; border-radius: 8px; background: #334166; display: grid; place-items: center; font: 600 .68rem var(--mono); color: #06101f; }
+.th span { mix-blend-mode: normal; opacity: .85; }
+.warp-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+.warp-stats .ps b { font-size: 1.05rem; }
+
+/* ---------- render hattı ---------- */
+.rp-steps { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.rp-pill {
+  cursor: pointer; font: 600 .84rem var(--font); padding: 8px 14px; border-radius: 999px;
+  background: rgba(255,255,255,.04); border: 1px solid var(--line-2); color: var(--muted); transition: all .2s;
+}
+.rp-pill b { font-family: var(--mono); color: var(--accent); margin-right: 4px; }
+.rp-pill.done { color: #d5def3; border-color: rgba(var(--accent-rgb), .4); }
+.rp-pill.on { background: rgba(var(--accent-rgb), .22); border-color: var(--accent); color: #fff; }
+.rp-stage { display: grid; grid-template-columns: 1.15fr 1fr; gap: 20px; align-items: center; }
+@media (max-width: 860px) { .rp-stage { grid-template-columns: 1fr; } }
+#rp-svg { width: 100%; height: auto; border-radius: 14px; background: #070c18; border: 1px solid var(--line-2); display: block; }
+.rp-text { min-height: 170px; padding: 18px; border-radius: 14px; background: rgba(255,255,255,.035); border: 1px solid var(--line); color: #d5def3; font-size: .98rem; }
+
+/* ---------- VRAM ---------- */
+.bw-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+@media (max-width: 560px) { .bw-controls { grid-template-columns: 1fr; } }
+.bw-bars { display: flex; flex-direction: column; gap: 14px; margin-top: 12px; }
+.bwrow { display: grid; grid-template-columns: 1fr; gap: 6px; }
+.bwl { font-size: .86rem; color: var(--muted); }
+.bwt { display: flex; align-items: center; gap: 12px; }
+.bwt { position: relative; height: 26px; border-radius: 8px; background: rgba(255,255,255,.05); overflow: hidden; }
+.bwf { height: 100%; border-radius: 8px; width: 0; }
+.bwrow.sys .bwf { background: linear-gradient(90deg, #4b5a85, #7a8bbb); }
+.bwrow.pcie .bwf { background: linear-gradient(90deg, #a16207, #fbbf24); }
+.bwrow.gpu .bwf { background: linear-gradient(90deg, #7c5ce0, var(--accent)); }
+.bwv { font: 700 .95rem var(--mono); color: #fff; text-align: right; margin-top: -2px; }
+.fb-out { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+@media (max-width: 720px) { .fb-out { grid-template-columns: repeat(2, 1fr); } }
