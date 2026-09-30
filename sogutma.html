@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Soğutma — ParçaParça</title>
+  <meta name="description" content="Bilgisayar neden ısınır, soğutucu ısıyı nasıl taşır? Hava, sıvı soğutma, termal macun ve kasa hava akışı. Simülasyonlarla öğren.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sogutma.css">
+</head>
+<body class="p-sogutma" data-page="sogutma">
+<div id="site-header"></div>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="part-hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">parça 07 · soğutma</span>
+        <h1>Soğutma <span class="grad">(ısı yönetimi)</span></h1>
+        <p class="lead">Bilgisayarın harcadığı her watt, sonunda ısıya dönüşür. Bu ısı dışarı atılmazsa parçalar yavaşlar, en sonunda kendini korumak için kapanır. Soğutma sistemi, bilgisayarın görünmeyen ama en meşgul işçisi.</p>
+        <div class="hero-chips">
+          <span class="chip"><b>Isı</b> yolu</span>
+          <span class="chip"><b>Hava</b> / <b>sıvı</b></span>
+          <span class="chip"><b>Hava</b> akışı</span>
+        </div>
+      </div>
+      <div class="hero-visual" id="cool-hero" aria-label="Dönen fan ve yayılan ısı halkaları animasyonu"></div>
+    </div>
+
+    <div class="container">
+      <div class="stats">
+        <div class="stat"><b data-count="95" data-prefix="~" data-suffix=" °C">0</b><span>çoğu işlemcinin yavaşlamaya (throttle) başladığı sıcaklık civarı</span></div>
+        <div class="stat"><b data-count="400" data-suffix=" W/mK">0</b><span>bakırın ısı iletkenliği. Havanınki sadece 0,026!</span></div>
+        <div class="stat"><b data-count="100" data-suffix=" W">0</b><span>tüketen bir işlemci, yaklaşık 100 W ısı üretir</span></div>
+        <div class="stat"><b data-count="3500" data-prefix="~" data-suffix="×">0</b><span>suyun aynı hacimde havadan daha fazla ısı taşıyabilmesi</span></div>
+      </div>
+      <div class="toc">
+        <small>Bu sayfada</small>
+        <a href="#neden">Neden ısınır</a>
+        <a href="#yol">Isının yolu</a>
+        <a href="#macun">Termal macun</a>
+        <a href="#tur">Soğutucu türleri</a>
+        <a href="#akis">Kasa hava akışı</a>
+        <a href="#bakim">Bakım</a>
+        <a href="#quiz">Quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NEDEN ISINIR ================= -->
+  <section class="section" id="neden">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">önce temel</span>
+        <h2>Bilgisayar neden ısınır?</h2>
+        <p>Enerji yok olmaz, dönüşür. Bir işlemciye giren elektrik enerjisi hesap yapmak için kullanılır ve sonunda tamamı ısıya dönüşür. Milyarlarca transistör saniyede milyarlarca kez açılıp kapanırken her biri çok küçük bir ısı bırakır, hepsi toplanınca ortaya onlarca-yüzlerce watt çıkar.</p>
+      </div>
+      <div class="grid c3">
+        <div class="card reveal"><div class="ico">🔥</div><h3>Isı yoğunluğu çok yüksek</h3><p>100 W ısı, tırnak büyüklüğündeki bir silikon parçadan (die) çıkıyor. Birim alan başına düşen ısı bir elektrikli ocak gözünden bile daha yoğun. Bu yüzden büyük bir soğutucu şart.</p></div>
+        <div class="card reveal d1"><div class="ico">📏</div><h3>TDP nedir?</h3><p><strong>TDP</strong> (Thermal Design Power), soğutucunun dağıtabilmesi gereken yaklaşık ısı gücüdür (watt). 65 W TDP'li bir işlemci için en az 65 W dağıtabilen bir soğutucu gerekir. Gerçek tüketim yük altında TDP'nin üstüne çıkabilir.</p></div>
+        <div class="card reveal d2"><div class="ico">🐢</div><h3>Throttling</h3><p>Sıcaklık sınıra (genelde ~95-100 °C) yaklaşınca işlemci ve ekran kartı kendini korumak için hızını düşürür. Performans kaybı yaşarsın. Daha da ısınırsa bilgisayar kendini kapatır.</p></div>
+      </div>
+      <div class="callout fun reveal">
+        <span class="callout-title">İpucu</span>
+        Isınma sadece "kötü" değil, ölçülebilir bir kaynak: iyi soğutulan işlemci boost hızında daha uzun kalır. Yani soğutma, performansın bir parçası.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ISININ YOLU ================= -->
+  <section class="section" id="yol">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">simülasyon</span>
+        <h2>Isının yolculuğu</h2>
+        <p>Isı silikondan havaya doğru bir zincirle ilerler: her halkada küçük bir "direnç" var ve her direnç sıcaklığı biraz düşürür. Zincirin en zayıf halkası toplam sıcaklığı belirler. Ayarları değiştirip her noktadaki sıcaklığı izle.</p>
+      </div>
+
+      <div class="demo reveal" id="chain">
+        <div class="demo-title"><span class="dot"></span> Demo: soğutma zinciri (basitleştirilmiş model)</div>
+        <div class="ch-controls">
+          <div class="field"><label for="ch-p">İşlemci gücü: <span class="val" id="ch-p-v"></span> W</label><input type="range" id="ch-p" min="30" max="250" step="5" value="125"></div>
+          <div class="field"><label for="ch-amb">Oda sıcaklığı: <span class="val" id="ch-amb-v"></span> °C</label><input type="range" id="ch-amb" min="15" max="40" step="1" value="25"></div>
+          <div class="field"><label for="ch-c">Soğutucu</label>
+            <select id="ch-c">
+              <option value="stock">Kutudan çıkan (stock) hava soğutucu</option>
+              <option value="tower" selected>Kule tipi hava soğutucu</option>
+              <option value="aio240">240 mm sıvı soğutma (AIO)</option>
+              <option value="aio360">360 mm sıvı soğutma (AIO)</option>
+              <option value="none">Soğutucu yok (sadece küçük ısı emici)</option>
+            </select></div>
+          <div class="field"><label for="ch-paste">Termal macun</label>
+            <select id="ch-paste"><option value="good" selected>Düzgün sürülmüş</option><option value="old">Eskimiş / kötü</option><option value="none">Hiç yok</option></select></div>
+          <div class="field"><label for="ch-fan">Fan hızı</label>
+            <select id="ch-fan"><option value="low">Sessiz (düşük)</option><option value="mid" selected>Dengeli</option><option value="high">Tam hız</option></select></div>
+        </div>
+
+        <div class="ch-nodes" id="ch-nodes"></div>
+        <div class="ch-gauge">
+          <div class="ch-gauge-bar"><div class="ch-gauge-fill" id="ch-fill"></div><i class="mk m70"></i><i class="mk m85"></i><i class="mk m95"></i></div>
+          <div class="ch-gauge-lbl"><span>30 °C</span><span>70</span><span>85</span><span>95 °C</span></div>
+        </div>
+        <div class="ch-out" id="ch-out"></div>
+        <div class="callout mt1" id="ch-note"></div>
+        <p class="demo-note">Bu sayısal bir model; gerçek sıcaklıklar işlemciye, soğutucu modeline ve kasa hava akışına göre değişir. Amaç, hangi halkanın ne kadar etkili olduğunu göstermek.</p>
+      </div>
+
+      <h3 class="sub reveal">Isı borusu (heat pipe) nasıl çalışır?</h3>
+      <p class="reveal">Kule soğutucuların içindeki bakır borular, ısıyı tabandan kanatçıklara bakırdan bile çok daha hızlı taşır. İçinde vakumlu ortamda az miktarda sıvı (genelde su) bulunur. Sıcak uçta sıvı <strong>buharlaşır</strong> ve ısıyı alarak soğuk uca gider, orada <strong>yoğuşup</strong> ısıyı bırakır. Sıvı, borunun iç yüzeyindeki kılcal yapıdan (fitil) geri akar. Pompa yok, hareketli parça yok!</p>
+      <div class="demo reveal" id="hp">
+        <div class="demo-title"><span class="dot"></span> Demo: ısı borusu döngüsü</div>
+        <div class="hp-view">
+          <div class="hp-end hot"><b>Sıcak uç</b><span>işlemci tabanı</span></div>
+          <div class="hp-pipe">
+            <div class="hp-lane vapor"><span class="lbl">buhar →</span><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="hp-wall">kapalı bakır boru · içinde az miktarda sıvı, vakum</div>
+            <div class="hp-lane liquid"><span class="lbl">← sıvı (kılcal fitil)</span><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="hp-end cold"><b>Soğuk uç</b><span>kanatçıklar + fan</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MACUN ================= -->
+  <section class="section" id="macun">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">mikroskop altında</span>
+        <h2>Termal macun neden şart?</h2>
+        <p>İşlemcinin metal kapağı ile soğutucunun tabanı gözle pürüzsüz görünür ama mikroskopta dağlık bir arazi gibidir. Aradaki boşluklar <strong>hava</strong> ile dolar ve hava ısıyı çok kötü iletir. Termal macun bu boşlukları doldurur.</p>
+      </div>
+      <div class="demo reveal" id="paste">
+        <div class="demo-title"><span class="dot"></span> Demo: yüzeylerin arasındaki boşluk</div>
+        <div class="tabs" id="paste-tabs">
+          <button class="tab active" data-m="none">Macun yok (hava boşlukları)</button>
+          <button class="tab" data-m="paste">Termal macun var</button>
+        </div>
+        <div class="paste-view"><svg id="paste-svg" viewBox="0 0 400 160" role="img" aria-label="İki pürüzlü yüzey arasındaki boşluk"></svg><div class="paste-text" id="paste-text"></div></div>
+      </div>
+      <div class="grid c2">
+        <div class="card reveal"><h3>Ne kadar sürülür?</h3><p>Genelde bezelye tanesi kadar, ortaya. Soğutucuyu takınca kendiliğinden yayılır. Çok fazla sürmek işe yaramaz, sadece kenarlardan taşar (bazı macunlar iletken olabilir, dikkat!).</p></div>
+        <div class="card reveal d1"><h3>Sıvı metal</h3><p>Daha da iyi ısı iletimi olan ama <strong>elektriği iletebilen</strong> bir seçenek: sızarsa kısa devre yapar; ayrıca alüminyumu aşındırır. Sadece deneyimliler için, çoğu kullanıcıya gerekmez.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TÜRLER ================= -->
+  <section class="section" id="tur">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">seçenekler</span>
+        <h2>Soğutucu türleri</h2>
+      </div>
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th>Tür</th><th>Nasıl çalışır?</th><th>Artıları</th><th>Eksileri</th></tr></thead>
+          <tbody>
+            <tr><td>Stock (kutudan çıkan)</td><td>Küçük alüminyum ısı emici + fan</td><td>Ücretsiz, yeterli (ekonomik işlemcilerde)</td><td>Güçlü işlemcilerde yetersiz ve gürültülü</td></tr>
+            <tr><td>Kule tipi hava</td><td>Bakır ısı boruları + alüminyum kanatçıklar + 1-2 fan</td><td>Ucuz, güvenilir, bakım gerektirmez</td><td>Büyük ve ağır, RAM/kasa uyumuna dikkat</td></tr>
+            <tr><td>AIO sıvı (120-360 mm)</td><td>Kapalı devre: pompa sıvıyı işlemciden radyatöre taşır, radyatör fanları soğutur</td><td>Güçlü, düzenli görünür, işlemci çevresi açık</td><td>Pompa arızası riski, daha pahalı, radyatör yeri lazım</td></tr>
+            <tr><td>Özel su soğutma (custom loop)</td><td>Ayrı pompa, rezervuar, borular ve bloklar</td><td>En güçlü ve şık (ekran kartı da dahil edilebilir)</td><td>Pahalı, kurulumu ve bakımı zor</td></tr>
+            <tr><td>Pasif</td><td>Fansız büyük ısı emici</td><td>Tam sessiz</td><td>Sadece düşük güçlü işlemcilerde mümkün</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="grid c3">
+        <div class="card reveal"><h3>Ekran kartı soğutma</h3><p>Kartlar genelde 2-3 fanlı, büyük kanatçık bloklu, ısı borulu ya da <strong>vapor chamber</strong> (düz ısı borusu gibi çalışan geniş oda) sistemlerle gelir. GPU çok ısındığı için kart kalın olur.</p></div>
+        <div class="card reveal d1"><h3>SSD ve VRM</h3><p>Hızlı NVMe SSD'ler yük altında ısınır, ısı emici altında termal ped ile korunur. VRM'lerin üzerinde de kanatçıklı blok bulunur (<a href="anakart.html">anakart</a> sayfasına bak).</p></div>
+        <div class="card reveal d2"><h3>Fan özellikleri</h3><p><strong>CFM</strong> (hava debisi), <strong>statik basınç</strong> (radyatör ve filtreden itebilme gücü), <strong>dBA</strong> (gürültü), <strong>RPM</strong>. 4 pinli (PWM) fanların hızı ince ayarlanır, 3 pinli (DC) fanlar gerilimle kısılır.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HAVA AKIŞI ================= -->
+  <section class="section" id="akis">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">kasanın içi</span>
+        <h2>Kasa hava akışı</h2>
+        <p>En iyi soğutucu bile, kasa içinde ısınmış havayı dışarı atamıyorsa boşuna çalışır. Temel kural: <strong>serin hava ön/alttan girer, sıcak hava arka ve üstten çıkar</strong> (çünkü sıcak hava yükselir). Fanları aç kapat ve hava akışının nasıl değiştiğine bak.</p>
+      </div>
+      <div class="demo reveal" id="airflow">
+        <div class="demo-title"><span class="dot"></span> Demo: kasa fanları</div>
+        <div class="af-layout">
+          <svg id="af-svg" viewBox="0 0 500 300" role="img" aria-label="Kasa içi hava akışı"></svg>
+          <div>
+            <div class="af-fans" id="af-fans"></div>
+            <div class="af-out" id="af-out"></div>
+          </div>
+        </div>
+        <div class="callout mt1" id="af-note"></div>
+      </div>
+      <div class="grid c2">
+        <div class="card reveal"><h3>Pozitif ve negatif basınç</h3><p>Girişteki fanlar çıkıştakilerden fazlaysa kasa içi <strong>pozitif basınç</strong> olur: hava, filtreli girişlerden içeri girer ve dar aralıklardan dışarı çıkar; toz az birikir. Tersi <strong>negatif basınç</strong>: hava her aralıktan içeri sızar, toz artar ama sıcak hava çabuk atılır. Dengeliyse ikisinin ortası.</p></div>
+        <div class="card reveal d1"><h3>Kablo düzeni</h3><p>Kasa içinde dağınık kablolar hava akışını bloklar. Kabloları arkaya yönlendirip bağlamak hem daha derli toplu hem de daha serin bir sistem demek.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BAKIM ================= -->
+  <section class="section" id="bakim">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">sıcaklığı düşük tut</span>
+        <h2>Bakım ve takip</h2>
+      </div>
+      <div class="grid c3">
+        <div class="card reveal"><h3>Toz temizliği</h3><p>Toz, ısı emicilerin kanatçıklarını ve filtreleri tıkar. Birkaç ayda bir bilgisayarı kapatıp basınçlı hava ile (fanı parmağınla tutarak) temizle. Fan dönerken üflersen aşırı hızda dönüp zarar görebilir.</p></div>
+        <div class="card reveal d1"><h3>Macun yenileme</h3><p>Termal macun yıllar içinde kurur. Sıcaklıklar kademeli olarak yükselmişse (birkaç yıl sonra) macunu yenilemek işe yarar.</p></div>
+        <div class="card reveal d2"><h3>Sıcaklığı izle</h3><p>HWiNFO, HWMonitor gibi ücretsiz araçlarla sıcaklıkları görebilirsin. Kabaca: boşta 30-50 °C, yük altında 60-85 °C çoğu sistemde normal sayılır. Sürekli 90 °C üstü bir sorun işaretidir.</p></div>
+      </div>
+      <div class="callout fun reveal">
+        <span class="callout-title">Fan yönünü unutma</span>
+        Fanların kenarında hava akış yönünü gösteren küçük oklar vardır. Yanlış yöne takılırsa sıcak havayı içeri üflersin. Basit bir hata ama şaşırtıcı sıklıkta yapılıyor.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">kendini dene</span>
+        <h2>Mini quiz</h2>
+        <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
+      </div>
+      <div class="quiz" id="cool-quiz"></div>
+      <script type="application/json" id="quiz-data">[{"q": "Bir işlemcinin tükettiği elektrik enerjisi sonunda ne olur?", "o": ["Depolanır", "Neredeyse tamamı ısıya dönüşür", "Işığa dönüşür", "Yok olur"], "a": 1, "e": "Enerji yok olmaz. İşlemcide hesap yapmak için kullanılan elektriğin tamamı sonunda ısıya dönüşür. 100 W tüketen işlemci ~100 W ısı üretir."}, {"q": "TDP neyi ifade eder?", "o": ["İşlemcinin maksimum hızı", "Soğutucunun dağıtabilmesi gereken yaklaşık ısı gücü (watt)", "İşlemcinin fiyatı", "Fan devri"], "a": 1, "e": "TDP (Thermal Design Power), tasarım gereği soğutucunun dağıtması gereken ısıdır. Gerçek çekiş yük altında TDP'nin üstüne çıkabilir."}, {"q": "İşlemci güvenli sıcaklık sınırına yaklaşınca ne yapar?", "o": ["Hızını artırır", "Kendini korumak için hızını düşürür (throttling)", "Fanı söker", "Hiçbir şey yapmaz"], "a": 1, "e": "Throttling, işlemci veya ekran kartının kendini korumak için hızını düşürmesidir. Performans kaybına yol açar. Sıcaklık daha da artarsa sistem kapanır."}, {"q": "Termal macunun görevi nedir?", "o": ["İşlemciyi yapıştırmak", "İşlemci kapağı ile soğutucu arasındaki mikroskobik boşlukları (hava) doldurup ısı geçişini iyileştirmek", "İşlemciyi elektrikten yalıtmak", "Fanı sessizleştirmek"], "a": 1, "e": "Hava ısıyı çok kötü iletir. Macun, yüzeyler arasındaki hava boşluklarını doldurur; böylece ısı soğutucu tabanına kolayca geçer."}, {"q": "Isı borusu (heat pipe) hangi prensiple ısıyı taşır?", "o": ["İçindeki pompa sıvıyı döndürür", "Sıvı sıcak uçta buharlaşıp soğuk uçta yoğuşur, kılcal yapıyla geri döner", "İçindeki fan hava üfler", "Bakır çok kalın olduğu için"], "a": 1, "e": "Isı borusu içindeki az miktarda sıvı sıcak uçta buharlaşarak ısıyı alır, soğuk uçta yoğuşarak bırakır. Kılcal fitil sıvıyı geri taşır. Pompa gerekmez."}, {"q": "Kasa içinde giriş fanı sayısı çıkış fanı sayısından fazlaysa oluşan duruma ne denir?", "o": ["Negatif basınç", "Pozitif basınç", "Sıfır basınç", "Vakum"], "a": 1, "e": "Pozitif basınçta içeri giren hava çıkandan fazladır: hava filtreli girişlerden girer, dar aralıklardan çıkar ve toz azalır."}, {"q": "Kasada sıcak hava için en doğal çıkış yeri neresidir?", "o": ["Alt kısım", "Üst ve arka kısım", "Sadece ön panel", "Fark etmez"], "a": 1, "e": "Sıcak hava yükselir. Bu yüzden serin hava önden ve alttan girip, ısınan hava arkadan ve üstten atılınca doğal akışla uyumlu olur."}, {"q": "Fanları temizlerken basınçlı hava kullanacaksan neye dikkat etmelisin?", "o": ["Fan dönerken üflemeliyim", "Fanı parmakla (ya da bir çubukla) tutup sonra üflemeliyim", "Sıvı sıkmalıyım", "Hiç temizlememeliyim"], "a": 1, "e": "Fan hızla dönerken üflersen normalden çok yüksek devire çıkıp yatakları zarar görebilir. Fanı durdurarak temizlemek güvenlidir."}]</script>
+      <div id="pager"></div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/site.js"></script>
+<script src="js/sogutma.js"></script>
+</body>
+</html>
