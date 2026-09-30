@@ -12,7 +12,7 @@ Her parçanın kendi sayfası var; anlatım + etkileşimli demolar + mini quiz.
 Build gerekmiyor, düz HTML/CSS/JS. Bir statik sunucu yeterli:
 
 ```bash
-python -m http.server 5173
+python -m http.server 5188
 ```
 
-Sonra `http://localhost:5173` adresini aç. (GSAP, CDN'den geliyor; internet lazım.)
+Sonra `http://localhost:5188` adresini aç. (GSAP, CDN'den geliyor; internet lazım.)

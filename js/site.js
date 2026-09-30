@@ -20,13 +20,13 @@
 
   // Öğrenme sırası da bu sıra
   const PARTS = [
-    { id: "cpu", url: "cpu.html", name: "İşlemci", full: "İşlemci (CPU)", tag: "Bilgisayarın beyni. Komutları tek tek okuyup çalıştırır, register'larla oynar.", chips: ["Register", "Cache", "Pipeline"], gsap: true },
-    { id: "gpu", url: "gpu.html", name: "Ekran Kartı", full: "Ekran Kartı (GPU)", tag: "Binlerce küçük çekirdekle aynı anda binlerce piksel boyar.", chips: ["Paralel", "VRAM", "Shader"], gsap: true },
-    { id: "ram", url: "ram.html", name: "RAM", full: "Bellek (RAM)", tag: "İşlemcinin çalışma masası. Hızlı ama kalıcı değil.", chips: ["DDR5", "Gecikme", "Dual channel"] },
-    { id: "depolama", url: "depolama.html", name: "Depolama", full: "Depolama (SSD / HDD)", tag: "Verilerin kalıcı evi. Bilgisayar kapansa da silinmez.", chips: ["NAND", "NVMe", "HDD"] },
-    { id: "anakart", url: "anakart.html", name: "Anakart", full: "Anakart", tag: "Tüm parçaları birbirine bağlayan devre kartı, şehrin yol haritası.", chips: ["Chipset", "PCIe", "BIOS"] },
-    { id: "psu", url: "psu.html", name: "Güç Kaynağı", full: "Güç Kaynağı (PSU)", tag: "Prizden gelen gücü parçaların yiyebileceği hale çevirir.", chips: ["12V", "80 PLUS", "Watt"] },
-    { id: "sogutma", url: "sogutma.html", name: "Soğutma", full: "Soğutma", tag: "Isıyı dışarı atmazsan parçalar yavaşlar, hatta yanar.", chips: ["Fan", "Heatpipe", "AIO"] }
+    { id: "cpu", rgb: "56,189,248", url: "cpu.html", name: "İşlemci", full: "İşlemci (CPU)", tag: "Bilgisayarın beyni. Komutları tek tek okuyup çalıştırır, register'larla oynar.", chips: ["Register", "Cache", "Pipeline"], gsap: true },
+    { id: "gpu", rgb: "167,139,250", url: "gpu.html", name: "Ekran Kartı", full: "Ekran Kartı (GPU)", tag: "Binlerce küçük çekirdekle aynı anda binlerce piksel boyar.", chips: ["Paralel", "VRAM", "Shader"], gsap: true },
+    { id: "ram", rgb: "52,211,153", url: "ram.html", name: "RAM", full: "Bellek (RAM)", tag: "İşlemcinin çalışma masası. Hızlı ama kalıcı değil.", chips: ["DDR5", "Gecikme", "Dual channel"] },
+    { id: "depolama", rgb: "251,113,133", url: "depolama.html", name: "Depolama", full: "Depolama (SSD / HDD)", tag: "Verilerin kalıcı evi. Bilgisayar kapansa da silinmez.", chips: ["NAND", "NVMe", "HDD"] },
+    { id: "anakart", rgb: "251,191,36", url: "anakart.html", name: "Anakart", full: "Anakart", tag: "Tüm parçaları birbirine bağlayan devre kartı, şehrin yol haritası.", chips: ["Chipset", "PCIe", "BIOS"] },
+    { id: "psu", rgb: "251,146,60", url: "psu.html", name: "Güç Kaynağı", full: "Güç Kaynağı (PSU)", tag: "Prizden gelen gücü parçaların yiyebileceği hale çevirir.", chips: ["12V", "80 PLUS", "Watt"] },
+    { id: "sogutma", rgb: "45,212,191", url: "sogutma.html", name: "Soğutma", full: "Soğutma", tag: "Isıyı dışarı atmazsan parçalar yavaşlar, hatta yanar.", chips: ["Fan", "Heatpipe", "AIO"] }
   ];
 
   const REPO = "https://github.com/egemenoral1-jpg/Computer-Hardware";
@@ -117,19 +117,23 @@
     update();
   }
 
-  function initReveal() {
-    const els = document.querySelectorAll(".reveal");
+  let io = null;
+  function initReveal(root) {
+    const els = (root || document).querySelectorAll(".reveal:not(.in)");
     if (!("IntersectionObserver" in window)) {
       els.forEach(function (el) { el.classList.add("in"); });
       return;
     }
-    const io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
-      });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+    if (!io) {
+      io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+        });
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+    }
     els.forEach(function (el) { io.observe(el); });
   }
+  window.PP.reveal = initReveal;
 
   /* ---------- quiz ---------- */
   function initQuiz() {

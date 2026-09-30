@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ParçaParça — Bilgisayarı Parça Parça Öğren</title>
+  <meta name="description" content="İşlemci, ekran kartı, RAM, anakart ve daha fazlası. Bilgisayar parçalarının ne yaptığını animasyonlar ve küçük demolarla öğren.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body class="p-home" data-page="home">
+<div id="site-header"></div>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="home-hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">bilgisayar donanımı · sıfırdan</span>
+        <h1>Bilgisayarın içinde <span class="grad">ne dönüyor?</span></h1>
+        <p class="lead">Parça parça, sıkılmadan öğreniyoruz. Her parçanın ne işe yaradığını, nasıl çalıştığını animasyonlarla ve kurcalayabileceğin küçük demolarla anlatıyorum. Ders kitabı gibi değil, kafede arkadaşına anlatır gibi.</p>
+        <div class="btn-row mt2">
+          <a class="btn" href="cpu.html">İşlemciyle başla →</a>
+          <a class="btn ghost" href="#parcalar">Tüm parçalar</a>
+        </div>
+        <div class="hero-chips">
+          <span class="chip"><b>7</b> parça sayfası</span>
+          <span class="chip"><b>GSAP</b> animasyonları</span>
+          <span class="chip"><b>Quiz</b> her sayfada</span>
+        </div>
+      </div>
+      <div class="hero-visual home-visual" id="net" aria-label="Parçaların birbirine bağlı olduğunu gösteren animasyonlu diyagram"></div>
+    </div>
+  </section>
+
+  <!-- ================= PARÇALAR ================= -->
+  <section class="section" id="parcalar">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">parçalar</span>
+        <h2>Birini seç, içine dal</h2>
+        <p>Sıra önemli değil ama ilk kez bakıyorsan yukarıdan aşağıya gitmek mantıklı. Quiz'i geçtiğin parçalar "tamamlandı" olarak işaretlenir.</p>
+      </div>
+      <div class="grid c3" id="part-grid"></div>
+    </div>
+  </section>
+
+  <!-- ================= TEMEL FİKİR ================= -->
+  <section class="section" id="temel">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">temel fikir</span>
+        <h2>Bir bilgisayar aslında dört iş yapar</h2>
+        <p>Bütün parçaları bu dört başlığa yerleştirebilirsin. Aklında bu çerçeve olursa gerisi kolay.</p>
+      </div>
+      <div class="grid c4">
+        <div class="card reveal">
+          <div class="ico">⌨️</div>
+          <h3>1. Girdi</h3>
+          <p>Klavye, fare, mikrofon... Dış dünyadan bilgiyi içeri alır. <a href="anakart.html">Anakart</a> bu sinyalleri doğru yere taşır.</p>
+        </div>
+        <div class="card reveal d1">
+          <div class="ico">🧠</div>
+          <h3>2. İşleme</h3>
+          <p>Gelen veriyle hesap yapılır. Genel işler <a href="cpu.html">işlemcide</a>, görüntü ve paralel işler <a href="gpu.html">ekran kartında</a>.</p>
+        </div>
+        <div class="card reveal d2">
+          <div class="ico">🗄️</div>
+          <h3>3. Bellek</h3>
+          <p>Aktif işler <a href="ram.html">RAM'de</a>, kalıcı olanlar <a href="depolama.html">SSD/HDD'de</a> durur.</p>
+        </div>
+        <div class="card reveal d3">
+          <div class="ico">🖥️</div>
+          <h3>4. Çıktı</h3>
+          <p>Sonuç ekrana, hoparlöre, yazıcıya gider. Ve arka planda <a href="psu.html">güç</a> ile <a href="sogutma.html">soğutma</a> her şeyi ayakta tutar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TUŞA BASINCA ================= -->
+  <section class="section" id="yolculuk">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">küçük bir yolculuk</span>
+        <h2>Klavyede bir tuşa bastığında ne olur?</h2>
+        <p>Örnek olarak not defterine <code>A</code> harfi yazdığını düşün. Bu tek harf bile neredeyse bütün parçaları uğratır.</p>
+      </div>
+      <ol class="journey">
+        <li class="reveal"><span class="num">1</span><div><h3>Klavye</h3><p>Tuşun altındaki kontak kapanır, klavyenin küçük denetleyicisi "şu tuşa basıldı" bilgisini USB üzerinden gönderir.</p></div></li>
+        <li class="reveal"><span class="num">2</span><div><h3><a href="anakart.html">Anakart</a></h3><p>USB portundan gelen sinyal chipset üzerinden işlemciye ulaşır. Anakart burada trafik polisi gibi çalışır.</p></div></li>
+        <li class="reveal"><span class="num">3</span><div><h3><a href="cpu.html">İşlemci</a></h3><p>İşlemci "Bir kesme (interrupt) geldi!" diye işini bırakır, sürücü kodunu çalıştırır ve tuşun <code>A</code> olduğunu çözer.</p></div></li>
+        <li class="reveal"><span class="num">4</span><div><h3><a href="ram.html">RAM</a></h3><p>Not defterinin kodu ve yazdığın metin zaten RAM'dedir. Yeni harf metin tamponuna eklenir.</p></div></li>
+        <li class="reveal"><span class="num">5</span><div><h3><a href="gpu.html">Ekran kartı</a></h3><p>Harfi ekranda görmek için şekli piksellere çevrilir ve ekran kartı bunu kareye çizer.</p></div></li>
+        <li class="reveal"><span class="num">6</span><div><h3>Ekran</h3><p>Ekran saniyede 60+ kez yenilenir. Sonunda <code>A</code> harfi belirir. Baştan sona bir saniyenin çok küçük bir kesiri.</p></div></li>
+        <li class="reveal"><span class="num">7</span><div><h3><a href="depolama.html">Depolama</a></h3><p>Ctrl+S'e basınca metin RAM'den SSD'ye yazılır. Artık bilgisayar kapansa bile silinmez.</p></div></li>
+      </ol>
+      <div class="callout reveal">
+        <span class="callout-title">Arka plandaki iki kahraman</span>
+        Bütün bunlar olurken <a href="psu.html">güç kaynağı</a> parçaların istediği voltajı dağıtıyor, <a href="sogutma.html">soğutma</a> da ortaya çıkan ısıyı dışarı atıyor. Onlar olmadan hiçbir şey çalışmaz.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NASIL ÖĞRENELİM ================= -->
+  <section class="section" id="nasil">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">nasıl kullanılır</span>
+        <h2>Okuma, kurcalama, sınama</h2>
+      </div>
+      <div class="grid c3">
+        <div class="card reveal"><div class="ico">📖</div><h3>Oku</h3><p>Her sayfa "bu parça ne işe yarar?" sorusuyla başlar, sonra içine iner. Terimlerin çoğu ilk geçtiği yerde açıklanıyor.</p></div>
+        <div class="card reveal d1"><div class="ico">🎛️</div><h3>Kurcala</h3><p>Sayfalardaki kutulu demolarda düğmelere bas, kaydırıcıları oynat. Bozacağın bir şey yok, bozulunca sıfırla yeter.</p></div>
+        <div class="card reveal d2"><div class="ico">✅</div><h3>Sına</h3><p>Sayfa sonundaki kısa quiz'de öğrendiklerini dene. Geçtiğin parçalar burada yeşil rozet alır.</p></div>
+      </div>
+      <div class="center mt2 reveal">
+        <a class="btn" href="cpu.html">Hadi başlayalım → İşlemci</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/site.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>
