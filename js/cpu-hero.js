@@ -1,13 +1,8 @@
-/* CPU hero: GSAP ile animasyonlu çip çizimi + giriş animasyonları + sayaçlar */
+/* CPU hero: GSAP ile animasyonlu çip çizimi (yazı ve sayaç animasyonları gsap-common.js'te) */
 (function () {
   "use strict";
   if (!window.gsap) return;
   gsap.registerPlugin(ScrollTrigger);
-
-  /* ---------- hero yazıları ---------- */
-  gsap.from(".part-hero .eyebrow, .part-hero h1, .part-hero .lead, .part-hero .chip", {
-    y: 26, opacity: 0, duration: 0.7, stagger: 0.09, ease: "power3.out"
-  });
 
   /* ---------- çip çizimi ---------- */
   const host = document.getElementById("cpu-hero");
@@ -95,21 +90,4 @@
     });
     host.addEventListener("pointerleave", function () { mx(0); my(0); });
   }
-
-  /* ---------- sayaçlar ---------- */
-  document.querySelectorAll(".stat b[data-count]").forEach(function (el) {
-    const end = parseFloat(el.dataset.count);
-    const dec = parseInt(el.dataset.dec || "0", 10);
-    const suf = el.dataset.suffix || "";
-    const o = { v: 0 };
-    ScrollTrigger.create({
-      trigger: el, start: "top 92%", once: true,
-      onEnter: function () {
-        gsap.to(o, {
-          v: end, duration: 1.6, ease: "power2.out",
-          onUpdate: function () { el.textContent = o.v.toFixed(dec).replace(".", ",") + suf; }
-        });
-      }
-    });
-  });
 })();

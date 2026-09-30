@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ekran Kartı (GPU) — ParçaParça</title>
+  <meta name="description" content="Ekran kartı nasıl çalışır? Paralel çekirdekler, warp, render hattı ve VRAM'i animasyonlarla öğren.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/gpu.css">
+</head>
+<body class="p-gpu" data-page="gpu">
+<div id="site-header"></div>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="part-hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">parça 02 · ekran kartı</span>
+        <h1>Ekran Kartı <span class="grad">(GPU)</span></h1>
+        <p class="lead">GPU da bir işlemci ama tam ters bir felsefeyle yapılmış: birkaç tane süper zeki çekirdek yerine binlerce basit çekirdek. Ekrandaki milyonlarca pikseli aynı anda boyamak için birebir. Bu sayfada nasıl çalıştığına bakıyoruz.</p>
+        <div class="hero-chips">
+          <span class="chip"><b>Binlerce</b> çekirdek</span>
+          <span class="chip"><b>Warp</b> ve shader</span>
+          <span class="chip"><b>VRAM</b> ve bant genişliği</span>
+        </div>
+        <p class="muted mt1" style="font-size:.88rem">İpucu: sağdaki ızgaraya tıkla ya da üstünde gez.</p>
+      </div>
+      <div class="hero-visual" id="gpu-hero" aria-label="Binlerce küçük çekirdeği temsil eden animasyonlu ızgara"></div>
+    </div>
+
+    <div class="container">
+      <div class="stats">
+        <div class="stat"><b data-count="16384">0</b><span>shader çekirdeği, en üst seviye ekran kartlarında</span></div>
+        <div class="stat"><b data-count="1" data-suffix=" TB/s">0</b><span>civarı VRAM bant genişliği, üst seviye kartlarda</span></div>
+        <div class="stat"><b data-count="8.3" data-dec="1" data-suffix=" M">0</b><span>piksel: 4K ekranda her karede boyanacak nokta sayısı</span></div>
+        <div class="stat"><b data-count="16.7" data-dec="1" data-suffix=" ms">0</b><span>60 FPS'te bir kare için ayrılan süre</span></div>
+      </div>
+      <div class="toc">
+        <small>Bu sayfada</small>
+        <a href="#nedir">GPU ne yapar</a>
+        <a href="#yaris">CPU ile yarış</a>
+        <a href="#mimari">İç yapı</a>
+        <a href="#warp">Warp</a>
+        <a href="#hat">Render hattı</a>
+        <a href="#vram">VRAM</a>
+        <a href="#isin">Işın izleme</a>
+        <a href="#ozel">Özel çekirdekler</a>
+        <a href="#igpu">iGPU / dGPU</a>
+        <a href="#quiz">Quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GPU NE YAPAR ================= -->
+  <section class="section" id="nedir">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">önce temel</span>
+        <h2>GPU ne yapar?</h2>
+        <p>GPU (Graphics Processing Unit) ismi "grafik" diyor ama bugün asıl yeteneği <strong>aynı işi çok sayıda veriye birden uygulamak</strong>. Grafik, bunun en bilinen örneği.</p>
+      </div>
+
+      <div class="grid c4">
+        <div class="card reveal"><div class="ico">🎮</div><h3>Görüntü çizmek</h3><p>3D sahneyi (köşe noktaları, dokular, ışıklar) ekrandaki piksellere çevirir. Oyunlarda her kare için milyonlarca piksel hesaplanır.</p></div>
+        <div class="card reveal d1"><div class="ico">🧮</div><h3>Genel paralel hesap</h3><p>Fizik simülasyonu, bilimsel hesaplar, video efektleri... Aynı işlemi binlerce veriye uygulayan her iş GPU'ya uygun. Buna <strong>GPGPU</strong> denir.</p></div>
+        <div class="card reveal d2"><div class="ico">🤖</div><h3>Yapay zekâ</h3><p>Sinir ağları özünde dev matris çarpımlarıdır. GPU'ların en sevdiği iş bu, o yüzden yapay zekâ patlaması GPU'larla geldi.</p></div>
+        <div class="card reveal d3"><div class="ico">🎞️</div><h3>Video</h3><p>Video oynatma ve kodlama için içinde ayrı özel donanım (video motoru) bulunur; işlemciyi yormadan 4K video çözer.</p></div>
+      </div>
+
+      <div class="grid c2 mt2">
+        <div class="card reveal">
+          <h3>Profesör mü, 1000 öğrenci mi? 🎓</h3>
+          <p>Elinde 1000 basit toplama sorusu var. Bir <strong>profesör</strong> (CPU çekirdeği) çok hızlı ama tek başına, soruları sırayla çözer. <strong>1000 ilkokul öğrencisi</strong> (GPU çekirdekleri) tek tek yavaş ama her biri bir soru alıp aynı anda çözerse iş bir anda biter.</p>
+          <p>Peki her sorunun cevabı bir öncekine bağlıysa? O zaman öğrenciler birbirini bekler ve kalabalık işe yaramaz; profesör kazanır. Yani GPU "her işte daha hızlı" değil, <em>paralel işte</em> hızlı.</p>
+        </div>
+        <div class="table-wrap reveal d1" style="margin:0">
+          <table style="min-width:0">
+            <thead><tr><th></th><th>CPU</th><th>GPU</th></tr></thead>
+            <tbody>
+              <tr><td>Çekirdek</td><td>4–24 büyük</td><td>Binlerce küçük</td></tr>
+              <tr><td>Hedef</td><td>Tek işi çabuk bitir (düşük gecikme)</td><td>Çok işi toplu bitir (yüksek verim)</td></tr>
+              <tr><td>Çip alanı</td><td>Çoğu cache ve kontrol mantığı</td><td>Çoğu hesap birimi</td></tr>
+              <tr><td>Bellek</td><td>RAM (~50–100 GB/s)</td><td>VRAM (yüzlerce GB/s)</td></tr>
+              <tr><td>Saat</td><td>4–5+ GHz</td><td>1,5–2,8 GHz civarı</td></tr>
+              <tr><td>İyi olduğu iş</td><td>Dallı, karışık, sıralı işler</td><td>Aynı işlem, çok veri</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= YARIŞ ================= -->
+  <section class="section" id="yaris">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">deneyerek gör</span>
+        <h2>CPU ile GPU yarışıyor</h2>
+        <p>Solda 4 büyük çekirdekli bir CPU, sağda 256 küçük çekirdekli bir GPU. Çekirdek başına CPU 4 kat daha hızlı. Görev: kutuları boyamak. Modu değiştirip ne olduğuna bak.</p>
+      </div>
+      <div class="demo reveal" id="race">
+        <div class="demo-title"><span class="dot"></span> Demo: paralel iş ve sıralı iş (basitleştirilmiş simülasyon)</div>
+        <div class="tabs" id="race-tabs">
+          <button class="tab active" data-m="par">Paralel iş: 256 pikseli boya</button>
+          <button class="tab" data-m="seq">Sıralı iş: 32 adım, her biri öncekine bağlı</button>
+        </div>
+        <p class="muted" id="race-desc"></p>
+        <div class="race-grid">
+          <div class="racer" id="racer-cpu">
+            <div class="rh"><div><b>CPU</b> <small>4 büyük çekirdek</small></div><span class="rtime" id="t-cpu">0,00 sn</span></div>
+            <div class="rboard" id="board-cpu"></div>
+            <div class="rstat" id="s-cpu">hazır</div>
+          </div>
+          <div class="racer" id="racer-gpu">
+            <div class="rh"><div><b>GPU</b> <small>256 küçük çekirdek</small></div><span class="rtime" id="t-gpu">0,00 sn</span></div>
+            <div class="rboard" id="board-gpu"></div>
+            <div class="rstat" id="s-gpu">hazır</div>
+          </div>
+        </div>
+        <div class="btn-row mt2">
+          <button class="btn" id="race-go">▶ Yarışı başlat</button>
+          <button class="btn ghost" id="race-reset">Sıfırla</button>
+        </div>
+        <div class="callout mt1" id="race-result">Yarışı başlat ve iki tarafı izle.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MİMARİ ================= -->
+  <section class="section" id="mimari">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">iç yapı</span>
+        <h2>GPU çipinin içi</h2>
+        <p>Bir GPU'da binlerce çekirdek düz bir yığın halinde değil, gruplar halinde durur. Bu gruba NVIDIA <strong>SM</strong> (Streaming Multiprocessor), AMD <strong>CU</strong> (Compute Unit), Intel <strong>Xe-core</strong> diyor. Kutulara tıkla, keşfet.</p>
+      </div>
+
+      <div class="arch-wrap reveal">
+        <div class="demo" style="margin:0">
+          <div class="demo-title"><span class="dot"></span> Demo: tüm kart</div>
+          <div class="chip-diagram" id="chip-diagram"></div>
+          <div class="demo-title" style="margin-top:22px"><span class="dot"></span> Demo: tek bir SM'nin içi</div>
+          <div class="sm-diagram" id="sm-diagram"></div>
+        </div>
+        <aside class="block-info" id="gpu-info" aria-live="polite"></aside>
+      </div>
+
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th>Ne?</th><th>NVIDIA</th><th>AMD</th><th>Intel Arc</th></tr></thead>
+          <tbody>
+            <tr><td>Çekirdek grubu</td><td>SM</td><td>Compute Unit (CU)</td><td>Xe-core</td></tr>
+            <tr><td>Genel hesap birimi</td><td>CUDA core</td><td>Stream processor</td><td>Vector engine</td></tr>
+            <tr><td>Yapay zekâ / matris</td><td>Tensor core</td><td>AI accelerator</td><td>XMX engine</td></tr>
+            <tr><td>Işın izleme</td><td>RT core</td><td>Ray accelerator</td><td>RT unit</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- @@more -->
+
+  <section class="section" id="quiz">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">kendini dene</span>
+        <h2>Mini quiz</h2>
+        <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
+      </div>
+      <div class="quiz" id="gpu-quiz"></div>
+      <script type="application/json" id="quiz-data">[]</script>
+      <div id="pager"></div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="js/site.js"></script>
+<script src="js/gsap-common.js"></script>
+<script src="js/gpu-hero.js"></script>
+<script src="js/gpu-race.js"></script>
+<script src="js/gpu-arch.js"></script>
+</body>
+</html>

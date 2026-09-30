@@ -377,3 +377,10 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   text-decoration: none !important; transition: all .2s;
 }
 .toc a:hover { color: #fff; border-color: rgba(var(--accent-rgb), .6); background: rgba(var(--accent-rgb), .12); }
+
+/* ---------- bilgi paneli (CPU blok şeması, GPU mimarisi) ---------- */
+.block-info { position: sticky; top: calc(var(--nav-h) + 16px); padding: 22px; border-radius: 16px; background: rgba(255,255,255,.035); border: 1px solid var(--line-2); min-height: 260px; }
+.block-info h3 { color: var(--accent); margin-bottom: 8px; }
+.block-info .analogy { padding: 10px 14px; border-radius: 10px; background: rgba(251,191,36,.08); border-left: 3px solid var(--warn); color: #e6d9a8; font-size: .94rem; margin: 12px 0; }
+.block-info ul { color: var(--muted); font-size: .93rem; margin-bottom: 0; }
+@media (max-width: 900px) { .block-info { position: static; } }

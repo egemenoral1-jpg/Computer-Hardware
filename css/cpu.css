@@ -27,13 +27,8 @@
 .blk:hover { border-color: rgba(var(--accent-rgb), .7); }
 .blk.sel { background: rgba(var(--accent-rgb), .2); border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .18); }
 .blk.rel { border-color: rgba(251,191,36,.8); background: rgba(251,191,36,.09); }
-.block-info { position: sticky; top: calc(var(--nav-h) + 16px); padding: 22px; border-radius: 16px; background: rgba(255,255,255,.035); border: 1px solid var(--line-2); min-height: 260px; }
-.block-info h3 { color: var(--accent); margin-bottom: 8px; }
-.block-info .analogy { padding: 10px 14px; border-radius: 10px; background: rgba(251,191,36,.08); border-left: 3px solid var(--warn); color: #e6d9a8; font-size: .94rem; margin: 12px 0; }
-.block-info ul { color: var(--muted); font-size: .93rem; margin-bottom: 0; }
 @media (max-width: 900px) {
   .blockmap-wrap { grid-template-columns: 1fr; }
-  .block-info { position: static; }
   .bgroup .row { grid-template-columns: repeat(2, 1fr); }
 }
 
