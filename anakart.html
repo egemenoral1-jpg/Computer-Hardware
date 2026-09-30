@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anakart — ParçaParça</title>
+  <meta name="description" content="Anakart nedir, üzerinde neler var? Soket, chipset, VRM, PCIe hatları ve bilgisayarın açılış süreci. Tıklanabilir haritayla öğren.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/anakart.css">
+</head>
+<body class="p-anakart" data-page="anakart">
+<div id="site-header"></div>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="part-hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">parça 05 · anakart</span>
+        <h1>Anakart <span class="grad">(Motherboard)</span></h1>
+        <p class="lead">Bilgisayarın şehir planı. İşlemci, RAM, ekran kartı, SSD... hepsi ayrı parçalar ama birbirleriyle konuşabilmeleri için yollara, kavşaklara ve elektriğe ihtiyaçları var. Bunların hepsini anakart sağlıyor.</p>
+        <div class="hero-chips">
+          <span class="chip"><b>Soket</b> ve chipset</span>
+          <span class="chip"><b>PCIe</b> hatları</span>
+          <span class="chip"><b>BIOS</b> / UEFI</span>
+        </div>
+      </div>
+      <div class="hero-visual" id="board-hero" aria-label="Animasyonlu anakart çizimi"></div>
+    </div>
+
+    <div class="container">
+      <div class="stats">
+        <div class="stat"><b data-count="24">0</b><span>pin: ATX ana güç konnektörü</span></div>
+        <div class="stat"><b data-count="63" data-suffix=" GB/s">0</b><span>PCIe 5.0 x16 yuvasının tek yön bant genişliği</span></div>
+        <div class="stat"><b data-count="8" data-prefix="~">0</b><span>katmanlı devre kartı: izler üst üste katmanlarda geçer (genelde 6-10)</span></div>
+        <div class="stat"><b data-count="17" data-suffix=" cm">0</b><span>en küçük yaygın form: Mini-ITX (17 × 17 cm)</span></div>
+      </div>
+      <div class="toc">
+        <small>Bu sayfada</small>
+        <a href="#nedir">Anakart ne yapar</a>
+        <a href="#harita">Harita</a>
+        <a href="#soket">Soket &amp; chipset</a>
+        <a href="#hat">PCIe hatları</a>
+        <a href="#form">Boyutlar</a>
+        <a href="#acilis">Açılış süreci</a>
+        <a href="#kurulum">Kurulum ipuçları</a>
+        <a href="#quiz">Quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NEDİR ================= -->
+  <section class="section" id="nedir">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">önce temel</span>
+        <h2>Anakart ne yapar?</h2>
+        <p>Anakart, üzerinde neredeyse hiç "hesap" yapmayan ama her şeyi birbirine bağlayan büyük bir devre kartı (PCB). Üç ana işi var:</p>
+      </div>
+      <div class="grid c3">
+        <div class="card reveal"><div class="ico">🛣️</div><h3>1. Yol olmak</h3><p>Parçalar arasındaki bütün veri yolları (izler) kartın içindeki katmanlarda bakır çizgiler halinde geçer. CPU ile RAM, CPU ile ekran kartı, hepsi buradan konuşur.</p></div>
+        <div class="card reveal d1"><div class="ico">⚡</div><h3>2. Güç dağıtmak</h3><p><a href="psu.html">Güç kaynağından</a> gelen 12 V'u alır, işlemci ve RAM'in ihtiyacı olan düşük voltajlara çevirir ve dağıtır.</p></div>
+        <div class="card reveal d2"><div class="ico">🔌</div><h3>3. Bağlantı noktası olmak</h3><p>USB, ağ, ses, ekran çıkışı, SATA, M.2 ve genişleme yuvaları... Dışarıyla ve diğer parçalarla bağlantıların hepsi anakartta.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HARİTA ================= -->
+  <section class="section" id="harita">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">tıkla ve keşfet</span>
+        <h2>Anakartın haritası</h2>
+        <p>Bu, sadeleştirilmiş bir ATX anakartın üstten görünümü. Gerçek kartlarda yerleşim değişir ama parçalar aynı. Bir bölgeye tıkla.</p>
+      </div>
+      <div class="board-wrap reveal">
+        <div class="demo" style="margin:0"><div class="demo-title"><span class="dot"></span> Demo: anakart haritası</div><div class="board-map" id="board-map"></div></div>
+        <aside class="block-info" id="board-info" aria-live="polite"></aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SOKET & CHIPSET ================= -->
+  <section class="section" id="soket">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">uyumluluğun kalbi</span>
+        <h2>Soket ve chipset</h2>
+        <p>Bir işlemcinin hangi anakarta takılacağını iki şey belirler: <strong>soket</strong> (fiziksel uyum) ve <strong>chipset</strong> (özellikler).</p>
+      </div>
+      <div class="grid c2">
+        <div class="card reveal">
+          <h3>Soket</h3>
+          <p>İşlemcinin oturduğu yuvanın fiziksel şekli ve pin düzeni. İşlemci yanlış sokete takılamaz.</p>
+          <ul>
+            <li><strong>LGA:</strong> Pinler anakartta durur, işlemcinin altında düz temas noktaları vardır (Intel'in hep kullandığı yapı, AMD'nin AM5'i de böyle). Bükülen pin anakarta ait olur, dikkat!</li>
+            <li><strong>PGA:</strong> Pinler işlemcinin üzerindedir (AMD AM4). Pin bükülürse işlemci zarar görür.</li>
+          </ul>
+          <p class="muted">Örnekler: Intel LGA1700, LGA1851, AMD AM5. Hangi işlemcinin hangi sokete uyduğu nesilden nesile değişir; almadan önce üreticinin uyumluluk listesine bak.</p>
+        </div>
+        <div class="card reveal d1">
+          <h3>Chipset</h3>
+          <p>İşlemcinin doğrudan yönetmediği bağlantıları toplayan yardımcı çip: ek USB, SATA, PCIe hatları, ağ, ses. İşlemciye tek bir hızlı bağlantı üzerinden bağlıdır.</p>
+          <div class="table-wrap" style="margin:12px 0 0">
+            <table style="min-width:0">
+              <thead><tr><th>Seviye</th><th>Tipik özellik</th></tr></thead>
+              <tbody>
+                <tr><td>Giriş (A/H serisi)</td><td>Temel USB/SATA, az PCIe hattı, hız aşırtma yok</td></tr>
+                <tr><td>Orta (B serisi)</td><td>Çoğu kullanıcı için ideal, RAM hız aşırtma, yeterli hat</td></tr>
+                <tr><td>Üst (Z/X serisi)</td><td>İşlemci hız aşırtma, çok sayıda USB/PCIe/M.2</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PCIe HATLARI ================= -->
+  <section class="section" id="hat">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">şerit bütçesi</span>
+        <h2>PCIe hatları (lane)</h2>
+        <p>PCIe, tek tek "hat"lardan (lane) oluşan bir yol sistemi. Her hat bir çift kablo gibi düşün; cihazın x4, x8, x16 olması kaç hat kullandığını gösterir. Ekran kartı genelde x16, NVMe SSD x4 kullanır. Sorun şu: <strong>işlemcinin sunduğu hat sayısı sınırlı</strong>.</p>
+      </div>
+      <div class="demo reveal" id="lanes">
+        <div class="demo-title"><span class="dot"></span> Demo: hat bütçesini paylaştır</div>
+        <div class="field" style="max-width:340px"><label for="ln-cpu">İşlemcinin sunduğu kullanılabilir PCIe hattı</label>
+          <select id="ln-cpu"><option value="20" selected>20 hat (tipik masaüstü)</option><option value="28">28 hat (daha üst seviye platform)</option></select></div>
+        <div class="ln-devs" id="ln-devs"></div>
+        <div class="ln-view">
+          <div class="ln-cpu"><b>CPU</b><span id="ln-cpu-used"></span></div>
+          <div class="ln-cols">
+            <div><h4>Doğrudan CPU'ya bağlı</h4><div class="ln-list" id="ln-direct"></div></div>
+            <div><h4>Chipset üzerinden (ortak yukarı bağlantı x4)</h4><div class="ln-list" id="ln-chip"></div></div>
+          </div>
+        </div>
+        <div class="callout mt1" id="ln-note"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FORM ================= -->
+  <section class="section" id="form">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">kasaya sığmalı</span>
+        <h2>Anakart boyutları (form factor)</h2>
+        <p>Anakartın boyutu kasa seçimini ve genişleme yuvası sayısını belirler. Kasanın desteklediği boyutlar kutusunda yazar.</p>
+      </div>
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th>Boyut</th><th>Ölçü (mm)</th><th>Genişleme yuvası</th><th>Genelde kime uygun?</th></tr></thead>
+          <tbody>
+            <tr><td>E-ATX</td><td>~305 × 330</td><td>7+</td><td>Üst seviye, çok parçalı sistemler</td></tr>
+            <tr><td>ATX</td><td>305 × 244</td><td>7</td><td>Standart masaüstü</td></tr>
+            <tr><td>Micro-ATX (mATX)</td><td>244 × 244</td><td>4</td><td>Kompakt ama yeterli genişleme</td></tr>
+            <tr><td>Mini-ITX</td><td>170 × 170</td><td>1</td><td>Minik sistemler; RAM yuvası çoğunlukla 2, M.2 sınırlı</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout reveal">
+        <span class="callout-title">Küçük anakart kasaya sığar, büyük sığmaz</span>
+        ATX kasa mATX ve ITX anakartları da alır (aynı vida delikleri). Tersi olmaz. Ayrıca büyük ekran kartı ve soğutucuyu da kasa ölçülerine göre kontrol et.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= AÇILIŞ ================= -->
+  <section class="section" id="acilis">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">güç düğmesine bastıktan sonra</span>
+        <h2>Bilgisayar nasıl açılır?</h2>
+        <p>Güç düğmesi ile işletim sisteminin gelmesi arasında arka planda birkaç saniyede çok şey olur. Adım adım ilerle.</p>
+      </div>
+      <div class="demo reveal" id="boot">
+        <div class="demo-title"><span class="dot"></span> Demo: açılış (boot) süreci</div>
+        <ol class="boot-rail" id="boot-rail"></ol>
+        <div class="btn-row mt1">
+          <button class="btn sm" id="boot-next">Sonraki adım →</button>
+          <button class="btn sm ghost" id="boot-auto">Otomatik oynat</button>
+          <button class="btn sm ghost" id="boot-reset">Baştan</button>
+        </div>
+      </div>
+      <div class="grid c2">
+        <div class="card reveal"><h3>BIOS mu UEFI mı?</h3><p>Eski adı BIOS, yenisi <strong>UEFI</strong>. İkisi de anakartın flash çipinde duran ilk yazılım. UEFI grafik arayüz, fare desteği, büyük disk desteği ve güvenli önyükleme (Secure Boot) sunar. Konuşma dilinde herkes hâlâ "BIOS" der.</p></div>
+        <div class="card reveal d1"><h3>Açılmıyorsa</h3><p>Birçok anakartta hata kodu veren küçük bir LED ya da ekran (Q-Code) bulunur. Bip sesleri veya kod, hangi aşamada durduğunu söyler: genelde RAM, ekran kartı ya da işlemci. RAM'i yeniden takmak şaşırtıcı sıklıkla işe yarar.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KURULUM ================= -->
+  <section class="section" id="kurulum">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">bilgisayar toplayacaksan</span>
+        <h2>Kurulum ipuçları</h2>
+      </div>
+      <div class="grid c3">
+        <div class="card reveal"><h3>Statik elektrik ⚡</h3><p>Parçalara dokunmadan önce kasanın çıplak metaline dokun. Halı üstünde terlikle dolaşıp anakarta dokunmak iyi fikir değil.</p></div>
+        <div class="card reveal d1"><h3>Ayırıcılar (standoff)</h3><p>Anakartı kasaya doğrudan değil, vidalı ayırıcılar üzerinden takarsın. Ayırıcıların yeri anakart boyutuna göre olmalı; fazladan olanı devreyi kısa devre edebilir.</p></div>
+        <div class="card reveal d2"><h3>İşlemciyi takarken</h3><p>Soketteki ve işlemcideki üçgen işaretini hizala. Zorlama yok, doğru oturursa kendiliğinden düşer. Soğutucudan önce termal macun ve iyi montaj şart.</p></div>
+        <div class="card reveal"><h3>RAM "tık" sesi</h3><p>Çubuk yuvaya tam oturunca iki yandaki kilit "tık" diye kapanır. Yarım takılı RAM açılmama sebebi numara 1.</p></div>
+        <div class="card reveal d1"><h3>Güç kabloları</h3><p>24 pin ve 8 pin CPU kablosunu unutma. Bunlar olmadan bilgisayar açılmaz. Ekran kartının kendi güç kablosu da var.</p></div>
+        <div class="card reveal d2"><h3>Ön panel kabloları</h3><p>Güç düğmesi, LED ve USB kabloları anakartın kılavuzundaki pin şemasına göre takılır. En çok karışan kısım burası, kılavuzu aç.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">kendini dene</span>
+        <h2>Mini quiz</h2>
+        <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
+      </div>
+      <div class="quiz" id="board-quiz"></div>
+      <script type="application/json" id="quiz-data">[{"q": "Anakartın en temel görevi nedir?", "o": ["Program çalıştırmak", "Parçaları birbirine bağlamak ve güç dağıtmak", "Veriyi kalıcı saklamak", "Görüntü üretmek"], "a": 1, "e": "Anakart kendi başına hesap yapmaz. Parçalar arası veri yollarını, güç dağıtımını ve bağlantı noktalarını sağlar."}, {"q": "VRM'in görevi nedir?", "o": ["Fan hızını ayarlamak", "12 V'u işlemcinin ihtiyacı olan düşük voltaja (~1 V) çevirmek", "RAM'i yenilemek", "Ses üretmek"], "a": 1, "e": "İşlemci çok düşük voltajda ama çok yüksek akımla çalışır. VRM, güç kaynağından gelen 12 V'u buna çevirir. Bu sırada ısındığı için soğutucusu vardır."}, {"q": "Bir işlemcinin anakarta fiziksel olarak takılıp takılamayacağını ilk olarak ne belirler?", "o": ["RAM miktarı", "Soket türü", "Kasa rengi", "Depolama boyutu"], "a": 1, "e": "Soket, işlemcinin ve anakartın fiziksel ve elektriksel uyumunu belirler. Örneğin AM5 işlemci LGA1700 anakarta takılamaz."}, {"q": "PCIe x16 ne anlama gelir?", "o": ["16 GB veri yolu", "16 hat (lane) kullanan bağlantı", "16 numaralı yuva", "16 çekirdekli işlemci"], "a": 1, "e": "Her hat bir çift kablo gibi düşünülebilir. x16, 16 hat demektir; bu yüzden ekran kartı gibi çok veri isteyen cihazlar x16 kullanır."}, {"q": "Chipset'in rolü nedir?", "o": ["İşlemcinin yönetmediği ek USB, SATA ve PCIe bağlantılarını toplamak", "Ekrana görüntü basmak", "RAM'i soğutmak", "İşlemcinin yerine hesap yapmak"], "a": 0, "e": "Chipset ek bağlantıları toplayıp işlemciye tek bir hızlı yolla bağlanır. Bu yüzden arkasındaki cihazlar bu yukarı bağlantıyı paylaşır."}, {"q": "CMOS pili (CR2032) biterse ne olur?", "o": ["Bilgisayar hiç açılmaz", "Saat ve BIOS ayarları sıfırlanır", "RAM hızı yarıya düşer", "Ekran kartı çalışmaz"], "a": 1, "e": "Pil, bilgisayar prizden çekiliyken saati ve BIOS ayarlarını tutar. Bitince saat sürekli sıfırlanır ve ayarlar kaybolur, ama bilgisayar genellikle yine açılır."}, {"q": "Güç düğmesine basınca işlemci ilk komutunu nereden okur?", "o": ["SSD'den", "RAM'den", "BIOS/UEFI flash çipinden", "Ekran kartından"], "a": 2, "e": "Açılışta RAM boş, işletim sistemi henüz yüklenmedi. İşlemci sıfırlanınca sabit bir adresten, yani anakarttaki BIOS/UEFI çipinden başlar."}, {"q": "Mini-ITX bir anakart ATX bir kasaya takılabilir mi?", "o": ["Evet, ATX kasalar küçük anakartları da destekler", "Hayır, sadece Mini-ITX kasaya takılır", "Sadece laptopta", "Sadece adaptörle"], "a": 0, "e": "ATX kasaların vida delikleri mATX ve Mini-ITX anakartlar için de vardır. Tersi (büyük anakartı küçük kasaya takmak) mümkün değildir."}]</script>
+      <div id="pager"></div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/site.js"></script>
+<script src="js/anakart.js"></script>
+</body>
+</html>
