@@ -166,13 +166,24 @@
     if (!root || !dataEl) return;
     const qs = JSON.parse(dataEl.textContent);
 
+    // şık sırasını her çizimde karıştır (doğru cevap hep aynı yerde olmasın)
+    function shuffled(n) {
+      const a = [];
+      for (let i = 0; i < n; i++) a.push(i);
+      for (let i = n - 1; i > 0; i--) {
+        const k = Math.floor(Math.random() * (i + 1));
+        const t = a[i]; a[i] = a[k]; a[k] = t;
+      }
+      return a;
+    }
+
     function render() {
       let answered = 0, correct = 0;
       root.innerHTML =
         qs.map(function (q, i) {
           return '<div class="quiz-q" data-i="' + i + '"><h3><span class="n">' + (i + 1) + ".</span>" + q.q + "</h3>" +
-            '<div class="quiz-opts">' + q.o.map(function (o, j) {
-              return '<button class="quiz-opt" data-j="' + j + '">' + o + "</button>";
+            '<div class="quiz-opts">' + shuffled(q.o.length).map(function (j) {
+              return '<button class="quiz-opt" data-j="' + j + '">' + q.o[j] + "</button>";
             }).join("") + '</div><div class="quiz-exp">' + q.e + "</div></div>";
         }).join("") +
         '<div class="quiz-result"><div class="score"></div><p class="msg"></p><button class="btn sm ghost retry">Tekrar dene</button></div>';
@@ -185,7 +196,8 @@
         const qEl = btn.closest(".quiz-q");
         const q = qs[+qEl.dataset.i];
         const pick = +btn.dataset.j;
-        qEl.querySelectorAll(".quiz-opt").forEach(function (b, j) {
+        qEl.querySelectorAll(".quiz-opt").forEach(function (b) {
+          const j = +b.dataset.j;
           b.disabled = true;
           if (j === q.a) b.classList.add("right");
           else if (j === pick) b.classList.add("wrong");
