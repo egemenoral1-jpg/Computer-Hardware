@@ -177,6 +177,115 @@
     </div>
   </section>
 
+  <!-- ================= REGISTER'LAR ================= -->
+  <section class="section" id="registerlar">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">işlemcinin cep defteri</span>
+        <h2>Register'lar</h2>
+        <p>Register, işlemcinin içindeki en hızlı ve en küçük hafıza türü. Komutların çoğu verisini RAM'den değil register'lardan alır, sonucu da oraya yazar. Bu bölüm biraz uzun, çünkü işlemciyi gerçekten anlamak için en önemli konu bu.</p>
+      </div>
+
+      <div class="grid c3">
+        <div class="card reveal">
+          <h3>Çok az var</h3>
+          <p>x86-64'te 16 tane genel amaçlı register var ve her biri 64 bit (8 bayt). Toplam: <strong>16 × 8 = 128 bayt</strong>. Bu cümlenin kendisi bile bundan büyük.</p>
+        </div>
+        <div class="card reveal d1">
+          <h3>Çok hızlı</h3>
+          <p>Register'lar ALU'nun hemen yanında, çipin içinde. Bir adres hesaplamaya, cache'te aramaya gerek yok. Erişim pratikte bir döngüden az sürer.</p>
+        </div>
+        <div class="card reveal d2">
+          <h3>Neden az?</h3>
+          <p>Komutlarda her register'ın bir "kodu" var; 16 register 4 bit ister. Çok olursa komutlar uzar, çip büyür, ısınır. Program değişirken (context switch) hepsi kaydedilmek zorunda da.</p>
+        </div>
+      </div>
+
+      <h3 class="sub reveal">1. Register gezgini</h3>
+      <div class="demo reveal" id="regexp">
+        <div class="demo-title"><span class="dot"></span> Demo: x86-64 register aileleri</div>
+        <div class="tabs" id="reg-tabs"></div>
+        <div class="reg-layout">
+          <div class="reg-chips" id="reg-chips"></div>
+          <div class="reg-detail" id="reg-detail" aria-live="polite"></div>
+        </div>
+        <p class="demo-note">Örnekler x86-64 mimarisinden (Intel / AMD). ARM işlemcilerde (telefonlar, Apple M serisi) isimler farklı: X0–X30 gibi, ama fikir aynı.</p>
+      </div>
+
+      <h3 class="sub reveal">2. RAX'in içi: bir register, birçok isim</h3>
+      <p class="reveal">Tarihsel sebeplerle (8086 → 386 → x86-64) aynı register'a farklı boyutlarda farklı isimlerle erişilir. <code>RAX</code> 64 bitin tamamı, <code>EAX</code> alt 32 biti, <code>AX</code> alt 16 biti, <code>AH</code> ve <code>AL</code> ise AX'in üst ve alt bayt'ıdır. Aşağıda bir isim seçip yazma komutlarını dene, hangi bitlerin değiştiğini izle.</p>
+      <div class="demo reveal" id="raxdemo">
+        <div class="demo-title"><span class="dot"></span> Demo: RAX register'ının 64 biti</div>
+        <div class="bits64" id="bits64"></div>
+        <div class="alias-row">
+          <div class="tabs" id="alias-tabs"></div>
+          <div class="alias-out" id="alias-out"></div>
+        </div>
+        <div class="btn-row" id="rax-ops"></div>
+        <div class="callout mt1" id="rax-note"></div>
+      </div>
+
+      <h3 class="sub reveal">3. ALU ve bayraklar (flags)</h3>
+      <p class="reveal">ALU bir işlem yapınca sadece sonucu vermez, sonuç hakkında bilgi de bırakır: <em>sıfır mı çıktı, negatif mi, taştı mı?</em> Bu bilgiler <code>RFLAGS</code> register'ındaki tek bitlik bayraklarda saklanır. Bir sonraki komut (<code>JE</code>, <code>JL</code> gibi şartlı atlamalar) bu bayraklara bakıp karar verir. Yani her <code>if</code> aslında bir karşılaştırma ve bayraklara bakan bir atlamadır.</p>
+      <div class="demo reveal" id="alu">
+        <div class="demo-title"><span class="dot"></span> Demo: 8 bitlik mini ALU</div>
+        <div class="alu-controls">
+          <div class="field"><label for="alu-a">A (0 – 255)</label><input type="number" id="alu-a" min="0" max="255" value="200"></div>
+          <div class="field"><label for="alu-op">İşlem</label>
+            <select id="alu-op">
+              <option value="ADD">ADD (A + B)</option>
+              <option value="SUB">SUB (A − B)</option>
+              <option value="CMP">CMP (A ile B'yi karşılaştır)</option>
+              <option value="AND">AND</option>
+              <option value="OR">OR</option>
+              <option value="XOR">XOR</option>
+            </select>
+          </div>
+          <div class="field"><label for="alu-b">B (0 – 255)</label><input type="number" id="alu-b" min="0" max="255" value="100"></div>
+        </div>
+        <div class="btn-row presets" id="alu-presets"></div>
+        <div class="alu-view" id="alu-view"></div>
+        <div class="flags" id="alu-flags"></div>
+        <h4 class="mini">Bu bayraklarla hangi şartlı atlamalar çalışır?</h4>
+        <div class="jumps" id="alu-jumps"></div>
+        <p class="demo-note" id="alu-jump-note"></p>
+      </div>
+
+      <div class="callout reveal">
+        <span class="callout-title">Bayraklar RFLAGS içinde nerede?</span>
+        <code>CF</code> bit 0, <code>PF</code> bit 2, <code>AF</code> bit 4, <code>ZF</code> bit 6, <code>SF</code> bit 7, <code>TF</code> bit 8, <code>IF</code> bit 9, <code>DF</code> bit 10, <code>OF</code> bit 11. Yani RFLAGS 64 bit ama bu işin ana kısmı ilk 12 bitte dönüyor.
+      </div>
+
+      <h3 class="sub reveal">4. Stack (yığın) ve RSP</h3>
+      <p class="reveal">RSP register'ı RAM'deki bir bölgeyi, yığını (stack) gösterir. <code>PUSH</code> ile üste değer koyarsın, <code>POP</code> ile üsttekini alırsın. Fonksiyon çağırırken (<code>CALL</code>) dönüş adresi de buraya konur, <code>RET</code> onu geri alır. Yığın adres olarak <strong>aşağı doğru büyür</strong>: PUSH'ta RSP azalır.</p>
+      <div class="demo reveal" id="stackdemo">
+        <div class="demo-title"><span class="dot"></span> Demo: Yığın nasıl çalışır?</div>
+        <div class="stack-wrap">
+          <div class="stack-mem" id="stack-mem"></div>
+          <div class="stack-side">
+            <div class="stack-regs">
+              <div class="fbox"><small>RSP</small><b id="st-rsp">0x1040</b></div>
+              <div class="fbox"><small>RIP</small><b id="st-rip">0x4010</b></div>
+            </div>
+            <div class="btn-row">
+              <button class="btn sm" id="st-push">PUSH</button>
+              <button class="btn sm ghost" id="st-pop">POP</button>
+              <button class="btn sm" id="st-call">CALL</button>
+              <button class="btn sm ghost" id="st-ret">RET</button>
+              <button class="btn sm ghost" id="st-reset">Sıfırla</button>
+            </div>
+            <div class="callout mt1" id="st-note">PUSH veya CALL'a bas. Yığının dolduğunu görene kadar devam et 😄</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout adv reveal">
+        <span class="callout-title">İleri seviye: aslında 16'dan çok fazla register var</span>
+        Yazdığın kod 16 register görür ama işlemcinin içinde yaklaşık 200-300 tane fiziksel tamsayı register bulunur. <strong>Register renaming</strong> ile işlemci, aynı isimli register'ı kullanan bağımsız işleri farklı fiziksel register'lara dağıtır ve böylece komutları sırasız (out-of-order) yürütebilir. Programcının haberi bile olmaz.
+      </div>
+    </div>
+  </section>
+
   <!-- @@more -->
 
   <section class="section" id="quiz">
@@ -201,5 +310,6 @@
 <script src="js/cpu-hero.js"></script>
 <script src="js/cpu-blocks.js"></script>
 <script src="js/cpu-fde.js"></script>
+<script src="js/cpu-registers.js"></script>
 </body>
 </html>
