@@ -1,0 +1,58 @@
+/* ---------- Güç kaynağı sayfası ---------- */
+#psu-hero svg { width: 100%; height: 100%; display: block; }
+#psu-hero .body { fill: #1a1f2e; stroke: rgba(251,146,60,.65); stroke-width: 2.5; }
+#psu-hero .ring { fill: #0c111d; stroke: rgba(251,146,60,.5); stroke-width: 3; }
+#psu-hero .fan path { fill: rgba(251,146,60,.85); }
+#psu-hero .fan .hub { fill: #3a2410; stroke: #fb923c; stroke-width: 2; }
+#psu-hero .fan { animation: fanspin 1.1s linear infinite; }
+#psu-hero .bolt { fill: #fbbf24; filter: drop-shadow(0 0 8px rgba(251,191,36,.8)); animation: zap 1.6s ease-in-out infinite; }
+#psu-hero .tag { fill: #f5d9c0; font: 700 11px var(--mono); }
+#psu-hero .ac { fill: #cbd5f0; font: 700 12px var(--mono); }
+#psu-hero .cable { fill: none; stroke-width: 6; stroke-linecap: round; stroke-dasharray: 10 8; animation: cflow 1s linear infinite; }
+#psu-hero .c12 { stroke: #fbbf24; } #psu-hero .c5 { stroke: #ef4444; } #psu-hero .c33 { stroke: #fb923c; } #psu-hero .ac-in { stroke: #94a3b8; }
+@keyframes fanspin { to { transform: rotate(360deg); } }
+@keyframes cflow { to { stroke-dashoffset: -36; } }
+@keyframes zap { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+
+/* AC → DC */
+.conv-steps { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.conv-steps .tab b { font-family: var(--mono); color: var(--accent); margin-right: 4px; }
+.conv-view { display: grid; grid-template-columns: 1.3fr 1fr; gap: 22px; align-items: center; }
+@media (max-width: 800px) { .conv-view { grid-template-columns: 1fr; } }
+#conv-wave { width: 100%; height: 200px; border-radius: 14px; background: #0a1020; border: 1px solid var(--line-2); display: block; }
+.conv-text .cv-v { font: 700 1.5rem var(--mono); color: var(--accent); margin-bottom: 4px; }
+.conv-text h3 { margin-bottom: 6px; }
+.conv-text p { color: var(--muted); }
+
+/* watt hesaplayıcı */
+.wc-controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 14px 0; }
+@media (max-width: 800px) { .wc-controls { grid-template-columns: 1fr 1fr !important; } }
+@media (max-width: 520px) { .wc-controls { grid-template-columns: 1fr !important; } }
+.wc-oc { display: inline-flex; gap: 8px; align-items: center; color: #d5def3; font-size: .94rem; cursor: pointer; margin-bottom: 14px; }
+.wc-oc input { accent-color: var(--accent); }
+.wc-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+@media (max-width: 720px) { .wc-cards { grid-template-columns: repeat(2, 1fr); } }
+.ps.hl { border-color: var(--accent); background: rgba(var(--accent-rgb), .12); }
+.wc-bar { display: flex; height: 24px; border-radius: 8px; overflow: hidden; background: rgba(255,255,255,.06); margin-top: 14px; }
+.wc-bar i { display: block; height: 100%; transition: width .4s; }
+.b-cpu { background: #38bdf8; } .b-gpu { background: #a78bfa; } .b-oth { background: #fb923c; } .b-free { background: rgba(255,255,255,.12); }
+.wc-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; font-size: .82rem; color: var(--muted); }
+.wc-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; }
+
+/* verimlilik */
+.eff-layout { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; align-items: center; }
+@media (max-width: 800px) { .eff-layout { grid-template-columns: 1fr; } }
+#eff-chart { width: 100%; height: auto; border-radius: 14px; background: #0a1020; border: 1px solid var(--line-2); display: block; }
+.eff-out { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.eff-note { grid-column: 1 / -1; padding: 10px 14px; border-radius: 12px; background: rgba(251,146,60,.09); border: 1px solid rgba(251,146,60,.3); font-size: .9rem; color: #f0dcc8; }
+
+/* konnektörler */
+.conn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 18px; }
+@media (max-width: 900px) { .conn-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .conn-grid { grid-template-columns: 1fr; } }
+.pins { display: inline-flex; flex-direction: column; gap: 5px; padding: 10px 12px; margin-bottom: 12px; border-radius: 8px; background: #0a0f1c; border: 2px solid #3b4666; max-width: 100%; overflow: hidden; }
+.prow2 { display: flex; gap: 5px; }
+.prow2 i { width: 12px; height: 12px; border-radius: 3px; background: #f5c542; box-shadow: inset 0 -2px 0 rgba(0,0,0,.35); }
+.prow2.small i { width: 8px; height: 8px; background: #94a3b8; margin-top: 3px; }
+.card .to { color: #fff; font-weight: 600; margin-bottom: 2px; }
+.card .w { font: 600 .82rem var(--mono); color: var(--accent); margin-bottom: 8px; }

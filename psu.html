@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Güç Kaynağı (PSU) — ParçaParça</title>
+  <meta name="description" content="Güç kaynağı prizden gelen elektriği nasıl bilgisayara uygun hale getirir? 80 PLUS, watt hesabı ve konnektörler. Demolarla öğren.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/psu.css">
+</head>
+<body class="p-psu" data-page="psu">
+<div id="site-header"></div>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="part-hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">parça 06 · güç kaynağı</span>
+        <h1>Güç Kaynağı <span class="grad">(PSU)</span></h1>
+        <p class="lead">Prizdeki elektrik bilgisayara doğrudan verilemez: fazla yüksek voltajlı ve yanlış türden. Güç kaynağı bunu, parçaların yiyebileceği güvenli ve düzenli bir hale çevirir. Sıkıcı görünür ama her şeyin ayakta durması ona bağlı.</p>
+        <div class="hero-chips">
+          <span class="chip"><b>AC</b> → <b>DC</b></span>
+          <span class="chip"><b>80 PLUS</b> verimlilik</span>
+          <span class="chip"><b>Watt</b> hesabı</span>
+        </div>
+      </div>
+      <div class="hero-visual" id="psu-hero" aria-label="Fanı dönen güç kaynağı animasyonu"></div>
+    </div>
+
+    <div class="container">
+      <div class="stats">
+        <div class="stat"><b data-count="230">0</b><span>V AC: Türkiye'de prizden gelen gerilim</span></div>
+        <div class="stat"><b data-count="12">0</b><span>V DC: bilgisayarın ana gücü (işlemci, ekran kartı)</span></div>
+        <div class="stat"><b data-count="90" data-prefix="%">0</b><span>civarı: 80 PLUS Gold güç kaynağının orta yükteki verimi</span></div>
+        <div class="stat"><b data-count="600" data-suffix=" W">0</b><span>bir 12V-2x6 (12VHPWR) ekran kartı konnektörünün üst sınırı</span></div>
+      </div>
+      <div class="toc">
+        <small>Bu sayfada</small>
+        <a href="#nedir">PSU ne yapar</a>
+        <a href="#donusum">AC → DC</a>
+        <a href="#watt">Kaç watt lazım</a>
+        <a href="#verim">80 PLUS</a>
+        <a href="#kablo">Konnektörler</a>
+        <a href="#koruma">Korumalar</a>
+        <a href="#quiz">Quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NEDİR ================= -->
+  <section class="section" id="nedir">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">önce temel</span>
+        <h2>Güç kaynağı ne yapar?</h2>
+        <p>Prizden gelen elektrik <strong>AC</strong> (alternatif akım): saniyede 50 kez yön değiştiren dalgalı bir 230 V. Bilgisayar parçaları ise <strong>DC</strong> (doğru akım) ister: sabit, düşük voltajlı, düzgün bir akım. Güç kaynağı (PSU, Power Supply Unit) bu dönüşümü yapar ve parçalara dağıtır.</p>
+      </div>
+      <div class="grid c3">
+        <div class="card reveal"><div class="ico">12V</div><h3>+12 V hattı</h3><p>Asıl güç burada. İşlemci ve ekran kartı neredeyse tüm enerjisini 12 V hattından alır. Anakarttaki <a href="anakart.html">VRM</a> bunu işlemcinin 1 V'una çevirir.</p></div>
+        <div class="card reveal d1"><div class="ico">5V</div><h3>+5 V ve +3,3 V</h3><p>SATA diskler, USB portları ve bazı anakart devreleri bu düşük voltajları kullanır. Modern güç kaynakları bunları da 12 V'tan türetir.</p></div>
+        <div class="card reveal d2"><div class="ico">5VSB</div><h3>5 V bekleme (standby)</h3><p>Bilgisayar kapalıyken bile prize takılıysa küçük bir devre uyanık kalır, yani güç düğmesini dinler. "Kapalı" bilgisayar aslında tamamen ölü değil.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DÖNÜŞÜM ================= -->
+  <section class="section" id="donusum">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">içinde neler oluyor</span>
+        <h2>230 V AC'den 12 V DC'ye yolculuk</h2>
+        <p>Dönüşüm birkaç aşamada gerçekleşir. Her aşamada elektriğin dalga şekli değişir. Aşamalara tıkla ve dalga şeklini izle.</p>
+      </div>
+      <div class="demo reveal" id="conv">
+        <div class="demo-title"><span class="dot"></span> Demo: dalga şekli aşamaları</div>
+        <div class="conv-steps" id="conv-steps"></div>
+        <div class="conv-view">
+          <svg id="conv-wave" viewBox="0 0 300 110" preserveAspectRatio="none" role="img" aria-label="Seçili aşamadaki elektrik dalgası"></svg>
+          <div class="conv-text" id="conv-text"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WATT ================= -->
+  <section class="section" id="watt">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">kaç watt yeter?</span>
+        <h2>Güç kaynağı seçimi</h2>
+        <p>Watt, saniyede harcanan enerji. Sisteminin toplam tüketimini toplayıp biraz pay bırakmalısın. Çok küçük alırsan sistem yük altında kapanır; çok büyük alırsan gereksiz para verirsin (ve verim düşük yükte biraz azalır). Aşağıdaki hesaplayıcı yaklaşık bir fikir verir.</p>
+      </div>
+      <div class="demo reveal" id="wattcalc">
+        <div class="demo-title"><span class="dot"></span> Demo: güç hesaplayıcı (yaklaşık)</div>
+        <div class="wc-controls">
+          <div class="field"><label for="wc-cpu">İşlemci (yük altında)</label>
+            <select id="wc-cpu"><option value="65">Ekonomik, ~65 W</option><option value="105" selected>Orta, ~105 W</option><option value="150">Güçlü, ~150 W</option><option value="220">Çok güçlü, ~220 W</option><option value="250">Üst uç, ~250 W</option></select></div>
+          <div class="field"><label for="wc-gpu">Ekran kartı (yük altında)</label>
+            <select id="wc-gpu"><option value="0">Yok (dahili grafik)</option><option value="75">Giriş, ~75 W</option><option value="150">Orta, ~150 W</option><option value="220" selected>Güçlü, ~220 W</option><option value="320">Çok güçlü, ~320 W</option><option value="450">Üst uç, ~450 W</option></select></div>
+          <div class="field"><label for="wc-ram">RAM çubuğu sayısı</label><select id="wc-ram"><option>1</option><option selected>2</option><option>4</option></select></div>
+          <div class="field"><label for="wc-ssd">SSD sayısı</label><select id="wc-ssd"><option>1</option><option selected>2</option><option>4</option></select></div>
+          <div class="field"><label for="wc-hdd">HDD sayısı</label><select id="wc-hdd"><option selected>0</option><option>1</option><option>2</option><option>4</option></select></div>
+          <div class="field"><label for="wc-fan">Fan sayısı</label><select id="wc-fan"><option>2</option><option selected>4</option><option>6</option><option>9</option></select></div>
+        </div>
+        <label class="wc-oc"><input type="checkbox" id="wc-oc"> Hız aşırtma yapacağım (+%20 pay)</label>
+        <div class="wc-result" id="wc-result"></div>
+        <p class="demo-note">Kural: tipik yükün güç kaynağının yaklaşık %50-60'ı, tepe yükün ise %80'in altında olsun. Ekran kartı üreticisinin önerdiği güç kaynağı gücüne de mutlaka bak.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= VERİM ================= -->
+  <section class="section" id="verim">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">80 PLUS</span>
+        <h2>Verimlilik: fark ısıya gidiyor</h2>
+        <p>Hiçbir güç kaynağı %100 verimli değil. Duvardan 100 W çekiyorsa sisteme belki 90 W verir, kalan 10 W ısı olarak kaybolur. <strong>80 PLUS</strong> sertifikası, güç kaynağının belirli yüklerde en az ne kadar verimli olduğunu garanti eder.</p>
+      </div>
+      <div class="demo reveal" id="eff">
+        <div class="demo-title"><span class="dot"></span> Demo: verimlilik eğrisi ve kayıp ısı</div>
+        <div class="wc-controls" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="field"><label for="ef-lvl">Sertifika seviyesi</label>
+            <select id="ef-lvl"><option value="std">80 PLUS (Standard)</option><option value="bronze">Bronze</option><option value="silver">Silver</option><option value="gold" selected>Gold</option><option value="plat">Platinum</option><option value="titan">Titanium</option></select></div>
+          <div class="field"><label for="ef-cap">Güç kaynağının gücü: <span class="val" id="ef-cap-v"></span> W</label><input type="range" id="ef-cap" min="450" max="1600" step="50" value="750"></div>
+          <div class="field"><label for="ef-load">Sistemin tükettiği güç: <span class="val" id="ef-load-v"></span> W</label><input type="range" id="ef-load" min="50" max="1600" step="10" value="400"></div>
+        </div>
+        <div class="eff-layout">
+          <svg id="eff-chart" viewBox="0 0 320 180" role="img" aria-label="Yüke göre verimlilik grafiği"></svg>
+          <div class="eff-out" id="eff-out"></div>
+        </div>
+        <p class="demo-note">Yatay eksen, güç kaynağının kapasitesine göre yük yüzdesi. Değerler 115 V testine göre; sertifikanın garanti ettiği noktalar düz çizgilerle birleştirilmiş yaklaşık bir eğri. %20'nin altında (sarı bölge) garanti yok, değerler tahmini.</p>
+      </div>
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th>Sertifika</th><th>%20 yük</th><th>%50 yük</th><th>%100 yük</th></tr></thead>
+          <tbody>
+            <tr><td>Standard</td><td>%80</td><td>%80</td><td>%80</td></tr>
+            <tr><td>Bronze</td><td>%82</td><td>%85</td><td>%82</td></tr>
+            <tr><td>Silver</td><td>%85</td><td>%88</td><td>%85</td></tr>
+            <tr><td>Gold</td><td>%87</td><td>%90</td><td>%87</td></tr>
+            <tr><td>Platinum</td><td>%90</td><td>%92</td><td>%89</td></tr>
+            <tr><td>Titanium</td><td>%92 (%10'da %90)</td><td>%94</td><td>%90</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KONNEKTÖRLER ================= -->
+  <section class="section" id="kablo">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">kablolar</span>
+        <h2>Konnektörler</h2>
+        <p>Güç kaynağından çıkan kabloların her biri farklı bir parçaya gider. Şekilleri, yanlış takmayı önleyecek biçimde tasarlanmıştır.</p>
+      </div>
+      <div class="conn-grid" id="conn-grid"></div>
+      <div class="grid c2">
+        <div class="card reveal">
+          <h3>Modüler mi, değil mi?</h3>
+          <p><strong>Modüler değil:</strong> kablolar sabit, kullanmadıkların kasanın içinde yığılır. <strong>Yarı modüler:</strong> ana kablolar sabit, ek kablolar çıkarılabilir. <strong>Tam modüler:</strong> hepsi çıkarılabilir; sadece ihtiyacın olanı takarsın, kasa daha derli toplu olur.</p>
+        </div>
+        <div class="callout warn reveal" style="margin:0">
+          <span class="callout-title">Modüler kabloları karıştırma!</span>
+          Güç kaynağının tarafındaki modüler soketin pin düzeni <strong>markadan markaya, hatta modelden modele farklıdır</strong>. Başka güç kaynağının kablosu fiziksel olarak takılsa bile parçaları yakabilir. Sadece kendi güç kaynağının kablolarını kullan.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KORUMA ================= -->
+  <section class="section" id="koruma">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">güvenlik ağı</span>
+        <h2>Korumalar ve kalite</h2>
+        <p>Kaliteli bir güç kaynağı sadece güç vermez, parçaları korur. Ucuz ve markasız bir güç kaynağı, arıza anında bütün sistemi de götürebilir.</p>
+      </div>
+      <div class="grid c3">
+        <div class="card reveal"><h3>OCP</h3><p><strong>Aşırı akım</strong> koruması: bir hat çok fazla akım çekerse güç kaynağı kendini kapatır.</p></div>
+        <div class="card reveal d1"><h3>OVP / UVP</h3><p><strong>Aşırı / düşük gerilim</strong> koruması: çıkış voltajı güvenli aralığın dışına çıkarsa devre kesilir.</p></div>
+        <div class="card reveal d2"><h3>SCP</h3><p><strong>Kısa devre</strong> koruması: kablo veya parça kısa devre yaparsa anında keser.</p></div>
+        <div class="card reveal"><h3>OPP</h3><p><strong>Aşırı güç</strong> koruması: toplam çekiş güç kaynağının gücünü aşarsa kapatır. "Sistemim yük altında kendiliğinden kapanıyor" sorununun klasik sebebi.</p></div>
+        <div class="card reveal d1"><h3>OTP</h3><p><strong>Aşırı sıcaklık</strong> koruması: iç sıcaklık tehlikeli seviyeye çıkarsa kapatır.</p></div>
+        <div class="card reveal d2"><h3>Ripple (dalgalanma)</h3><p>DC çıkışta kalan küçük dalgalanma. Ne kadar düşükse parçalar için o kadar temiz güç. Bunu ölçen incelemeler güç kaynağı seçerken çok faydalı.</p></div>
+      </div>
+      <div class="callout warn reveal">
+        <span class="callout-title">Güç kaynağını asla açma</span>
+        Prizden çekilmiş olsa bile içindeki büyük kondansatörler <strong>tehlikeli seviyede yük</strong> tutabilir. Tamir etmeye çalışma; bozulursa değiştir. Ayrıca prizde bilgisayarın için kaliteli bir akım korumalı priz (ya da UPS) kullanmak, voltaj dalgalanmalarına karşı iyi bir sigortadır.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">kendini dene</span>
+        <h2>Mini quiz</h2>
+        <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
+      </div>
+      <div class="quiz" id="psu-quiz"></div>
+      <script type="application/json" id="quiz-data">[{"q": "Güç kaynağının (PSU) temel görevi nedir?", "o": ["Elektriği depolamak", "Prizden gelen AC'yi bilgisayar parçalarının kullanabileceği DC'ye çevirmek", "Ekran kartını hızlandırmak", "Sistemi soğutmak"], "a": 1, "e": "Prizden dalgalı 230 V AC gelir. PSU bunu doğrultur, düzeltir ve düşük voltajlı, kararlı DC hatlarına (12 V, 5 V, 3,3 V) çevirir."}, {"q": "Modern bilgisayarda işlemci ve ekran kartının enerjisini neredeyse tamamen hangi hat sağlar?", "o": ["+3,3 V", "+5 V", "+12 V", "-12 V"], "a": 2, "e": "Asıl güç +12 V hattından gelir. Anakarttaki VRM bunu işlemcinin ihtiyacı olan ~1 V'a düşürür."}, {"q": "80 PLUS sertifikası neyi belirtir?", "o": ["Güç kaynağının garanti süresini", "Güç kaynağının belirli yüklerde en az ne kadar verimli olduğunu", "Kablo sayısını", "Fan gürültüsünü"], "a": 1, "e": "80 PLUS, dönüşüm verimini garanti eder. Verimsiz kısım ısı olarak kaybolur; Gold, Standard'a göre çok daha az ısı üretir."}, {"q": "%90 verimli bir güç kaynağı, sisteme 450 W verirken duvardan yaklaşık kaç W çeker?", "o": ["405 W", "450 W", "500 W", "900 W"], "a": 2, "e": "Duvardan çekilen = yük ÷ verim = 450 ÷ 0,9 = 500 W. Fark olan 50 W ısıya gider."}, {"q": "Bilgisayar oyun sırasında kendiliğinden kapanıyor. Güç kaynağıyla ilgili en olası neden nedir?", "o": ["Fanın çok hızlı dönmesi", "Toplam çekişin güç kaynağının gücünü aşması (koruma devresi devreye giriyor)", "RAM'in fazla olması", "Kablonun renginin uyumsuzluğu"], "a": 1, "e": "Yük altında tüketim arttığında zayıf bir güç kaynağı OPP/OCP korumasıyla kendini kapatır. Sistem toplam tüketimine ve ekran kartının önerisine göre güç seç."}, {"q": "Başka bir güç kaynağının modüler kablosunu kullanmak neden tehlikelidir?", "o": ["Renkleri uymaz", "Güç kaynağı tarafındaki soketin pin düzeni markadan markaya, hatta modelden modele farklı olabilir", "Kablolar daha kısa olur", "Hiçbir sakıncası yok"], "a": 1, "e": "Fiziksel olarak takılıyor olması pin düzeninin aynı olduğu anlamına gelmez. Yanlış voltaj parçalara gidip onları yakabilir."}, {"q": "Bir 8 pin PCIe güç konnektörü tek başına en fazla kaç watt sağlayacak şekilde tasarlanmıştır?", "o": ["75 W", "150 W", "300 W", "600 W"], "a": 1, "e": "6 pin konnektör 75 W, 8 pin 150 W verir. Yeni 12V-2x6 (12VHPWR) tek fişte 600 W'a kadar çıkar."}, {"q": "Güç kaynağını neden asla kendin açıp kurcalamamalısın?", "o": ["Garanti bitmesin diye sadece", "Prizden çekilse bile büyük kondansatörlerde tehlikeli düzeyde yük kalabilir", "İçinde hiçbir şey yok", "Fan çıkarsa çalışmaz"], "a": 1, "e": "Ana kondansatörler ~400 V gibi yüksek voltajda yük depolar ve fiş çekilse de bir süre bunu tutabilir. Tamir yerine değiştirmek güvenlidir."}]</script>
+      <div id="pager"></div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/site.js"></script>
+<script src="js/psu.js"></script>
+</body>
+</html>
