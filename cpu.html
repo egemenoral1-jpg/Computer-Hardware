@@ -48,7 +48,6 @@
         <a href="#pipeline">Pipeline</a>
         <a href="#cekirdek">Çekirdek &amp; GHz</a>
         <a href="#isa">x86 / ARM</a>
-        <a href="#quiz">Quiz</a>
       </div>
     </div>
   </section>
@@ -461,18 +460,7 @@ for (j = 0; j &lt; N; j++)
   </section>
 
 
-  <section class="section" id="quiz">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">kendini dene</span>
-        <h2>Mini quiz</h2>
-        <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
-      </div>
-      <div class="quiz" id="cpu-quiz"></div>
-      <script type="application/json" id="quiz-data">[{"q": "PC (Program Counter) / RIP register'ı neyi tutar?", "o": ["Son yapılan işlemin sonucunu", "Sıradaki komutun bellek adresini", "Çalışan program sayısını", "İşlemcinin sıcaklığını"], "a": 1, "e": "PC (x86-64'te RIP), sıradaki komutun adresini gösterir. Fetch aşamasında bu adresteki komut getirilir ve PC bir sonrakine ilerler."}, {"q": "Aşağıdakilerden hangisine erişim en hızlıdır?", "o": ["RAM", "L3 cache", "Register", "NVMe SSD"], "a": 2, "e": "Register'lar işlemcinin içinde, ALU'nun hemen yanında. Erişim pratikte bir döngüden az sürer. Sıralama: register > L1 > L2 > L3 > RAM > SSD > HDD."}, {"q": "Bir çıkarma işleminin sonucu tam olarak 0 çıktı. Hangi bayrak 1 olur?", "o": ["CF (Carry)", "ZF (Zero)", "SF (Sign)", "OF (Overflow)"], "a": 1, "e": "ZF (Zero Flag) sonuç sıfırsa 1 olur. JE / JZ gibi 'eşitse atla' komutları bu bayrağa bakar. Demoda 5 − 5 ile denemiştik."}, {"q": "x86-64'te <code>MOV EAX, 1</code> çalışınca RAX'in üst 32 biti ne olur?", "o": ["Olduğu gibi kalır", "Sıfırlanır", "Hepsi 1 olur", "Rastgele bir değer alır"], "a": 1, "e": "32 bitlik yazma, üst 32 biti sıfırlar. 8 ve 16 bitlik yazmalarda (AL, AH, AX) ise üst bitler korunur. Kafa karıştıran ama önemli bir kural."}, {"q": "Pipeline'ın amacı nedir?", "o": ["İşlemciyi soğutmak", "Farklı komutların farklı aşamalarını aynı anda yürütüp verimi artırmak", "RAM miktarını artırmak", "Komutları şifrelemek"], "a": 1, "e": "Pipeline bir montaj hattı gibidir: bir komut EX aşamasındayken sıradaki ID'de, ondan sonraki IF'te olabilir. Böylece her çevrimde bir komut bitebilir."}, {"q": "Cache neden var?", "o": ["Daha çok dosya saklamak için", "İşlemci ile RAM arasındaki hız farkını azaltmak için", "Ekran kartına veri yollamak için", "İşlemciyi ucuzlatmak için"], "a": 1, "e": "RAM işlemciye göre çok yavaş (yüzlerce döngü). Sık kullanılan verileri işlemciye yakın, küçük ve hızlı bir bellekte tutarak beklemeyi azaltıyoruz."}, {"q": "PUSH komutu çalışınca RSP (64 bit modda) ne olur?", "o": ["8 azalır", "8 artar", "Sıfırlanır", "Değişmez"], "a": 0, "e": "Yığın aşağı doğru büyür: PUSH'ta önce RSP 8 azaltılır, sonra değer o adrese yazılır. POP'ta tersi olur."}, {"q": "Bir programın %50'si sadece sırayla çalışabiliyor. Sonsuz çekirdek olsa en fazla kaç kat hızlanır?", "o": ["2 kat", "10 kat", "50 kat", "Sınırsız"], "a": 0, "e": "Amdahl Yasası: hızlanma en fazla 1 / (sıralı oran) = 1 / 0,5 = 2. Çekirdek eklemek sıralı kısmı hızlandırmaz."}]</script>
-      <div id="pager"></div>
-    </div>
-  </section>
+  <div class="container"><div id="pager"></div></div>
 </main>
 
 <div id="site-footer"></div>

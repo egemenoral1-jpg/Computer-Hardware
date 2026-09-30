@@ -47,7 +47,6 @@
         <a href="#form">Boyutlar</a>
         <a href="#acilis">Açılış süreci</a>
         <a href="#kurulum">Kurulum ipuçları</a>
-        <a href="#quiz">Quiz</a>
       </div>
     </div>
   </section>
@@ -212,18 +211,7 @@
     </div>
   </section>
 
-  <section class="section" id="quiz">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">kendini dene</span>
-        <h2>Mini quiz</h2>
-        <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
-      </div>
-      <div class="quiz" id="board-quiz"></div>
-      <script type="application/json" id="quiz-data">[{"q": "Anakartın en temel görevi nedir?", "o": ["Program çalıştırmak", "Parçaları birbirine bağlamak ve güç dağıtmak", "Veriyi kalıcı saklamak", "Görüntü üretmek"], "a": 1, "e": "Anakart kendi başına hesap yapmaz. Parçalar arası veri yollarını, güç dağıtımını ve bağlantı noktalarını sağlar."}, {"q": "VRM'in görevi nedir?", "o": ["Fan hızını ayarlamak", "12 V'u işlemcinin ihtiyacı olan düşük voltaja (~1 V) çevirmek", "RAM'i yenilemek", "Ses üretmek"], "a": 1, "e": "İşlemci çok düşük voltajda ama çok yüksek akımla çalışır. VRM, güç kaynağından gelen 12 V'u buna çevirir. Bu sırada ısındığı için soğutucusu vardır."}, {"q": "Bir işlemcinin anakarta fiziksel olarak takılıp takılamayacağını ilk olarak ne belirler?", "o": ["RAM miktarı", "Soket türü", "Kasa rengi", "Depolama boyutu"], "a": 1, "e": "Soket, işlemcinin ve anakartın fiziksel ve elektriksel uyumunu belirler. Örneğin AM5 işlemci LGA1700 anakarta takılamaz."}, {"q": "PCIe x16 ne anlama gelir?", "o": ["16 GB veri yolu", "16 hat (lane) kullanan bağlantı", "16 numaralı yuva", "16 çekirdekli işlemci"], "a": 1, "e": "Her hat bir çift kablo gibi düşünülebilir. x16, 16 hat demektir; bu yüzden ekran kartı gibi çok veri isteyen cihazlar x16 kullanır."}, {"q": "Chipset'in rolü nedir?", "o": ["İşlemcinin yönetmediği ek USB, SATA ve PCIe bağlantılarını toplamak", "Ekrana görüntü basmak", "RAM'i soğutmak", "İşlemcinin yerine hesap yapmak"], "a": 0, "e": "Chipset ek bağlantıları toplayıp işlemciye tek bir hızlı yolla bağlanır. Bu yüzden arkasındaki cihazlar bu yukarı bağlantıyı paylaşır."}, {"q": "CMOS pili (CR2032) biterse ne olur?", "o": ["Bilgisayar hiç açılmaz", "Saat ve BIOS ayarları sıfırlanır", "RAM hızı yarıya düşer", "Ekran kartı çalışmaz"], "a": 1, "e": "Pil, bilgisayar prizden çekiliyken saati ve BIOS ayarlarını tutar. Bitince saat sürekli sıfırlanır ve ayarlar kaybolur, ama bilgisayar genellikle yine açılır."}, {"q": "Güç düğmesine basınca işlemci ilk komutunu nereden okur?", "o": ["SSD'den", "RAM'den", "BIOS/UEFI flash çipinden", "Ekran kartından"], "a": 2, "e": "Açılışta RAM boş, işletim sistemi henüz yüklenmedi. İşlemci sıfırlanınca sabit bir adresten, yani anakarttaki BIOS/UEFI çipinden başlar."}, {"q": "Mini-ITX bir anakart ATX bir kasaya takılabilir mi?", "o": ["Evet, ATX kasalar küçük anakartları da destekler", "Hayır, sadece Mini-ITX kasaya takılır", "Sadece laptopta", "Sadece adaptörle"], "a": 0, "e": "ATX kasaların vida delikleri mATX ve Mini-ITX anakartlar için de vardır. Tersi (büyük anakartı küçük kasaya takmak) mümkün değildir."}]</script>
-      <div id="pager"></div>
-    </div>
-  </section>
+  <div class="container"><div id="pager"></div></div>
 </main>
 
 <div id="site-footer"></div>

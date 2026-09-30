@@ -1,8 +1,7 @@
 # ParçaParça 🖥️
 
 Bilgisayar donanım parçalarını **öğrenerek** keşfetmek için yaptığım küçük Türkçe site.
-Her parçanın kendi sayfası var: anlatım + etkileşimli demolar + mini quiz.
-Quiz'i geçtiğin parçalar ana sayfada "tamamlandı" olarak işaretlenir.
+Her parçanın kendi sayfası var: anlatım + etkileşimli demolar.
 
 ## Sayfalar
 
@@ -31,7 +30,7 @@ Sonra `http://localhost:5188` adresini aç. (GSAP ve fontlar CDN'den geliyor; in
 ```
 index.html, cpu.html, gpu.html, ram.html, depolama.html, anakart.html, psu.html, sogutma.html
 css/   style.css (ortak) + her sayfanın kendi css'i
-js/    site.js (menü, quiz, ilerleme takibi) + gsap-common.js + sayfaya özel dosyalar
+js/    site.js (menü, ilerleme çubuğu, geçiş animasyonları) + gsap-common.js + sayfaya özel dosyalar
 ```
 
 Yeni bir parça sayfası eklemek için `js/site.js` içindeki `PARTS` listesine bir satır eklemek yeterli;

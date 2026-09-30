@@ -46,7 +46,6 @@
         <a href="#verim">80 PLUS</a>
         <a href="#kablo">Konnektörler</a>
         <a href="#koruma">Korumalar</a>
-        <a href="#quiz">Quiz</a>
       </div>
     </div>
   </section>
@@ -196,18 +195,7 @@
     </div>
   </section>
 
-  <section class="section" id="quiz">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">kendini dene</span>
-        <h2>Mini quiz</h2>
-        <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
-      </div>
-      <div class="quiz" id="psu-quiz"></div>
-      <script type="application/json" id="quiz-data">[{"q": "Güç kaynağının (PSU) temel görevi nedir?", "o": ["Elektriği depolamak", "Prizden gelen AC'yi bilgisayar parçalarının kullanabileceği DC'ye çevirmek", "Ekran kartını hızlandırmak", "Sistemi soğutmak"], "a": 1, "e": "Prizden dalgalı 230 V AC gelir. PSU bunu doğrultur, düzeltir ve düşük voltajlı, kararlı DC hatlarına (12 V, 5 V, 3,3 V) çevirir."}, {"q": "Modern bilgisayarda işlemci ve ekran kartının enerjisini neredeyse tamamen hangi hat sağlar?", "o": ["+3,3 V", "+5 V", "+12 V", "-12 V"], "a": 2, "e": "Asıl güç +12 V hattından gelir. Anakarttaki VRM bunu işlemcinin ihtiyacı olan ~1 V'a düşürür."}, {"q": "80 PLUS sertifikası neyi belirtir?", "o": ["Güç kaynağının garanti süresini", "Güç kaynağının belirli yüklerde en az ne kadar verimli olduğunu", "Kablo sayısını", "Fan gürültüsünü"], "a": 1, "e": "80 PLUS, dönüşüm verimini garanti eder. Verimsiz kısım ısı olarak kaybolur; Gold, Standard'a göre çok daha az ısı üretir."}, {"q": "%90 verimli bir güç kaynağı, sisteme 450 W verirken duvardan yaklaşık kaç W çeker?", "o": ["405 W", "450 W", "500 W", "900 W"], "a": 2, "e": "Duvardan çekilen = yük ÷ verim = 450 ÷ 0,9 = 500 W. Fark olan 50 W ısıya gider."}, {"q": "Bilgisayar oyun sırasında kendiliğinden kapanıyor. Güç kaynağıyla ilgili en olası neden nedir?", "o": ["Fanın çok hızlı dönmesi", "Toplam çekişin güç kaynağının gücünü aşması (koruma devresi devreye giriyor)", "RAM'in fazla olması", "Kablonun renginin uyumsuzluğu"], "a": 1, "e": "Yük altında tüketim arttığında zayıf bir güç kaynağı OPP/OCP korumasıyla kendini kapatır. Sistem toplam tüketimine ve ekran kartının önerisine göre güç seç."}, {"q": "Başka bir güç kaynağının modüler kablosunu kullanmak neden tehlikelidir?", "o": ["Renkleri uymaz", "Güç kaynağı tarafındaki soketin pin düzeni markadan markaya, hatta modelden modele farklı olabilir", "Kablolar daha kısa olur", "Hiçbir sakıncası yok"], "a": 1, "e": "Fiziksel olarak takılıyor olması pin düzeninin aynı olduğu anlamına gelmez. Yanlış voltaj parçalara gidip onları yakabilir."}, {"q": "Bir 8 pin PCIe güç konnektörü tek başına en fazla kaç watt sağlayacak şekilde tasarlanmıştır?", "o": ["75 W", "150 W", "300 W", "600 W"], "a": 1, "e": "6 pin konnektör 75 W, 8 pin 150 W verir. Yeni 12V-2x6 (12VHPWR) tek fişte 600 W'a kadar çıkar."}, {"q": "Güç kaynağını neden asla kendin açıp kurcalamamalısın?", "o": ["Garanti bitmesin diye sadece", "Prizden çekilse bile büyük kondansatörlerde tehlikeli düzeyde yük kalabilir", "İçinde hiçbir şey yok", "Fan çıkarsa çalışmaz"], "a": 1, "e": "Ana kondansatörler ~400 V gibi yüksek voltajda yük depolar ve fiş çekilse de bir süre bunu tutabilir. Tamir yerine değiştirmek güvenlidir."}]</script>
-      <div id="pager"></div>
-    </div>
-  </section>
+  <div class="container"><div id="pager"></div></div>
 </main>
 
 <div id="site-footer"></div>

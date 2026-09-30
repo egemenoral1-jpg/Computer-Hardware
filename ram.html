@@ -47,7 +47,6 @@
         <a href="#hiz">Hız ve gecikme</a>
         <a href="#kanal">Dual channel</a>
         <a href="#dolu">RAM dolunca</a>
-        <a href="#quiz">Quiz</a>
       </div>
     </div>
   </section>
@@ -260,18 +259,7 @@
     </div>
   </section>
 
-  <section class="section" id="quiz">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">kendini dene</span>
-        <h2>Mini quiz</h2>
-        <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
-      </div>
-      <div class="quiz" id="ram-quiz"></div>
-      <script type="application/json" id="quiz-data">[{"q": "RAM'in \"uçucu (volatile)\" olması ne demek?", "o": ["Çok hızlı çalışır", "Elektrik kesilince içindeki veriler kaybolur", "Isındıkça buharlaşır", "Sadece okunabilir"], "a": 1, "e": "DRAM bitleri kapasitörlerde yük olarak tutar. Güç gidince yükler sızıp biter; bu yüzden kalıcı saklama için SSD/HDD kullanılır."}, {"q": "DRAM'de tek bir bit fiziksel olarak nasıl saklanır?", "o": ["Bir mıknatısın yönüyle", "Bir transistör ve bir kapasitördeki yükle", "Ayna gibi bir yüzeydeki çukurla", "6 transistörlük bir kilitle"], "a": 1, "e": "DRAM hücresi 1 transistör + 1 kapasitördür (1T1C). 6 transistörlü yapı, işlemci cache'inde kullanılan SRAM'e aittir."}, {"q": "DRAM neden sürekli \"yenilenmek (refresh)\" zorunda?", "o": ["Kapasitörler zamanla yük sızdırır", "Işık gecikmesi yüzünden", "İşlemci öyle istediği için", "Yeni verilerle değiştirilmesi gerektiği için"], "a": 0, "e": "Kapasitörlerin yükü kendiliğinden azalır. Yaklaşık her 64 ms'de bir okunup geri yazılmazsa bit kaybolur. Demoda yenilemeyi kapatınca bunu gördün."}, {"q": "3200 MT/s hızındaki bir DDR bellek gerçekte kaç MHz saatle çalışır?", "o": ["800 MHz", "1600 MHz", "3200 MHz", "6400 MHz"], "a": 1, "e": "DDR (Double Data Rate) saat sinyalinin hem yükselen hem düşen kenarında veri aktarır. Yani MT/s = 2 × saat (MHz)."}, {"q": "DDR5-6000 CL30 belleğin gerçek gecikmesi yaklaşık kaç nanosaniyedir?", "o": ["5 ns", "10 ns", "30 ns", "60 ns"], "a": 1, "e": "Gecikme (ns) = CL × 2000 ÷ MT/s = 30 × 2000 ÷ 6000 = 10 ns."}, {"q": "Dual channel çalışmanın etkisi nedir?", "o": ["RAM kapasitesini iki katına çıkarır", "Bant genişliğini (teorik olarak) iki katına çıkarır", "Gecikmeyi sıfırlar", "Elektrik tüketimini yarıya indirir"], "a": 1, "e": "Her kanal 64 bit genişliğinde bir yol. İki kanal aynı anda çalışınca aktarılabilen veri miktarı iki katına çıkar. Kapasite değişmez, sadece toplanır."}, {"q": "DDR4 modülünü DDR5 yuvasına takabilir miyim?", "o": ["Evet, sadece biraz yavaş çalışır", "Evet, adaptörle", "Hayır, çentik konumu ve elektriksel yapı farklı", "Sadece laptopta"], "a": 2, "e": "Çentik farklı yerde olduğu için fiziksel olarak takılamaz. Bu bilinçli bir tasarım: yanlış gerilimle modül yanmasın."}, {"q": "RAM tamamen dolarsa ne olur?", "o": ["Bilgisayar hemen kapanır", "Az kullanılan veriler diske (sayfa dosyası) taşınır ve sistem yavaşlar", "İşlemci otomatik hızlanır", "Hiçbir şey olmaz"], "a": 1, "e": "İşletim sistemi RAM'i boşaltmak için verileri diske yazar. Disk RAM'den çok daha yavaş olduğu için takılmalar başlar. Bu yüzden yeterli RAM önemli."}]</script>
-      <div id="pager"></div>
-    </div>
-  </section>
+  <div class="container"><div id="pager"></div></div>
 </main>
 
 <div id="site-footer"></div>

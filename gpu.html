@@ -50,7 +50,6 @@
         <a href="#isin">Işın izleme</a>
         <a href="#ozel">Özel çekirdekler</a>
         <a href="#igpu">iGPU / dGPU</a>
-        <a href="#quiz">Quiz</a>
       </div>
     </div>
   </section>
@@ -402,18 +401,7 @@
   </section>
 
 
-  <section class="section" id="quiz">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">kendini dene</span>
-        <h2>Mini quiz</h2>
-        <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
-      </div>
-      <div class="quiz" id="gpu-quiz"></div>
-      <script type="application/json" id="quiz-data">[{"q": "CPU ile GPU arasındaki temel tasarım farkı nedir?", "o": ["GPU'da çekirdekler daha büyük ve akıllı", "GPU'da çok sayıda basit çekirdek var, CPU'da az sayıda güçlü çekirdek", "CPU'nun VRAM'i var, GPU'nun yok", "Fark yok, sadece isimleri farklı"], "a": 1, "e": "CPU az sayıda güçlü çekirdekle tek işi çabuk bitirmeye (düşük gecikme), GPU çok sayıda basit çekirdekle çok işi toplu bitirmeye (yüksek verim) odaklanır."}, {"q": "Aşağıdaki işlerden hangisi GPU'ya en uygunudur?", "o": ["Her adımı bir öncekinin sonucuna bağlı zincir hesap", "Bir metin dosyasını satır satır okuyup kural uygulamak", "Ekrandaki milyonlarca pikselin rengini hesaplamak", "Tek bir sayıyı bir kez toplamak"], "a": 2, "e": "Her piksel birbirinden bağımsız hesaplanabildiği için binlerce çekirdek aynı anda çalışabilir. Yarış demosunda sıralı işte CPU'nun kazandığını hatırla."}, {"q": "Warp nedir?", "o": ["GPU'nun soğutma sistemi", "32 thread'in aynı komutu birlikte çalıştırdığı grup", "VRAM çipinin adı", "Ekran kartının PCIe konnektörü"], "a": 1, "e": "GPU thread'leri 32'şerli warp'lara ayırır. Bir warp'taki thread'ler aynı anda aynı komutu, farklı veriler üzerinde çalıştırır (SIMT)."}, {"q": "Bir warp'taki thread'lerin yarısı <code>if</code>'in, yarısı <code>else</code>'in yoluna girerse ne olur?", "o": ["Hepsi aynı anda çalışır, fark olmaz", "İki yol sırayla çalışır, verim yaklaşık yarıya düşer", "GPU çöker", "Sadece if yolu çalışır"], "a": 1, "e": "Buna warp sapması (divergence) denir. GPU iki kolu sırayla çalıştırır; her adımda thread'lerin yarısı maskelenip bekler."}, {"q": "Grafik hattında üçgenin hangi piksellere denk geldiğini bulan adım hangisi?", "o": ["Vertex shader", "Rasterization", "Çıktı birleştirme (ROP)", "Video kodlama"], "a": 1, "e": "Rasterization, köşe noktalarından oluşan üçgeni ekran ızgarasındaki piksellere (fragment'lara) çevirir. Sonra piksel shader bunlara renk verir."}, {"q": "256 bit bus ve 18 Gbps bellekle bant genişliği kaç GB/s olur?", "o": ["288", "576", "1152", "72"], "a": 1, "e": "256 × 18 ÷ 8 = 576 GB/s. Bus genişliği (bit) × pin başına hız (Gbps) ÷ 8."}, {"q": "RT çekirdeklerinin işi nedir?", "o": ["Video kodlamak", "Işın–üçgen kesişim testlerini donanımda hızlandırmak", "Sistem RAM'ini büyütmek", "Ekranı soğutmak"], "a": 1, "e": "Işın izlemede her ışının hangi nesneye çarptığı sürekli sorulur. RT çekirdekleri bu kesişim testlerini özel donanımla çok hızlı yapar."}, {"q": "DLSS / FSR / XeSS gibi upscaling tekniklerinin mantığı nedir?", "o": ["Ekranın gerçek çözünürlüğünü düşürmek", "Düşük çözünürlükte çizip hedef çözünürlüğe akıllıca yükseltmek, böylece daha az piksel hesaplamak", "VRAM'i sıkıştırıp büyütmek", "İşlemci hızını artırmak"], "a": 1, "e": "4K'da Performans modu, oyunu aslında 1080p'de çizer (%25 piksel) ve sonucu 4K'ya yükseltir. GPU'nun işi bu sayede ciddi azalır."}]</script>
-      <div id="pager"></div>
-    </div>
-  </section>
+  <div class="container"><div id="pager"></div></div>
 </main>
 
 <div id="site-footer"></div>

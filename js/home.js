@@ -8,9 +8,7 @@
   const grid = document.getElementById("part-grid");
   if (grid) {
     grid.innerHTML = PP.PARTS.map(function (p, i) {
-      const badge = PP.isDone(p.id)
-        ? '<span class="badge done">✓ tamamlandı</span>'
-        : (p.gsap ? '<span class="badge">GSAP</span>' : "");
+      const badge = p.gsap ? '<span class="badge">GSAP</span>' : "";
       return '<a class="card hoverable part-card reveal d' + (i % 3) + '" href="' + p.url + '" style="--accent-rgb:' + p.rgb + ';--accent:rgb(' + p.rgb + ')">' +
         '<div class="top"><div class="ico">' + PP.ICONS[p.id] + "</div>" + badge + "</div>" +
         "<h3>" + p.full + "</h3><p>" + p.tag + "</p>" +

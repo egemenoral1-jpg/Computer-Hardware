@@ -2,7 +2,7 @@
    Parça Parça — ortak JS
    - parça listesi (menü, ana sayfa kartları, sayfa altı gezinme)
    - scroll ilerleme çubuğu, reveal animasyonları
-   - mini quiz + "tamamlandı" takibi (localStorage)
+   - mini 
    ========================================================== */
 (function () {
   "use strict";
@@ -32,19 +32,7 @@
   const REPO = "https://github.com/egemenoral1-jpg/Computer-Hardware";
   const page = document.body.dataset.page || "home";
 
-  /* ---------- tamamlandı takibi ---------- */
-  function readDone() {
-    try { return JSON.parse(localStorage.getItem("pp-done") || "[]"); } catch (e) { return []; }
-  }
-  function isDone(id) { return readDone().indexOf(id) !== -1; }
-  function markDone(id) {
-    const d = readDone();
-    if (d.indexOf(id) === -1) {
-      d.push(id);
-      try { localStorage.setItem("pp-done", JSON.stringify(d)); } catch (e) { /* olsun */ }
-    }
-  }
-  window.PP = { PARTS: PARTS, ICONS: ICONS, isDone: isDone, markDone: markDone };
+  window.PP = { PARTS: PARTS, ICONS: ICONS };
 
   /* ---------- header / footer ---------- */
   function buildHeader() {
@@ -159,73 +147,10 @@
     els.forEach(function (el) { io2.observe(el); });
   }
 
-  /* ---------- quiz ---------- */
-  function initQuiz() {
-    const root = document.querySelector(".quiz");
-    const dataEl = document.getElementById("quiz-data");
-    if (!root || !dataEl) return;
-    const qs = JSON.parse(dataEl.textContent);
-
-    // şık sırasını her çizimde karıştır (doğru cevap hep aynı yerde olmasın)
-    function shuffled(n) {
-      const a = [];
-      for (let i = 0; i < n; i++) a.push(i);
-      for (let i = n - 1; i > 0; i--) {
-        const k = Math.floor(Math.random() * (i + 1));
-        const t = a[i]; a[i] = a[k]; a[k] = t;
-      }
-      return a;
-    }
-
-    function render() {
-      let answered = 0, correct = 0;
-      root.innerHTML =
-        qs.map(function (q, i) {
-          return '<div class="quiz-q" data-i="' + i + '"><h3><span class="n">' + (i + 1) + ".</span>" + q.q + "</h3>" +
-            '<div class="quiz-opts">' + shuffled(q.o.length).map(function (j) {
-              return '<button class="quiz-opt" data-j="' + j + '">' + q.o[j] + "</button>";
-            }).join("") + '</div><div class="quiz-exp">' + q.e + "</div></div>";
-        }).join("") +
-        '<div class="quiz-result"><div class="score"></div><p class="msg"></p><button class="btn sm ghost retry">Tekrar dene</button></div>';
-
-      root.onclick = function (e) {
-        const retry = e.target.closest(".retry");
-        if (retry) { render(); return; }
-        const btn = e.target.closest(".quiz-opt");
-        if (!btn || btn.disabled) return;
-        const qEl = btn.closest(".quiz-q");
-        const q = qs[+qEl.dataset.i];
-        const pick = +btn.dataset.j;
-        qEl.querySelectorAll(".quiz-opt").forEach(function (b) {
-          const j = +b.dataset.j;
-          b.disabled = true;
-          if (j === q.a) b.classList.add("right");
-          else if (j === pick) b.classList.add("wrong");
-        });
-        qEl.querySelector(".quiz-exp").classList.add("show");
-        answered++;
-        if (pick === q.a) correct++;
-        if (answered === qs.length) {
-          const res = root.querySelector(".quiz-result");
-          res.classList.add("show");
-          res.querySelector(".score").textContent = correct + " / " + qs.length + " doğru";
-          const ok = correct / qs.length >= 0.6;
-          res.querySelector(".msg").textContent = ok
-            ? "Güzel! Bu konuyu bitirdin sayılır. Sıradaki parçaya geçebilirsin."
-            : "Fena değil ama biraz daha göz gezdirip tekrar deneyebilirsin. Demoları kurcalamak çok işe yarıyor.";
-          if (ok) { markDone(page); }
-          res.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        }
-      };
-    }
-    render();
-  }
-
   buildHeader();
   buildFooter();
   buildPager();
   initProgress();
   initReveal();
   initCounters();
-  initQuiz();
 })();

@@ -48,7 +48,6 @@
         <a href="#arayuz">SATA / NVMe</a>
         <a href="#yaris">Kopyalama yarışı</a>
         <a href="#bakim">Bakım ve yedek</a>
-        <a href="#quiz">Quiz</a>
       </div>
     </div>
   </section>
@@ -221,18 +220,7 @@
     </div>
   </section>
 
-  <section class="section" id="quiz">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">kendini dene</span>
-        <h2>Mini quiz</h2>
-        <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
-      </div>
-      <div class="quiz" id="dep-quiz"></div>
-      <script type="application/json" id="quiz-data">[{"q": "HDD'de veri nasıl saklanır?", "o": ["Dönen plakadaki manyetik bölgelerde", "NAND hücrelerindeki elektrik yükünde", "Kapasitörlerde", "Lazerle yakılan çukurlarda"], "a": 0, "e": "HDD plakaları manyetik bir kaplamayla kaplıdır. Okuma/yazma kafası minik bölgelerin manyetik yönünü değiştirerek 0 ve 1'leri yazar."}, {"q": "SSD'de bir bit fiziksel olarak nasıl saklanır?", "o": ["Dönen bir plakada mıknatısla", "NAND flash hücresinde hapsedilmiş elektrik yükü olarak", "RAM gibi sürekli yenilenen bir kapasitörde", "Fiber kabloda ışık olarak"], "a": 1, "e": "NAND hücresi yükü bir yalıtkan katmanın içine hapseder. Bu yük güç kesilse de uzun süre kaybolmaz; RAM'den fark budur."}, {"q": "HDD rastgele erişimde (küçük dosyalarda) neden çok yavaştır?", "o": ["Kabloları uzun olduğu için", "Kolun ize gitmesi (seek) ve plakanın dönmesini beklemek gerektiği için", "Çok fazla ısındığı için", "Sadece 1 çekirdeği olduğu için"], "a": 1, "e": "Her farklı konuma erişimde birkaç ms'lik mekanik bekleme var. SSD'de mekanik parça olmadığı için erişim yaklaşık 100 kat hızlıdır."}, {"q": "QLC bir NAND hücresi kaç seviye ayırt etmek zorundadır?", "o": ["4", "8", "16", "32"], "a": 2, "e": "QLC hücre başına 4 bit saklar: 2⁴ = 16 seviye. Seviyeler birbirine yaklaştığı için okumak daha zor, yavaş ve dayanıklılık daha düşük olur."}, {"q": "NVMe SSD'yi SATA SSD'den hızlı yapan temel fark nedir?", "o": ["Daha çok RGB ışığı olması", "PCIe hattına doğrudan bağlanması", "Daha büyük olması", "Mekanik parçalarının daha hızlı dönmesi"], "a": 1, "e": "SATA yaklaşık 550 MB/s ile sınırlı eski bir arayüzdür. NVMe, geniş ve paralel PCIe hattını kullanır: Gen4'te ~7.000 MB/s."}, {"q": "\"M.2\" neyi ifade eder?", "o": ["Sadece NVMe SSD'leri", "Fiziksel şekli (ince çubuk); içinde SATA da NVMe da olabilir", "Bir HDD türünü", "Bir RAM standardını"], "a": 1, "e": "M.2 bir konnektör ve form faktörüdür. Bir M.2 SSD SATA da olabilir, NVMe de. Anakartın hangisini desteklediğine bakmak gerekir."}, {"q": "TRIM komutu ne işe yarar?", "o": ["SSD'yi soğutur", "İşletim sisteminin SSD'ye hangi blokların artık boş olduğunu bildirmesini sağlar", "Diski formatlar", "Yazma hızını sınırlar"], "a": 1, "e": "SSD silmeyi büyük bloklar halinde yaptığı için hangi verinin geçersiz olduğunu bilmesi gerekir. TRIM ile arka plandaki temizlik (garbage collection) daha verimli olur."}, {"q": "3-2-1 yedekleme kuralında \"1\" neyi ifade eder?", "o": ["1 adet SSD kullanmak", "Kopyalardan 1 tanesinin başka bir yerde (örn. bulut) tutulması", "Haftada 1 kez yedek almak", "Tek bir dosyayı yedeklemek"], "a": 1, "e": "3 kopya, 2 farklı ortam, 1 tanesi farklı bir konumda. Yangın, hırsızlık ya da fidye yazılımı gibi olaylara karşı korur."}]</script>
-      <div id="pager"></div>
-    </div>
-  </section>
+  <div class="container"><div id="pager"></div></div>
 </main>
 
 <div id="site-footer"></div>
