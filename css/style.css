@@ -358,3 +358,22 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   border: 1px solid rgba(var(--accent-rgb), .35);
 }
 .badge.done { background: rgba(52,211,153,.16); color: var(--good); border-color: rgba(52,211,153,.4); }
+
+/* ---------- istatistik kartları + içindekiler ---------- */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 10px 0 0; }
+.stat {
+  padding: 20px; border-radius: var(--radius); border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(var(--accent-rgb), .08), transparent);
+}
+.stat b { display: block; font-family: var(--font-head); font-size: 2.3rem; line-height: 1.1; color: var(--accent); }
+.stat span { display: block; margin-top: 6px; color: var(--muted); font-size: .9rem; line-height: 1.45; }
+@media (max-width: 800px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+.toc { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 26px 0 0; }
+.toc small { color: var(--dim); font-family: var(--mono); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; margin-right: 6px; }
+.toc a {
+  padding: 6px 14px; border-radius: 999px; font-size: .86rem; font-weight: 500;
+  color: var(--muted); border: 1px solid var(--line); background: rgba(255,255,255,.03);
+  text-decoration: none !important; transition: all .2s;
+}
+.toc a:hover { color: #fff; border-color: rgba(var(--accent-rgb), .6); background: rgba(var(--accent-rgb), .12); }

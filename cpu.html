@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>İşlemci (CPU) — ParçaParça</title>
+  <meta name="description" content="İşlemci nasıl çalışır? Komut döngüsü, register'lar, bayraklar, cache ve pipeline'ı animasyonlarla öğren.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/cpu.css">
+</head>
+<body class="p-cpu" data-page="cpu">
+<div id="site-header"></div>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="part-hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">parça 01 · işlemci</span>
+        <h1>İşlemci <span class="grad">(CPU)</span></h1>
+        <p class="lead">Herkes "bilgisayarın beyni" der. Doğru, ama tuhaf bir beyin: aynı anda tek bir işten anlıyor, bunu da saniyede milyarlarca kez yapıyor. Bu sayfada işlemcinin içine giriyoruz, register'lara kadar iniyoruz.</p>
+        <div class="hero-chips">
+          <span class="chip"><b>Fetch</b> Decode Execute</span>
+          <span class="chip"><b>Register</b> ve bayraklar</span>
+          <span class="chip"><b>Cache</b> ve pipeline</span>
+        </div>
+      </div>
+      <div class="hero-visual" id="cpu-hero" aria-label="Animasyonlu işlemci çipi çizimi"></div>
+    </div>
+
+    <div class="container">
+      <div class="stats" id="cpu-stats">
+        <div class="stat"><b data-count="4.5" data-dec="1">0</b><span>GHz: saniyede yaklaşık 4,5 milyar saat döngüsü</span></div>
+        <div class="stat"><b data-count="0.22" data-dec="2">0</b><span>nanosaniye: tek bir döngünün süresi (4,5 GHz'de)</span></div>
+        <div class="stat"><b data-count="16">0</b><span>genel amaçlı 64-bit register (x86-64'te)</span></div>
+        <div class="stat"><b data-count="10" data-suffix="+">0</b><span>milyar transistör, üst seviye masaüstü işlemcilerde</span></div>
+      </div>
+      <div class="toc">
+        <small>Bu sayfada</small>
+        <a href="#nedir">CPU ne yapar</a>
+        <a href="#ic">İçinde ne var</a>
+        <a href="#dongu">Komut döngüsü</a>
+        <a href="#registerlar">Register'lar</a>
+        <a href="#cache">Cache</a>
+        <a href="#pipeline">Pipeline</a>
+        <a href="#cekirdek">Çekirdek &amp; GHz</a>
+        <a href="#isa">x86 / ARM</a>
+        <a href="#quiz">Quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CPU NE YAPAR ================= -->
+  <section class="section" id="nedir">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">önce temel</span>
+        <h2>CPU ne yapar?</h2>
+        <p>CPU (Central Processing Unit, Merkezi İşlem Birimi) bir programın komutlarını sırayla okuyup uygular. Hepsi bu. Ama "komut" dediğimiz şey çok küçük bir iş.</p>
+      </div>
+
+      <div class="grid c2">
+        <div class="card reveal">
+          <h3>Bildiği işler çok az</h3>
+          <p>İşlemci temelde şunları yapabilir:</p>
+          <ul>
+            <li><strong>Taşı:</strong> bir değeri bellekten register'a ya da tersine kopyala</li>
+            <li><strong>Hesapla:</strong> topla, çıkar, çarp, böl, AND, OR, XOR...</li>
+            <li><strong>Karşılaştır:</strong> iki sayı eşit mi, hangisi büyük?</li>
+            <li><strong>Atla:</strong> karşılaştırma sonucuna göre programın başka yerine git</li>
+          </ul>
+          <p>Bir video izlemek de, oyun oynamak da, web sitesi açmak da bu dört işin milyarlarcasının art arda dizilmesinden ibaret. Yani bir "if" bile aslında karşılaştır + atla.</p>
+        </div>
+        <div class="card reveal d1">
+          <h3>Mutfak benzetmesi 🍳</h3>
+          <p>İşlemciyi bir aşçı gibi düşün. Ama tek seferde tek adım yapan, aşırı hızlı bir aşçı:</p>
+          <table style="min-width:0">
+            <tbody>
+              <tr><td>Aşçı</td><td>CPU</td></tr>
+              <tr><td>Tarif</td><td>Program (komutlar)</td></tr>
+              <tr><td>Elindeki malzeme</td><td>Register</td></tr>
+              <tr><td>Tezgah üstü</td><td>L1 cache</td></tr>
+              <tr><td>Mutfak dolabı</td><td>L2 / L3 cache</td></tr>
+              <tr><td>Kiler</td><td>RAM</td></tr>
+              <tr><td>Market</td><td>SSD</td></tr>
+            </tbody>
+          </table>
+          <p class="muted" style="margin-top:12px">Aşçı ne kadar hızlı olursa olsun, malzemeyi markete gidip getirmek zorunda kalırsa yavaşlar. Cache bölümünde bu işin sayılarına bakacağız.</p>
+        </div>
+      </div>
+
+      <div class="callout fun reveal">
+        <span class="callout-title">CPU "akıllı" değil, sadece çok hızlı</span>
+        İşlemci ne yaptığını "anlamaz". Sadece kendisine verilen komutları körü körüne uygular. Zekâ programı yazan insanın işi; işlemcinin işi, bunu saniyede milyarlarca kez hatasız yapmak.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= İÇİNDE NE VAR ================= -->
+  <section class="section" id="ic">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">iç yapı</span>
+        <h2>Çipin içinde neler var?</h2>
+        <p>Bir işlemci çekirdeği birkaç ana birimden oluşur. Aşağıdaki kutulara tıkla; ne yaptıklarını ve hangi birimlerle çalıştıklarını gör.</p>
+      </div>
+      <div class="demo reveal">
+        <div class="demo-title"><span class="dot"></span> Demo: İşlemcinin blok şeması</div>
+        <div class="blockmap-wrap">
+          <div class="blockmap" id="blockmap"></div>
+          <aside class="block-info" id="block-info" aria-live="polite"></aside>
+        </div>
+        <p class="demo-note">Gerçekte bunların hepsi, birkaç yüz milimetrekarelik tek bir silikon parça (die) üzerinde duruyor.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KOMUT DÖNGÜSÜ ================= -->
+  <section class="section" id="dongu">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">işlemcinin kalp atışı</span>
+        <h2>Komut döngüsü: Fetch → Decode → Execute → Write-back</h2>
+        <p>İşlemci hep aynı döngüyü tekrarlar. Program RAM'de bir komut listesi olarak durur. İşlemci sırayla şunu yapar:</p>
+      </div>
+
+      <div class="grid c4 reveal">
+        <div class="card"><div class="ico">1</div><h3>Fetch (Getir)</h3><p>PC (Program Counter) sıradaki komutun adresini tutar. Komut RAM'den (aslında cache'ten) alınıp IR'ye konur.</p></div>
+        <div class="card"><div class="ico">2</div><h3>Decode (Çöz)</h3><p>Kontrol birimi komutun ne olduğunu çözer: hangi işlem, hangi register'lar, hangi sabit?</p></div>
+        <div class="card"><div class="ico">3</div><h3>Execute (Uygula)</h3><p>ALU ya da ilgili birim işi yapar: topla, karşılaştır, adres hesapla...</p></div>
+        <div class="card"><div class="ico">4</div><h3>Write-back (Yaz)</h3><p>Sonuç bir register'a ya da belleğe yazılır. Sonra PC ilerler ve baştan başlar.</p></div>
+      </div>
+
+      <div class="demo reveal" id="fde">
+        <div class="demo-title"><span class="dot"></span> Demo: 5 komutluk küçük bir programı adım adım çalıştır</div>
+        <div class="fde-stage" id="fde-stage">
+          <div class="fde-col">
+            <h4>RAM</h4>
+            <div class="ram-list" id="fde-mem"></div>
+            <div class="fbox data-cell" id="fde-data"><small>Veri hücresi [7]</small><b>0</b></div>
+          </div>
+          <div class="fde-col cpu-col">
+            <h4>İşlemci</h4>
+            <div class="fde-row">
+              <div class="fbox" id="fde-pc"><small>PC</small><b>0</b></div>
+              <div class="fbox" id="fde-ir"><small>IR (komut)</small><b>—</b></div>
+            </div>
+            <div class="fde-row">
+              <div class="fbox wide" id="fde-cu"><small>Kontrol birimi</small><b>bekliyor</b></div>
+              <div class="fbox wide" id="fde-alu"><small>ALU</small><b>—</b></div>
+            </div>
+            <div class="fde-row three">
+              <div class="fbox" id="fde-r1"><small>R1</small><b>0</b></div>
+              <div class="fbox" id="fde-r2"><small>R2</small><b>0</b></div>
+              <div class="fbox" id="fde-r3"><small>R3</small><b>0</b></div>
+            </div>
+            <div class="fbox flag" id="fde-zf"><small>ZF (sıfır bayrağı)</small><b>0</b></div>
+          </div>
+          <div class="fde-col side">
+            <h4>Şu an ne oluyor?</h4>
+            <div class="phases" id="fde-phases">
+              <span>Fetch</span><span>Decode</span><span>Execute</span><span>Write-back</span>
+            </div>
+            <ol class="fde-log" id="fde-log"></ol>
+          </div>
+        </div>
+        <div class="btn-row mt2">
+          <button class="btn" id="fde-step">Adım ▶</button>
+          <button class="btn ghost" id="fde-auto">Otomatik oynat</button>
+          <button class="btn ghost" id="fde-reset">Sıfırla</button>
+        </div>
+        <p class="demo-note">"Adım" her seferinde bir aşama ilerletir: bir komut 4 tıkta biter. Gerçek işlemci bunu bir nanosaniyenin altında yapar, üstelik birden fazla komutu üst üste bindirerek (pipeline bölümüne bak).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- @@more -->
+
+  <section class="section" id="quiz">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">kendini dene</span>
+        <h2>Mini quiz</h2>
+        <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
+      </div>
+      <div class="quiz" id="cpu-quiz"></div>
+      <script type="application/json" id="quiz-data">[]</script>
+      <div id="pager"></div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="js/site.js"></script>
+<script src="js/cpu-hero.js"></script>
+<script src="js/cpu-blocks.js"></script>
+<script src="js/cpu-fde.js"></script>
+</body>
+</html>
