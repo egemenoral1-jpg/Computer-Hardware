@@ -2,7 +2,6 @@
    Parça Parça — ortak JS
    - parça listesi (menü, ana sayfa kartları, sayfa altı gezinme)
    - scroll ilerleme çubuğu, reveal animasyonları
-   - mini 
    ========================================================== */
 (function () {
   "use strict";
@@ -147,10 +146,43 @@
     els.forEach(function (el) { io2.observe(el); });
   }
 
+  /* ---------- imleci izleyen parlama + yukarı çık + içindekiler vurgusu ---------- */
+  function initFx() {
+    document.addEventListener("pointermove", function (e) {
+      const t = e.target.closest && e.target.closest(".card, .demo");
+      if (!t) return;
+      const r = t.getBoundingClientRect();
+      t.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      t.style.setProperty("--my", (e.clientY - r.top) + "px");
+    }, { passive: true });
+
+    const up = document.createElement("button");
+    up.className = "to-top"; up.setAttribute("aria-label", "Yukarı çık"); up.textContent = "↑";
+    up.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
+    document.body.appendChild(up);
+    window.addEventListener("scroll", function () { up.classList.toggle("show", window.scrollY > 700); }, { passive: true });
+
+    const links = document.querySelectorAll(".toc a[href^='#']");
+    if (links.length && "IntersectionObserver" in window) {
+      const map = {};
+      links.forEach(function (a) { const s = document.querySelector(a.getAttribute("href")); if (s) map[s.id] = a; });
+      const io3 = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting && map[en.target.id]) {
+            links.forEach(function (a) { a.classList.remove("on"); });
+            map[en.target.id].classList.add("on");
+          }
+        });
+      }, { rootMargin: "-40% 0px -55% 0px" });
+      Object.keys(map).forEach(function (id) { io3.observe(document.getElementById(id)); });
+    }
+  }
+
   buildHeader();
   buildFooter();
   buildPager();
   initProgress();
   initReveal();
   initCounters();
+  initFx();
 })();
