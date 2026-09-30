@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Depolama (SSD / HDD) — ParçaParça</title>
+  <meta name="description" content="HDD ve SSD nasıl çalışır? NAND hücreleri, NVMe, SATA farkı ve dosya kopyalama hızı. Demolarla öğren.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/depolama.css">
+</head>
+<body class="p-depolama" data-page="depolama">
+<div id="site-header"></div>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="part-hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">parça 04 · depolama</span>
+        <h1>Depolama <span class="grad">(SSD / HDD)</span></h1>
+        <p class="lead">Bilgisayarı kapatsan da silinmeyen tek yer. Fotoğrafların, oyunların, işletim sistemi, hepsi burada duruyor. İki farklı fikir var: dönen bir plakaya manyetik yazmak (HDD) ya da elektrik yükünü çipte hapsetmek (SSD).</p>
+        <div class="hero-chips">
+          <span class="chip"><b>HDD</b> mekanik</span>
+          <span class="chip"><b>SSD</b> flash</span>
+          <span class="chip"><b>NVMe</b> vs SATA</span>
+        </div>
+      </div>
+      <div class="hero-visual" aria-label="Dönen plaka ve okuma kolu animasyonu">
+        <div class="hdd"><div class="platter"></div><div class="hub"></div><div class="arm"><i class="head"></i></div><div class="hdd-tag">HDD</div></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="stats">
+        <div class="stat"><b data-count="7200">0</b><span>devir/dakika: masaüstü HDD plakalarının tipik hızı</span></div>
+        <div class="stat"><b data-count="10" data-suffix=" ms" data-prefix="~">0</b><span>HDD'nin bir veriye ulaşma süresi</span></div>
+        <div class="stat"><b data-count="80" data-suffix=" µs" data-prefix="~">0</b><span>SSD'nin bir veriye ulaşma süresi (yaklaşık 100 kat hızlı)</span></div>
+        <div class="stat"><b data-count="7000" data-suffix="+">0</b><span>MB/s: Gen4 NVMe SSD'lerin sıralı okuma hızı</span></div>
+      </div>
+      <div class="toc">
+        <small>Bu sayfada</small>
+        <a href="#nedir">Depolama nedir</a>
+        <a href="#hdd">HDD</a>
+        <a href="#ssd">SSD</a>
+        <a href="#arayuz">SATA / NVMe</a>
+        <a href="#yaris">Kopyalama yarışı</a>
+        <a href="#bakim">Bakım ve yedek</a>
+        <a href="#quiz">Quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DEPOLAMA NEDİR ================= -->
+  <section class="section" id="nedir">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">önce temel</span>
+        <h2>Depolama ne işe yarar?</h2>
+        <p><a href="ram.html">RAM</a> masaydı, depolama kitaplık. Kapasitesi çok büyük, fiyatı GB başına çok ucuz ve en önemlisi <strong>kalıcı</strong>: elektrik kesilse bile veri durur. Karşılığında RAM'den çok daha yavaştır.</p>
+      </div>
+      <div class="grid c3">
+        <div class="card reveal"><div class="ico">🗂️</div><h3>Neleri saklar?</h3><p>İşletim sistemi, programlar, oyunlar, belgeler, fotoğraflar. Bilgisayar açıldığında ilk iş, işletim sistemini buradan RAM'e yüklemektir.</p></div>
+        <div class="card reveal d1"><div class="ico">🧱</div><h3>Dosya sistemi</h3><p>Disk düz bir bayt yığınıdır. <strong>Dosya sistemi</strong> (NTFS, ext4, APFS...) bu baytları dosya ve klasörlere çevirir: hangi dosya diskin neresinde, boş yer neresi, hepsini o tutar.</p></div>
+        <div class="card reveal d2"><div class="ico">🔌</div><h3>İşlemciye nasıl bağlanır?</h3><p>Anakart üzerindeki SATA ya da M.2 (NVMe) yuvalarından. Bu arayüzün hızı diskin hızını sınırlar, aşağıda göreceğiz.</p></div>
+      </div>
+      <div class="callout fun reveal">
+        <span class="callout-title">Sildiğin dosya gerçekten silinmez</span>
+        Bir dosyayı sildiğinde dosya sistemi sadece "bu alan artık boş sayılır" diye not düşer, içindeki bitler sonradan üzerine yazılana kadar orada durur. Bu yüzden veri kurtarma programları çalışır; SSD'lerde ise TRIM komutu bu alanı hızlıca temizleyebilir.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HDD ================= -->
+  <section class="section" id="hdd">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">mekanik olan</span>
+        <h2>HDD: dönen plaka, gezen kafa</h2>
+        <p>Sabit disk (HDD) içinde manyetik kaplı bir ya da birkaç <strong>plaka</strong> saniyede 120 kez (7200 devir/dakika) döner. Bir <strong>okuma/yazma kafası</strong> plakanın hemen üstünde, hava yastığında (tıraş bıçağı inceliğinde bir boşlukta) süzülür ve minik manyetik bölgeleri okuyup yazar.</p>
+      </div>
+
+      <div class="demo reveal" id="hddsim">
+        <div class="demo-title"><span class="dot"></span> Demo: kafa bir izden diğerine gidiyor</div>
+        <div class="hdd-layout">
+          <div class="hdd-svg-wrap"><svg id="hdd-svg" viewBox="0 0 420 420" role="img" aria-label="HDD plakası ve okuma kolu"></svg></div>
+          <div>
+            <p class="muted" style="margin-top:0">Plakadaki bir halkaya (iz, track) tıkla. Kolu o ize götürüp veriyi okuyalım.</p>
+            <div class="hdd-out" id="hdd-out"></div>
+            <div class="callout mt1" id="hdd-note"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid c2">
+        <div class="card reveal">
+          <h3>Neden yavaş?</h3>
+          <p>İki fiziksel bekleme var: kolun doğru ize gitmesi (<strong>seek</strong>, birkaç ms) ve plakanın döner dönmez istenen sektörün kafanın altına gelmesi (<strong>dönme gecikmesi</strong>, ortalama yarım tur = 7200 RPM'de ~4,2 ms). Bunlar mekanik olduğu için fiziksel bir sınır var.</p>
+        </div>
+        <div class="card reveal d1">
+          <h3>Parçalanma (fragmentation)</h3>
+          <p>Bir dosya diskin farklı yerlerine dağılmışsa kafa sürekli gezmek zorunda kalır ve okuma çok yavaşlar. HDD'de <em>birleştirme (defrag)</em> bu yüzden anlamlıdır. SSD'de gezen bir şey olmadığı için parçalanma neredeyse önemsizdir ve defrag yapmak gereksizdir.</p>
+        </div>
+      </div>
+
+      <div class="callout warn reveal">
+        <span class="callout-title">HDD'ler darbeye hassas</span>
+        Çalışırken kafa plakanın mikron altı yakınında süzülür. Sarsıntı ya da düşme "head crash" denen hasara yol açabilir. Bu yüzden çalışırken bilgisayar taşınmaz.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SSD ================= -->
+  <section class="section" id="ssd">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">hareketli parça yok</span>
+        <h2>SSD: yükü hapseden çipler</h2>
+        <p>SSD (Solid State Drive) içinde dönen bir şey yok. Veri <strong>NAND flash</strong> çiplerinde, minik hücrelerin içine hapsedilen elektrik yükü olarak saklanır. Yük kaybolmadığı için (yıllarca) güç kesilse bile veri durur. Bir de <strong>kontrolcü</strong> çip her şeyi yönetir.</p>
+      </div>
+
+      <div class="grid c3">
+        <div class="card reveal"><h3>NAND çipleri</h3><p>Asıl veriyi tutan bellek. Aynı çipe daha çok veri sığdırmak için hücreler üst üste katmanlanır (3D NAND, 200+ katman).</p></div>
+        <div class="card reveal d1"><h3>Kontrolcü</h3><p>SSD'nin beyni: hangi verinin nerede olduğunu takip eder, hata düzeltir (ECC), yıpranmayı dengeler (wear leveling) ve işlemciyle konuşur.</p></div>
+        <div class="card reveal d2"><h3>DRAM / önbellek</h3><p>Birçok SSD'de küçük bir DRAM, "hangi veri nerede" haritasını hızlı tutar. Bazıları bunu sistem RAM'inden ödünç alır (HMB), bazıları hem ucuz hem yavaş olur.</p></div>
+      </div>
+
+      <h3 class="sub reveal">Bir hücreye kaç bit sığar?</h3>
+      <p class="reveal">Hücredeki yük miktarı farklı <strong>seviyelere</strong> ayrılabilir. 2 seviye = 1 bit (SLC), 4 seviye = 2 bit (MLC), 8 seviye = 3 bit (TLC), 16 seviye = 4 bit (QLC). Daha çok bit daha ucuz depolama demek ama seviyeler birbirine yaklaştığı için daha yavaş ve daha az dayanıklı olur.</p>
+
+      <div class="demo reveal" id="nand">
+        <div class="demo-title"><span class="dot"></span> Demo: NAND hücresi ve seviyeler</div>
+        <div class="tabs" id="nand-tabs"></div>
+        <div class="nand-layout">
+          <div class="nand-cell" id="nand-cell"></div>
+          <div>
+            <div class="btn-row"><button class="btn sm" id="nand-write">Rastgele bir değer yaz</button></div>
+            <div class="nand-out" id="nand-out"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid c2">
+        <div class="card reveal">
+          <h3>Yazmak silmekten farklı</h3>
+          <p>SSD veriyi küçük <strong>sayfalar</strong> halinde yazar ama silmeyi ancak büyük <strong>bloklar</strong> halinde yapabilir. Bu yüzden kontrolcü arka planda sürekli dosyaları toplar (garbage collection). Sistem "bu alan artık boş" dediğinde (<strong>TRIM</strong>) işi kolaylaşır.</p>
+        </div>
+        <div class="card reveal d1">
+          <h3>Ömür: her hücre sınırlı yazılır</h3>
+          <p>Hücreler her silme-yazma döngüsünde biraz yıpranır. Kontrolcü yazmaları hücrelere eşit dağıtır (wear leveling). Sıradan kullanımda ömür yıllarca yeter. Üreticiler bunu <strong>TBW</strong> (toplam yazılabilir terabayt) olarak belirtir.</p>
+        </div>
+      </div>
+      <div class="callout fun reveal">
+        <span class="callout-title">Neden dolu SSD yavaşlar?</span>
+        Hızlı SSD'ler, boş alanın bir kısmını geçici olarak 1 bit/hücre modunda (SLC cache) kullanıp yazmayı hızlandırır. Disk dolduğunda bu cache küçülür ve yazma hızı düşer. Diskin %10-20'sini boş bırakmak iyi bir alışkanlık.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ARAYÜZ ================= -->
+  <section class="section" id="arayuz">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">bağlantı</span>
+        <h2>SATA mı, NVMe mi?</h2>
+        <p>Aynı flash belleği farklı yollardan bağlayabilirsin. <strong>SATA</strong> eski hard disklerden kalma bir arayüz ve 6 Gbit/s ile sınırlı (pratikte ~550 MB/s). <strong>NVMe</strong> ise SSD'yi doğrudan <strong>PCIe</strong> hattına bağlar; paralel ve çok geniş bir yoldur.</p>
+      </div>
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th></th><th>HDD (SATA)</th><th>SATA SSD</th><th>NVMe Gen3</th><th>NVMe Gen4</th><th>NVMe Gen5</th></tr></thead>
+          <tbody>
+            <tr><td>Sıralı okuma (yaklaşık)</td><td>100 – 250 MB/s</td><td>~550 MB/s</td><td>~3.500 MB/s</td><td>~7.000 MB/s</td><td>10.000+ MB/s</td></tr>
+            <tr><td>Erişim süresi</td><td>~10 ms</td><td>~0,1 ms</td><td>~0,08 ms</td><td>~0,08 ms</td><td>~0,08 ms</td></tr>
+            <tr><td>Şekil</td><td>3,5" / 2,5"</td><td>2,5" veya M.2</td><td colspan="3">M.2 2280 (ince çubuk)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout reveal">
+        <span class="callout-title">M.2 ≠ NVMe</span>
+        M.2 sadece fiziksel şekildir. Bir M.2 SSD SATA da olabilir, NVMe de. Almadan önce anakartın M.2 yuvasının hangisini desteklediğine bak. <a href="anakart.html">Anakart sayfasında</a> yuvaları görebilirsin.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= YARIŞ ================= -->
+  <section class="section" id="yaris">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">deneyerek gör</span>
+        <h2>Dosya kopyalama yarışı</h2>
+        <p>Aynı dosyayı üç farklı depolamaya kopyalıyoruz. Boyutu ve dosya türünü seç. Süre gerçek zamanlı değil, hızlandırılmış bir animasyon (yaklaşık değerlerle).</p>
+      </div>
+      <div class="demo reveal" id="copyrace">
+        <div class="demo-title"><span class="dot"></span> Demo: kim önce bitirir?</div>
+        <div class="tabs" id="cp-mode">
+          <button class="tab active" data-m="big">Tek büyük dosya</button>
+          <button class="tab" data-m="small">Binlerce küçük dosya</button>
+        </div>
+        <div class="field" style="max-width:420px"><label for="cp-size">Toplam boyut: <span class="val" id="cp-size-v">20 GB</span></label><input type="range" id="cp-size" min="1" max="100" value="20"></div>
+        <div class="cp-rows" id="cp-rows"></div>
+        <div class="btn-row mt1"><button class="btn" id="cp-go">▶ Kopyalamayı başlat</button></div>
+        <p class="demo-note" id="cp-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BAKIM ================= -->
+  <section class="section" id="bakim">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">veriyi kaybetme</span>
+        <h2>Bakım ve yedekleme</h2>
+      </div>
+      <div class="grid c3">
+        <div class="card reveal"><h3>3-2-1 kuralı</h3><p>Verinin <strong>3</strong> kopyası, <strong>2</strong> farklı türde ortamda (örn. SSD + harici disk), <strong>1</strong> tanesi başka bir yerde (örn. bulut) olsun. Diskler bir gün mutlaka ölür.</p></div>
+        <div class="card reveal d1"><h3>S.M.A.R.T.</h3><p>Diskler kendi sağlıklarını izler: yeniden bağlanan sektörler, sıcaklık, kalan ömür... CrystalDiskInfo gibi araçlar bunu gösterir. Uyarı görürsen yedeği hemen al.</p></div>
+        <div class="card reveal d2"><h3>RAID yedek değildir</h3><p>Birden çok diski birleştiren RAID, bir disk ölürse çalışmaya devam etmeni sağlayabilir ama sildiğin, bozduğun ya da fidye yazılımının şifrelediği dosyayı geri getirmez.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">kendini dene</span>
+        <h2>Mini quiz</h2>
+        <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
+      </div>
+      <div class="quiz" id="dep-quiz"></div>
+      <script type="application/json" id="quiz-data">[{"q": "HDD'de veri nasıl saklanır?", "o": ["Dönen plakadaki manyetik bölgelerde", "NAND hücrelerindeki elektrik yükünde", "Kapasitörlerde", "Lazerle yakılan çukurlarda"], "a": 0, "e": "HDD plakaları manyetik bir kaplamayla kaplıdır. Okuma/yazma kafası minik bölgelerin manyetik yönünü değiştirerek 0 ve 1'leri yazar."}, {"q": "SSD'de bir bit fiziksel olarak nasıl saklanır?", "o": ["Dönen bir plakada mıknatısla", "NAND flash hücresinde hapsedilmiş elektrik yükü olarak", "RAM gibi sürekli yenilenen bir kapasitörde", "Fiber kabloda ışık olarak"], "a": 1, "e": "NAND hücresi yükü bir yalıtkan katmanın içine hapseder. Bu yük güç kesilse de uzun süre kaybolmaz; RAM'den fark budur."}, {"q": "HDD rastgele erişimde (küçük dosyalarda) neden çok yavaştır?", "o": ["Kabloları uzun olduğu için", "Kolun ize gitmesi (seek) ve plakanın dönmesini beklemek gerektiği için", "Çok fazla ısındığı için", "Sadece 1 çekirdeği olduğu için"], "a": 1, "e": "Her farklı konuma erişimde birkaç ms'lik mekanik bekleme var. SSD'de mekanik parça olmadığı için erişim yaklaşık 100 kat hızlıdır."}, {"q": "QLC bir NAND hücresi kaç seviye ayırt etmek zorundadır?", "o": ["4", "8", "16", "32"], "a": 2, "e": "QLC hücre başına 4 bit saklar: 2⁴ = 16 seviye. Seviyeler birbirine yaklaştığı için okumak daha zor, yavaş ve dayanıklılık daha düşük olur."}, {"q": "NVMe SSD'yi SATA SSD'den hızlı yapan temel fark nedir?", "o": ["Daha çok RGB ışığı olması", "PCIe hattına doğrudan bağlanması", "Daha büyük olması", "Mekanik parçalarının daha hızlı dönmesi"], "a": 1, "e": "SATA yaklaşık 550 MB/s ile sınırlı eski bir arayüzdür. NVMe, geniş ve paralel PCIe hattını kullanır: Gen4'te ~7.000 MB/s."}, {"q": "\"M.2\" neyi ifade eder?", "o": ["Sadece NVMe SSD'leri", "Fiziksel şekli (ince çubuk); içinde SATA da NVMe da olabilir", "Bir HDD türünü", "Bir RAM standardını"], "a": 1, "e": "M.2 bir konnektör ve form faktörüdür. Bir M.2 SSD SATA da olabilir, NVMe de. Anakartın hangisini desteklediğine bakmak gerekir."}, {"q": "TRIM komutu ne işe yarar?", "o": ["SSD'yi soğutur", "İşletim sisteminin SSD'ye hangi blokların artık boş olduğunu bildirmesini sağlar", "Diski formatlar", "Yazma hızını sınırlar"], "a": 1, "e": "SSD silmeyi büyük bloklar halinde yaptığı için hangi verinin geçersiz olduğunu bilmesi gerekir. TRIM ile arka plandaki temizlik (garbage collection) daha verimli olur."}, {"q": "3-2-1 yedekleme kuralında \"1\" neyi ifade eder?", "o": ["1 adet SSD kullanmak", "Kopyalardan 1 tanesinin başka bir yerde (örn. bulut) tutulması", "Haftada 1 kez yedek almak", "Tek bir dosyayı yedeklemek"], "a": 1, "e": "3 kopya, 2 farklı ortam, 1 tanesi farklı bir konumda. Yangın, hırsızlık ya da fidye yazılımı gibi olaylara karşı korur."}]</script>
+      <div id="pager"></div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/site.js"></script>
+<script src="js/depolama.js"></script>
+</body>
+</html>
