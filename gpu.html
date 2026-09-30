@@ -286,7 +286,121 @@
     </div>
   </section>
 
-  <!-- @@more -->
+  <!-- ================= IŞIN İZLEME ================= -->
+  <section class="section" id="isin">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">ışığı takip et</span>
+        <h2>Işın izleme (ray tracing)</h2>
+        <p>Gerçek hayatta ışık kaynaktan çıkar, nesnelere çarpıp sekerek gözümüze gelir. Bilgisayarda bunu simüle etmenin yolu: bir noktadan <strong>ışınlar gönderip</strong> ilk neye çarptıklarını bulmak. Aşağıda tek bir ışık kaynağının çevresine ışın yolladım. Fareni tuvalin üstünde gezdir.</p>
+      </div>
+
+      <div class="demo reveal" id="raydemo">
+        <div class="demo-title"><span class="dot"></span> Demo: ışın gönder, ilk çarptığı yeri bul</div>
+        <canvas id="ray-canvas" width="720" height="380" aria-label="Işık kaynağı ve engeller. Işınlar ilk çarptıkları yerde durur."></canvas>
+        <div class="field mt1">
+          <label for="ray-n">Işın sayısı: <span class="val" id="ray-n-val">72</span></label>
+          <input type="range" id="ray-n" min="8" max="720" value="72">
+        </div>
+        <div class="ray-stats" id="ray-stats"></div>
+        <p class="demo-note">Işın sayısı azsa ışığın alanı köşeli ve eksik görünür, çoğaldıkça gerçeğe yaklaşır. Ama her ışın için her nesneye "çarptı mı?" testi yapılır. İşte <strong>RT çekirdekleri</strong> tam olarak bu testleri donanımda hızlandırır.</p>
+      </div>
+
+      <div class="callout fun reveal">
+        <span class="callout-title">Bir oyun karesinde kaç ışın?</span>
+        4K ekranda 8,3 milyon piksel var. Piksel başına 1 ışın bile 8,3 milyon ışın eder; gerçekçi yansıma ve gölge için birkaç sekme daha ekleyince saniyede milyarlarca ışın gerekir. O yüzden oyunlar genelde az ışın gönderip sonucu "gürültü giderme" ile temizler.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ÖZEL ÇEKİRDEKLER ================= -->
+  <section class="section" id="ozel">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">sadece hesap değil</span>
+        <h2>Özel çekirdekler ve akıllı hileler</h2>
+        <p>Modern GPU'lar sadece "çok sayıda basit çekirdek" değil. Belirli işler için ayrılmış özel birimler de içerir.</p>
+      </div>
+
+      <div class="grid c2">
+        <div class="card reveal"><h3>Shader çekirdekleri</h3><p>Genel amaçlı hesap birimleri. Vertex, piksel ve compute shader'ları çalıştırır. Kart hızının temeli.</p></div>
+        <div class="card reveal d1"><h3>RT çekirdekleri</h3><p>Işın izleme için kesişim testlerini donanımda yapar. Gerçekçi yansıma, gölge ve ışık için gerekli; pahalı bir teknik olduğu için genelde yapay zekâ ile desteklenir.</p></div>
+        <div class="card reveal"><h3>Tensor / AI çekirdekleri</h3><p>Matris çarpımı yapan birimler. DLSS, FSR ve XeSS gibi tekniklerle düşük çözünürlükte çizilen kareyi akıllıca yükseltmek için kullanılır.</p></div>
+        <div class="card reveal d1"><h3>Video motoru</h3><p>NVENC, VCN, Quick Sync gibi adlarla bilinen sabit fonksiyonlu birimler. H.264, HEVC, AV1 videoları işlemciyi yormadan kodlar ve çözer. Yayın yaparken bu yüzden FPS düşmez.</p></div>
+      </div>
+
+      <h3 class="sub reveal">Çözünürlük yükseltme neden kazandırır?</h3>
+      <p class="reveal">Fikir: oyunu düşük çözünürlükte çiz (az piksel = az iş), sonra yapay zekâ ya da akıllı algoritmalarla hedef çözünürlüğe yükselt. Aşağıdaki demoda GPU'nun boyaması gereken piksel sayısının ne kadar azaldığına bak.</p>
+      <div class="demo reveal" id="updemo">
+        <div class="demo-title"><span class="dot"></span> Demo: upscaling hesaplayıcı</div>
+        <div class="bw-controls">
+          <div class="field"><label for="up-target">Ekran çözünürlüğü</label>
+            <select id="up-target"><option value="2560x1440">2560 × 1440 (2K)</option><option value="3840x2160" selected>3840 × 2160 (4K)</option></select></div>
+          <div class="field"><label for="up-mode">Mod (eksen başına ölçek)</label>
+            <select id="up-mode">
+              <option value="0.667">Kalite (~%67)</option><option value="0.58">Dengeli (~%58)</option>
+              <option value="0.5" selected>Performans (%50)</option><option value="0.333">Ultra performans (~%33)</option>
+            </select></div>
+        </div>
+        <div class="fb-out" id="up-out"></div>
+        <div class="up-track"><div class="up-fill" id="up-fill"></div></div>
+        <p class="demo-note">Çubuk, "tam çözünürlüğe göre" GPU'nun gerçekten çizdiği piksel oranı. Gerisini yükseltme algoritması tahmin ediyor. Sonuç görüntü kalitesi hedeflenen çözünürlükte oluyor ama biraz gecikme ve yapaylık gibi ödünler de olabilir.</p>
+      </div>
+
+      <div class="grid c2 mt2">
+        <div class="card reveal">
+          <h3>GPGPU: grafik dışı işler</h3>
+          <p>Shader çekirdeklerine "piksel değil, sayı işle" dersen GPU genel bir hesap makinesine dönüşür. <strong>CUDA</strong> (NVIDIA), <strong>ROCm</strong> (AMD), <strong>OpenCL</strong> ve <strong>Vulkan compute</strong> bu iş için var. Yapay zekâ eğitimi, bilimsel simülasyon, video efektleri, şifre çözme testleri...</p>
+        </div>
+        <div class="card reveal d1">
+          <h3>API ve sürücü</h3>
+          <p>Oyunlar ekran kartıyla doğrudan konuşmaz. <strong>DirectX</strong>, <strong>Vulkan</strong>, <strong>OpenGL</strong>, <strong>Metal</strong> gibi API'ler ortak bir dil sunar; kartın <strong>sürücüsü</strong> bu dili donanımın anlayacağı komutlara çevirir. Bu yüzden sürücü güncellemeleri performansı değiştirebilir.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= iGPU / dGPU ================= -->
+  <section class="section" id="igpu">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">hangisi bende var?</span>
+        <h2>Dahili mi, harici mi?</h2>
+      </div>
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th></th><th>Dahili GPU (iGPU)</th><th>Harici GPU (dGPU)</th></tr></thead>
+          <tbody>
+            <tr><td>Nerede?</td><td>İşlemcinin içinde</td><td>PCIe yuvasında ayrı kart (laptopta anakarta lehimli çip)</td></tr>
+            <tr><td>Bellek</td><td>Sistem RAM'ini paylaşır</td><td>Kendi VRAM'i var</td></tr>
+            <tr><td>Güç</td><td>Onlarca watt, işlemciyle ortak</td><td>75 W'tan 450 W'a ve üstüne</td></tr>
+            <tr><td>Uygun iş</td><td>Ofis, web, video izleme, hafif oyun</td><td>Oyun, 3D, video düzenleme, yapay zekâ</td></tr>
+            <tr><td>Maliyet</td><td>İşlemcinin içinden gelir</td><td>Ayrı ücret</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout reveal">
+        <span class="callout-title">Laptoplarda hibrit grafik</span>
+        Birçok laptopta ikisi birden bulunur: günlük işlerde pil için iGPU çalışır, oyun açınca dGPU devreye girer. Apple M serisi ve oyun konsolları ise CPU ve GPU'nun aynı bellek havuzunu paylaştığı "birleşik bellek" (unified memory) yapısını kullanır.
+      </div>
+
+      <h3 class="sub reveal">Ekran kartı alırken neye bakılır?</h3>
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th>Bakılacak şey</th><th>Neden?</th></tr></thead>
+          <tbody>
+            <tr><td>Model ve genel performans</td><td>Aynı fiyattaki kartlar arasında oyunda gerçek fark yaratan asıl şey bu.</td></tr>
+            <tr><td>VRAM miktarı ve bus</td><td>Yukarıdaki VRAM bölümüne bak: miktar kadar bant genişliği de önemli.</td></tr>
+            <tr><td>Güç ihtiyacı</td><td>Kartın önerdiği <a href="psu.html">güç kaynağı</a> gücü ve gereken güç konnektörleri (8 pin, 12V-2x6...).</td></tr>
+            <tr><td>Boyut</td><td>Kasaya sığıyor mu? Uzunluk ve kalınlık (2, 2,5, 3 slot) kontrol edilmeli.</td></tr>
+            <tr><td>Soğutma</td><td>Fan sayısı ve <a href="sogutma.html">kasa hava akışı</a> sıcaklığı ve gürültüyü belirler.</td></tr>
+            <tr><td>Çıkışlar</td><td>Monitörünle uyumlu HDMI / DisplayPort sürümü.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
 
   <section class="section" id="quiz">
     <div class="container">
@@ -296,7 +410,7 @@
         <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
       </div>
       <div class="quiz" id="gpu-quiz"></div>
-      <script type="application/json" id="quiz-data">[]</script>
+      <script type="application/json" id="quiz-data">[{"q": "CPU ile GPU arasındaki temel tasarım farkı nedir?", "o": ["GPU'da çekirdekler daha büyük ve akıllı", "GPU'da çok sayıda basit çekirdek var, CPU'da az sayıda güçlü çekirdek", "CPU'nun VRAM'i var, GPU'nun yok", "Fark yok, sadece isimleri farklı"], "a": 1, "e": "CPU az sayıda güçlü çekirdekle tek işi çabuk bitirmeye (düşük gecikme), GPU çok sayıda basit çekirdekle çok işi toplu bitirmeye (yüksek verim) odaklanır."}, {"q": "Aşağıdaki işlerden hangisi GPU'ya en uygunudur?", "o": ["Her adımı bir öncekinin sonucuna bağlı zincir hesap", "Bir metin dosyasını satır satır okuyup kural uygulamak", "Ekrandaki milyonlarca pikselin rengini hesaplamak", "Tek bir sayıyı bir kez toplamak"], "a": 2, "e": "Her piksel birbirinden bağımsız hesaplanabildiği için binlerce çekirdek aynı anda çalışabilir. Yarış demosunda sıralı işte CPU'nun kazandığını hatırla."}, {"q": "Warp nedir?", "o": ["GPU'nun soğutma sistemi", "32 thread'in aynı komutu birlikte çalıştırdığı grup", "VRAM çipinin adı", "Ekran kartının PCIe konnektörü"], "a": 1, "e": "GPU thread'leri 32'şerli warp'lara ayırır. Bir warp'taki thread'ler aynı anda aynı komutu, farklı veriler üzerinde çalıştırır (SIMT)."}, {"q": "Bir warp'taki thread'lerin yarısı <code>if</code>'in, yarısı <code>else</code>'in yoluna girerse ne olur?", "o": ["Hepsi aynı anda çalışır, fark olmaz", "İki yol sırayla çalışır, verim yaklaşık yarıya düşer", "GPU çöker", "Sadece if yolu çalışır"], "a": 1, "e": "Buna warp sapması (divergence) denir. GPU iki kolu sırayla çalıştırır; her adımda thread'lerin yarısı maskelenip bekler."}, {"q": "Grafik hattında üçgenin hangi piksellere denk geldiğini bulan adım hangisi?", "o": ["Vertex shader", "Rasterization", "Çıktı birleştirme (ROP)", "Video kodlama"], "a": 1, "e": "Rasterization, köşe noktalarından oluşan üçgeni ekran ızgarasındaki piksellere (fragment'lara) çevirir. Sonra piksel shader bunlara renk verir."}, {"q": "256 bit bus ve 18 Gbps bellekle bant genişliği kaç GB/s olur?", "o": ["288", "576", "1152", "72"], "a": 1, "e": "256 × 18 ÷ 8 = 576 GB/s. Bus genişliği (bit) × pin başına hız (Gbps) ÷ 8."}, {"q": "RT çekirdeklerinin işi nedir?", "o": ["Video kodlamak", "Işın–üçgen kesişim testlerini donanımda hızlandırmak", "Sistem RAM'ini büyütmek", "Ekranı soğutmak"], "a": 1, "e": "Işın izlemede her ışının hangi nesneye çarptığı sürekli sorulur. RT çekirdekleri bu kesişim testlerini özel donanımla çok hızlı yapar."}, {"q": "DLSS / FSR / XeSS gibi upscaling tekniklerinin mantığı nedir?", "o": ["Ekranın gerçek çözünürlüğünü düşürmek", "Düşük çözünürlükte çizip hedef çözünürlüğe akıllıca yükseltmek, böylece daha az piksel hesaplamak", "VRAM'i sıkıştırıp büyütmek", "İşlemci hızını artırmak"], "a": 1, "e": "4K'da Performans modu, oyunu aslında 1080p'de çizer (%25 piksel) ve sonucu 4K'ya yükseltir. GPU'nun işi bu sayede ciddi azalır."}]</script>
       <div id="pager"></div>
     </div>
   </section>
@@ -314,5 +428,7 @@
 <script src="js/gpu-warp.js"></script>
 <script src="js/gpu-pipeline.js"></script>
 <script src="js/gpu-vram.js"></script>
+<script src="js/gpu-rays.js"></script>
+<script src="js/gpu-upscale.js"></script>
 </body>
 </html>
