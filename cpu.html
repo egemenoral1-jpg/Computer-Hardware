@@ -286,7 +286,180 @@
     </div>
   </section>
 
-  <!-- @@more -->
+  <!-- ================= CACHE ================= -->
+  <section class="section" id="cache">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">hız farkı</span>
+        <h2>Cache: Hız piramidi</h2>
+        <p>İşlemci öyle hızlı ki RAM bile ona yetişemiyor. Bir veriyi RAM'den istediğinde işlemci yüzlerce döngü boşta bekleyebilir. Çözüm: RAM ile işlemci arasına, küçük ama çok hızlı ara depolar koymak. Bunlara <strong>cache (önbellek)</strong> diyoruz.</p>
+      </div>
+
+      <div class="demo reveal" id="cache-demo">
+        <div class="demo-title"><span class="dot"></span> Demo: Veri nerede saklıysa orada aranır</div>
+        <p class="muted" style="margin-top:-4px">Bir satıra tıkla: "aradığım veri burada" de ve işlemcinin yukarıdan aşağıya nasıl aradığını izle. Süreleri hem döngü hem de <strong>insan ölçeğinde</strong> gösteriyorum: bir döngü = 1 saniye olsaydı ne olurdu?</p>
+        <div class="lvl-head"><span>Katman</span><span>Boyut</span><span>Gecikme</span><span>1 döngü = 1 sn olsa</span><span></span></div>
+        <div class="lvl-list" id="lvl-list"></div>
+        <div class="cache-result" id="cache-result">Bir katmana tıkla 👆</div>
+      </div>
+
+      <div class="grid c2">
+        <div class="card reveal">
+          <h3>Nasıl çalışıyor?</h3>
+          <ul>
+            <li>İşlemci bir adresi ister. Önce <strong>L1</strong>'e bakar. Varsa buna <strong>hit</strong> denir, hemen döner.</li>
+            <li>Yoksa (<strong>miss</strong>) L2'ye, sonra L3'e, en son RAM'e gider.</li>
+            <li>RAM'den gelen veri yolda geçtiği cache'lere de kopyalanır; sonra tekrar isteyene hazır olur.</li>
+            <li>Cache doluysa en uzun süredir kullanılmayan veri atılır (LRU'ya benzer stratejiler).</li>
+          </ul>
+        </div>
+        <div class="card reveal d1">
+          <h3>Tek bayt değil, 64 bayt gelir</h3>
+          <p>Cache veriyi <strong>cache line</strong> denen 64 baytlık parçalarla taşır. Bir baytı istesen bile komşu 63 bayt da gelir. Neden? Çünkü programlar genelde <em>yakın adresleri</em> art arda kullanır (uzamsal yerellik) ve <em>az önce kullandığını</em> tekrar kullanır (zamansal yerellik).</p>
+        </div>
+      </div>
+
+      <div class="callout fun reveal">
+        <span class="callout-title">Aynı işi yapan iki kod, çok farklı hız</span>
+        Bir 2 boyutlu diziyi toplarken satır satır gezmek, sütun sütun gezmekten çok daha hızlıdır (dizi bellekte satır satır durur):
+<pre class="code"><span class="c">// hızlı: komşu baytlar art arda, cache line'ın hepsi kullanılıyor</span>
+for (i = 0; i &lt; N; i++)
+  for (j = 0; j &lt; N; j++)  toplam += a[i][j];
+
+<span class="c">// yavaş: her adımda başka satıra atlıyor, neredeyse her okuma cache miss</span>
+for (j = 0; j &lt; N; j++)
+  for (i = 0; i &lt; N; i++)  toplam += a[i][j];</pre>
+        Büyük dizilerde fark birkaç kat olabilir. Yani "hızlı kod" bazen algoritmadan çok bellek erişim düzenine bağlı.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PIPELINE ================= -->
+  <section class="section" id="pipeline">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">montaj hattı</span>
+        <h2>Pipeline: Komutları üst üste bindirmek</h2>
+        <p>Çamaşır yıkama benzetmesi: yıkama makinesi, kurutma makinesi ve ütü var. İlk yükü yıkayıp kurutup ütüleyene kadar beklemek yerine, ilk yük kurutmaya geçince ikincisini yıkamaya koyarsın. Hepsi hep meşgul olur. İşlemci de komutlara böyle davranır.</p>
+      </div>
+
+      <div class="demo reveal" id="pipe">
+        <div class="demo-title"><span class="dot"></span> Demo: 5 aşamalı pipeline</div>
+        <div class="tabs" id="pipe-tabs"></div>
+        <div class="pipe-legend">
+          <span class="lg IF">IF <small>Fetch</small></span>
+          <span class="lg ID">ID <small>Decode</small></span>
+          <span class="lg EX">EX <small>Execute</small></span>
+          <span class="lg MEM">MEM <small>Bellek</small></span>
+          <span class="lg WB">WB <small>Write-back</small></span>
+        </div>
+        <div class="pipe-wrap"><div class="pipe-grid" id="pipe-grid"></div></div>
+        <div class="pipe-stats" id="pipe-stats"></div>
+        <div class="btn-row mt1"><button class="btn sm" id="pipe-replay">↻ Baştan oynat</button></div>
+        <p class="demo-note" id="pipe-note"></p>
+      </div>
+
+      <div class="grid c2">
+        <div class="card reveal">
+          <h3>Dal tahmini (branch prediction)</h3>
+          <p>Pipeline'ın düşmanı <code>if</code>. Program hangi yöne gideceğini karşılaştırma bitmeden bilemez ama pipeline'a komut akıtmaya devam etmek zorunda. Bu yüzden işlemci <em>tahmin eder</em> ve o yoldan devam eder. Tahmin tutarsa hiçbir şey kaybolmaz; tutmazsa yanlış yoldaki komutlar çöpe atılır (flush). Yukarıdaki üçüncü sekmede bunu gör. Modern işlemcilerde pipeline 15-20 aşamayı bulduğu için bir yanlış tahmin onlarca döngü kaybettirir.</p>
+        </div>
+        <div class="card reveal d1">
+          <h3>Ve daha fazlası</h3>
+          <ul>
+            <li><strong>Superscalar:</strong> Tek hat değil, birkaç paralel hat. Döngü başına 4-6 komut bile tamamlanabilir.</li>
+            <li><strong>Out-of-order:</strong> Bağımsız komutlar, sırası gelmese de hazırsa öne geçirilir.</li>
+            <li><strong>Spekülatif yürütme:</strong> Tahminin sonucunu beklemeden işe başlamak. Spectre / Meltdown açıkları bu tekniğin yan etkilerinden çıktı.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ÇEKİRDEK / GHZ ================= -->
+  <section class="section" id="cekirdek">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">kutunun üstündeki sayılar</span>
+        <h2>Çekirdek, thread ve GHz</h2>
+        <p>Kutuda "8 çekirdek / 16 thread / 5,0 GHz" yazıyor. Bunlar ne demek?</p>
+      </div>
+      <div class="grid c3">
+        <div class="card reveal"><h3>Çekirdek (core)</h3><p>Kendi ALU'su, register'ları ve L1 / L2 cache'i olan tam bir işlemci. 8 çekirdek, aynı anda 8 ayrı iş yürütebilir demek.</p></div>
+        <div class="card reveal d1"><h3>Thread (SMT)</h3><p>Bir çekirdeğin iki iş parçacığını dönüşümlü çalıştırması (Intel'de Hyper-Threading). Birinin beklediği sırada diğeri çekirdeği kullanır. Performansı 2 katına çıkarmaz, çoğu zaman %20-30 civarı kazandırır.</p></div>
+        <div class="card reveal d2"><h3>GHz (saat hızı)</h3><p>Saniyedeki döngü sayısı. Ama hız = GHz demek değil: döngü başına kaç komut bitirdiğin (<strong>IPC</strong>) de önemli. Yeni nesil 4 GHz, eski nesil 4 GHz'den hızlıdır.</p></div>
+      </div>
+
+      <h3 class="sub reveal">Çok çekirdek her zaman çok hız mı?</h3>
+      <p class="reveal">Değil. Programın sadece bir kısmı paralel çalışabiliyorsa, kalan sıralı kısım hızlanmanın tavanını belirler (<strong>Amdahl Yasası</strong>). Yemeği 100 aşçıya vermek, fırında 30 dakika pişmesi gereken kekin süresini kısaltmaz.</p>
+      <div class="demo reveal" id="amdahl">
+        <div class="demo-title"><span class="dot"></span> Demo: Çekirdek sayısı arttıkça ne kadar hızlanırız?</div>
+        <div class="field">
+          <label for="am-p">Programın paralel çalışabilen kısmı: <span class="val" id="am-p-val">90%</span></label>
+          <input type="range" id="am-p" min="0" max="100" value="90">
+        </div>
+        <div class="am-bars" id="am-bars"></div>
+        <p class="demo-note" id="am-note"></p>
+      </div>
+
+      <div class="callout reveal">
+        <span class="callout-title">P-core ve E-core</span>
+        Yeni işlemcilerin çoğu (Intel 12. nesil ve sonrası, Apple M serisi, telefonlar) iki tür çekirdek karıştırır: hızlı ve güç yiyen <strong>performans çekirdekleri</strong> ile küçük ve verimli <strong>verimlilik çekirdekleri</strong>. Arka plan işleri küçüklerde, ağır işler büyüklerde döner. Pil ömrü de buradan gelir.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ISA ================= -->
+  <section class="section" id="isa">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">komut seti</span>
+        <h2>x86-64 mı, ARM mı?</h2>
+        <p>İşlemcinin anlayabildiği komutların listesine <strong>ISA (Instruction Set Architecture)</strong> denir. Bir program belirli bir ISA için derlenir; bu yüzden bir ARM programı doğrudan Intel işlemcide çalışmaz.</p>
+      </div>
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th></th><th>x86-64 (Intel, AMD)</th><th>ARM (Apple M, telefonlar)</th></tr></thead>
+          <tbody>
+            <tr><td>Felsefe</td><td>CISC: çok sayıda, karmaşık, değişken uzunlukta komut</td><td>RISC: az sayıda, basit, çoğunlukla sabit uzunlukta komut</td></tr>
+            <tr><td>Genel amaçlı register</td><td>16 (RAX ... R15)</td><td>31 (X0 ... X30)</td></tr>
+            <tr><td>Nerede?</td><td>PC'ler, sunucular, PS5 / Xbox</td><td>Telefonlar, tabletler, Apple Mac'ler, Raspberry Pi, artan şekilde sunucular</td></tr>
+            <tr><td>Güç verimi</td><td>Genelde daha fazla güç ister</td><td>Genelde watt başına daha verimli</td></tr>
+            <tr><td>Uyumluluk</td><td>Onlarca yıllık eski yazılımı çalıştırır</td><td>Yeni platform; eski yazılım için çevirmen katmanları kullanılır</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout adv reveal">
+        <span class="callout-title">RISC-V</span>
+        Üçüncü bir oyuncu daha var: <strong>RISC-V</strong>, lisans ücreti olmayan açık bir komut seti. Üniversiteler ve küçük şirketler kendi işlemcilerini bununla tasarlayabiliyor. Öğrenmek için de harika bir aday.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SEÇİM ================= -->
+  <section class="section" id="secim">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">alışveriş rehberi</span>
+        <h2>İşlemci seçerken nelere bakılır?</h2>
+      </div>
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th>Özellik</th><th>Neden önemli?</th></tr></thead>
+          <tbody>
+            <tr><td>Çekirdek / thread</td><td>Render, derleme, video düzenleme gibi paralel işlerde belirleyici. Oyun ve ofiste 6-8 çekirdek çoğu zaman yeterli.</td></tr>
+            <tr><td>Boost saat hızı</td><td>Tek çekirdek performansı için önemli; oyunların çoğu buna duyarlı.</td></tr>
+            <tr><td>Cache (özellikle L3)</td><td>Büyük L3, oyunlarda ve bellek yoğun işlerde ciddi fark yaratabilir.</td></tr>
+            <tr><td>TDP / güç tüketimi</td><td>Hangi soğutucunun ve güç kaynağının gerektiğini belirler. <a href="sogutma.html">Soğutma</a> ve <a href="psu.html">güç kaynağı</a> sayfalarına bak.</td></tr>
+            <tr><td>Soket</td><td>Anakartla uyumu belirler (ör. AM5, LGA1700). <a href="anakart.html">Anakart</a> sayfasında anlatıyoruz.</td></tr>
+            <tr><td>Dahili grafik (iGPU)</td><td>Ekran kartı almayacaksan çok işe yarar. Alacaksan gereksiz olabilir.</td></tr>
+            <tr><td>Desteklenen RAM</td><td>DDR4 mü DDR5 mi? Bu işlemciye göre değişir. <a href="ram.html">RAM</a> sayfasına bak.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
 
   <section class="section" id="quiz">
     <div class="container">
@@ -296,7 +469,7 @@
         <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
       </div>
       <div class="quiz" id="cpu-quiz"></div>
-      <script type="application/json" id="quiz-data">[]</script>
+      <script type="application/json" id="quiz-data">[{"q": "PC (Program Counter) / RIP register'ı neyi tutar?", "o": ["Son yapılan işlemin sonucunu", "Sıradaki komutun bellek adresini", "Çalışan program sayısını", "İşlemcinin sıcaklığını"], "a": 1, "e": "PC (x86-64'te RIP), sıradaki komutun adresini gösterir. Fetch aşamasında bu adresteki komut getirilir ve PC bir sonrakine ilerler."}, {"q": "Aşağıdakilerden hangisine erişim en hızlıdır?", "o": ["RAM", "L3 cache", "Register", "NVMe SSD"], "a": 2, "e": "Register'lar işlemcinin içinde, ALU'nun hemen yanında. Erişim pratikte bir döngüden az sürer. Sıralama: register > L1 > L2 > L3 > RAM > SSD > HDD."}, {"q": "Bir çıkarma işleminin sonucu tam olarak 0 çıktı. Hangi bayrak 1 olur?", "o": ["CF (Carry)", "ZF (Zero)", "SF (Sign)", "OF (Overflow)"], "a": 1, "e": "ZF (Zero Flag) sonuç sıfırsa 1 olur. JE / JZ gibi 'eşitse atla' komutları bu bayrağa bakar. Demoda 5 − 5 ile denemiştik."}, {"q": "x86-64'te <code>MOV EAX, 1</code> çalışınca RAX'in üst 32 biti ne olur?", "o": ["Olduğu gibi kalır", "Sıfırlanır", "Hepsi 1 olur", "Rastgele bir değer alır"], "a": 1, "e": "32 bitlik yazma, üst 32 biti sıfırlar. 8 ve 16 bitlik yazmalarda (AL, AH, AX) ise üst bitler korunur. Kafa karıştıran ama önemli bir kural."}, {"q": "Pipeline'ın amacı nedir?", "o": ["İşlemciyi soğutmak", "Farklı komutların farklı aşamalarını aynı anda yürütüp verimi artırmak", "RAM miktarını artırmak", "Komutları şifrelemek"], "a": 1, "e": "Pipeline bir montaj hattı gibidir: bir komut EX aşamasındayken sıradaki ID'de, ondan sonraki IF'te olabilir. Böylece her çevrimde bir komut bitebilir."}, {"q": "Cache neden var?", "o": ["Daha çok dosya saklamak için", "İşlemci ile RAM arasındaki hız farkını azaltmak için", "Ekran kartına veri yollamak için", "İşlemciyi ucuzlatmak için"], "a": 1, "e": "RAM işlemciye göre çok yavaş (yüzlerce döngü). Sık kullanılan verileri işlemciye yakın, küçük ve hızlı bir bellekte tutarak beklemeyi azaltıyoruz."}, {"q": "PUSH komutu çalışınca RSP (64 bit modda) ne olur?", "o": ["8 azalır", "8 artar", "Sıfırlanır", "Değişmez"], "a": 0, "e": "Yığın aşağı doğru büyür: PUSH'ta önce RSP 8 azaltılır, sonra değer o adrese yazılır. POP'ta tersi olur."}, {"q": "Bir programın %50'si sadece sırayla çalışabiliyor. Sonsuz çekirdek olsa en fazla kaç kat hızlanır?", "o": ["2 kat", "10 kat", "50 kat", "Sınırsız"], "a": 0, "e": "Amdahl Yasası: hızlanma en fazla 1 / (sıralı oran) = 1 / 0,5 = 2. Çekirdek eklemek sıralı kısmı hızlandırmaz."}]</script>
       <div id="pager"></div>
     </div>
   </section>
@@ -311,5 +484,8 @@
 <script src="js/cpu-blocks.js"></script>
 <script src="js/cpu-fde.js"></script>
 <script src="js/cpu-registers.js"></script>
+<script src="js/cpu-cache.js"></script>
+<script src="js/cpu-pipeline.js"></script>
+<script src="js/cpu-cores.js"></script>
 </body>
 </html>
