@@ -11,7 +11,7 @@
   document.querySelectorAll(".stat b[data-count]").forEach(function (el) {
     const end = parseFloat(el.dataset.count);
     const dec = parseInt(el.dataset.dec || "0", 10);
-    const suf = el.dataset.suffix || "";
+    const suf = el.dataset.suffix || "", pre = el.dataset.prefix || "";
     const o = { v: 0 };
     ScrollTrigger.create({
       trigger: el, start: "top 92%", once: true,
@@ -19,7 +19,7 @@
         gsap.to(o, {
           v: end, duration: 1.6, ease: "power2.out",
           onUpdate: function () {
-            el.textContent = (dec ? o.v.toFixed(dec).replace(".", ",") : Math.round(o.v).toLocaleString("tr-TR")) + suf;
+            el.textContent = pre + (dec ? o.v.toFixed(dec).replace(".", ",") : Math.round(o.v).toLocaleString("tr-TR")) + suf;
           }
         });
       }

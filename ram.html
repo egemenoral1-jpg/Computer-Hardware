@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAM (Bellek) — ParçaParça</title>
+  <meta name="description" content="RAM nedir, neden kalıcı değil, DDR4 ile DDR5 farkı, dual channel ve gecikme. Demolarla öğren.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/ram.css">
+</head>
+<body class="p-ram" data-page="ram">
+<div id="site-header"></div>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="part-hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">parça 03 · bellek</span>
+        <h1>RAM <span class="grad">(Bellek)</span></h1>
+        <p class="lead">RAM, işlemcinin çalışma masası. Şu an açık olan her program, her sekme, oynadığın oyun burada duruyor. Hızlı ama unutkan: elektrik gidince masadaki her şey de gider.</p>
+        <div class="hero-chips">
+          <span class="chip"><b>Uçucu</b> bellek</span>
+          <span class="chip"><b>DDR4</b> / <b>DDR5</b></span>
+          <span class="chip"><b>Dual</b> channel</span>
+        </div>
+      </div>
+      <div class="hero-visual" id="ram-hero" aria-label="Animasyonlu RAM modülü çizimi"></div>
+    </div>
+
+    <div class="container">
+      <div class="stats">
+        <div class="stat"><b data-count="70" data-suffix=" ns" data-prefix="~">0</b><span>bir veriyi RAM'den getirmenin yaklaşık süresi (toplam)</span></div>
+        <div class="stat"><b data-count="96" data-suffix=" GB/s">0</b><span>DDR5-6000 dual channel bant genişliği</span></div>
+        <div class="stat"><b data-count="64" data-suffix=" ms">0</b><span>her hücrenin yenilenmesi (refresh) için tanınan süre</span></div>
+        <div class="stat"><b data-count="1">0</b><span>transistör + 1 kapasitör = 1 bit (DRAM hücresi)</span></div>
+      </div>
+      <div class="toc">
+        <small>Bu sayfada</small>
+        <a href="#nedir">RAM nedir</a>
+        <a href="#hucre">Bir bit nasıl saklanır</a>
+        <a href="#modul">Modülün üstü</a>
+        <a href="#ddr">DDR nesilleri</a>
+        <a href="#hiz">Hız ve gecikme</a>
+        <a href="#kanal">Dual channel</a>
+        <a href="#dolu">RAM dolunca</a>
+        <a href="#quiz">Quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RAM NEDİR ================= -->
+  <section class="section" id="nedir">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">önce temel</span>
+        <h2>RAM ne işe yarar?</h2>
+        <p>RAM (Random Access Memory, rastgele erişimli bellek) çalışan programların ve onların kullandığı verilerin geçici olarak durduğu yer. "Rastgele erişim" demek: istediğin adrese, sırayla gitmeden doğrudan ulaşabilirsin.</p>
+      </div>
+
+      <div class="grid c2">
+        <div class="card reveal">
+          <h3>Masa ve kitaplık 📚</h3>
+          <p>Bir masada çalıştığını düşün. <strong>Kitaplık</strong> (SSD/HDD) hepsini saklar ama bir kitabı almak için kalkıp gitmen gerekir. <strong>Masa</strong> (RAM) ise küçüktür ama üstündekilere anında uzanırsın. Çalışacağın kitapları masaya alırsın.</p>
+          <p>Masa büyükse aynı anda çok şey açık tutabilirsin. Masa küçükse sürekli kitaplığa gidip gelirsin ve iş yavaşlar. RAM kapasitesinin önemi budur.</p>
+        </div>
+        <div class="card reveal d1">
+          <h3>Neden SSD yetmiyor?</h3>
+          <p>Hız farkı çok büyük. İşlemci RAM'den veriyi onlarca nanosaniyede alır. Çok hızlı bir NVMe SSD bile mikrosaniye seviyesinde, yani yüzlerce kat daha yavaş kalır. Ayrıca bant genişliği de RAM'de kat kat yüksek.</p>
+          <div class="cmp">
+            <div class="cmp-row"><span>RAM (DDR5)</span><div class="cmp-t"><i style="width:100%"></i></div><b>~96 GB/s</b></div>
+            <div class="cmp-row"><span>NVMe SSD (Gen4)</span><div class="cmp-t"><i style="width:7%"></i></div><b>~7 GB/s</b></div>
+            <div class="cmp-row"><span>SATA SSD</span><div class="cmp-t"><i style="width:0.6%"></i></div><b>~0,55 GB/s</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout fun reveal">
+        <span class="callout-title">"Kaydetmediğin belge" neden gider?</span>
+        Yazdığın metin, sen kaydetmeden önce sadece RAM'dedir. RAM <strong>uçucu (volatile)</strong> bir bellektir: elektrik kesilince bitler kaybolur. "Kaydet" dediğinde veri RAM'den SSD'ye kopyalanır. Kalıcı olan sadece odur.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HÜCRE ================= -->
+  <section class="section" id="hucre">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">bir bit nasıl saklanır</span>
+        <h2>DRAM hücresi ve "yenileme"</h2>
+        <p>Bilgisayarındaki RAM'in türü <strong>DRAM</strong> (Dynamic RAM). Her bit, bir transistör ve minicik bir <strong>kapasitörden</strong> oluşur. Kapasitör dolu ise 1, boş ise 0. Sorun şu: kapasitörler <em>sızdırır</em>. Yükü zamanla azalır ve dokunulmazsa bit kaybolur.</p>
+      </div>
+
+      <div class="demo reveal" id="dram">
+        <div class="demo-title"><span class="dot"></span> Demo: sızan kapasitörler (8×8 = 64 bit)</div>
+        <div class="dram-layout">
+          <div>
+            <div class="dram-grid" id="dram-grid"></div>
+            <div class="btn-row mt1">
+              <button class="btn sm" id="dram-heart">❤️ Şekli yaz</button>
+              <button class="btn sm ghost" id="dram-clear">Hepsini boşalt</button>
+              <button class="btn sm ghost" id="dram-refresh" aria-pressed="false">Yenileme: KAPALI</button>
+            </div>
+          </div>
+          <div class="dram-info">
+            <div class="dram-read" id="dram-read"></div>
+            <ul class="tips">
+              <li>Bir hücreye tıklayarak 1 / 0 yazabilirsin. Hücrenin dolgusu kapasitörün <strong>yükünü</strong> gösterir.</li>
+              <li>Yük <strong>%50'nin altına</strong> düşünce hücre artık 0 okunur: veri kayboldu.</li>
+              <li>Yenileme <strong>AÇIK</strong> iken denetleyici belli aralıklarla okunabilen bitleri tekrar tam doldurur.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="demo-note">Gerçekte yenileme her hücre için yaklaşık 64 ms içinde yapılır. Demoda sızıntıyı gözle görülebilmesi için yavaşlattım.</p>
+      </div>
+
+      <div class="grid c2">
+        <div class="card reveal">
+          <h3>DRAM ve SRAM</h3>
+          <p>İşlemcinin cache'i <strong>SRAM</strong>'dir: her bit için 6 transistör kullanır, sızdırmaz ve yenilemeye ihtiyaç yoktur ama çok yer kaplar ve pahalıdır. DRAM ise bit başına çok az yer tutar; bu yüzden gigabaytlarca RAM ucuza yapılabilir.</p>
+        </div>
+        <div class="card reveal d1">
+          <h3>Yenileme bedava değil</h3>
+          <p>Yenileme sırasında ilgili bellek satırı okunup geri yazılır ve o sırada o satıra erişim yapılamaz. Bu küçük bir performans kaybıdır ve RAM'in güç tüketiminin de bir kısmını oluşturur.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MODÜL ================= -->
+  <section class="section" id="modul">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">bir RAM çubuğunun üstünde</span>
+        <h2>Modülün üstünde neler var?</h2>
+        <p>Masaüstünde takılan RAM modülüne <strong>DIMM</strong>, laptoplardaki küçüğüne <strong>SO-DIMM</strong> denir.</p>
+      </div>
+      <div class="grid c3">
+        <div class="card reveal"><h3>DRAM çipleri</h3><p>Asıl bilgiyi saklayan siyah çipler. Genelde bir yüzünde 8 tane olur (ECC'li modüllerde 9). Toplam kapasite bu çiplerin toplamıdır.</p></div>
+        <div class="card reveal d1"><h3>SPD çipi</h3><p>Modülün "kimlik kartı": hızını, zamanlamalarını, üreticisini içerir. Bilgisayar açılırken BIOS bunu okuyup güvenli ayarları yapar.</p></div>
+        <div class="card reveal d2"><h3>PMIC (DDR5)</h3><p>DDR5 ile voltaj düzenleyici anakarttan modülün kendisine taşındı. Böylece her modül kendi gücünü daha temiz yönetiyor.</p></div>
+        <div class="card reveal"><h3>Kontaklar (altın uçlar)</h3><p>Anakarttaki yuvaya değen 288 pinlik kısım (DDR4/DDR5 DIMM). Pislenirse temas sorunu çıkabilir.</p></div>
+        <div class="card reveal d1"><h3>Çentik (notch)</h3><p>Kontakların arasındaki kesik. Konumu her nesilde farklı; bu sayede DDR4 modülü DDR5 yuvasına yanlışlıkla takılamaz.</p></div>
+        <div class="card reveal d2"><h3>Isı yayıcı (heatspreader)</h3><p>Metal kaplama ısıyı dağıtır, üstüne RGB ışık da konabilir. Yüksek hızlı kitlerde faydalıdır, standart hızlarda şart değildir.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DDR ================= -->
+  <section class="section" id="ddr">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">nesiller</span>
+        <h2>DDR3, DDR4, DDR5</h2>
+        <p>DDR: Double Data Rate. Saat sinyalinin hem yükselen hem düşen kenarında veri aktarılır, yani bir saat döngüsünde iki kez. Bu yüzden "MHz" yerine <strong>MT/s</strong> (saniyede milyon transfer) diyoruz. 3200 MT/s bellek aslında 1600 MHz saatle çalışır.</p>
+      </div>
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th></th><th>DDR3</th><th>DDR4</th><th>DDR5</th></tr></thead>
+          <tbody>
+            <tr><td>Çıkış</td><td>2007</td><td>2014</td><td>2020 (yaygınlaşması 2021-22)</td></tr>
+            <tr><td>Gerilim</td><td>1,5 V</td><td>1,2 V</td><td>1,1 V</td></tr>
+            <tr><td>Tipik hız (MT/s)</td><td>800 – 2133</td><td>2133 – 3200 (OC ile 4000+)</td><td>4800 – 8000+</td></tr>
+            <tr><td>DIMM pin sayısı</td><td>240</td><td>288</td><td>288</td></tr>
+            <tr><td>Yenilik</td><td>-</td><td>Daha düşük güç, bank grupları</td><td>Modülde PMIC, iki 32 bitlik alt kanal, çip üstü ECC</td></tr>
+            <tr><td>Uyumlu mu?</td><td colspan="3">Hayır. Çentik konumu ve elektriksel yapı farklı; birbirinin yuvasına takılmaz.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout reveal">
+        <span class="callout-title">Hangisini takacağımı kim belirliyor?</span>
+        İşlemci (bellek denetleyicisi orada) ve anakart. Bir anakartın yuvası ya DDR4 ya da DDR5 içindir. Yeni bir platform alırken RAM türü de otomatik olarak belirlenmiş olur. <a href="anakart.html">Anakart sayfasına</a> bak.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HIZ ================= -->
+  <section class="section" id="hiz">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">rakamların anlamı</span>
+        <h2>Hız (MT/s) ve gecikme (CL)</h2>
+        <p>Kutuda "DDR5-6000 CL30" yazıyor. İlk sayı ne kadar hızlı <em>akıttığını</em> (bant genişliği), CL ise ne kadar hızlı <em>yanıt verdiğini</em> (gecikme) etkiler. Gerçek gecikme nanosaniye cinsinden şu formülle bulunur:</p>
+        <p class="formula">gecikme (ns) = CL × 2000 ÷ MT/s</p>
+      </div>
+
+      <div class="demo reveal" id="ramcalc">
+        <div class="demo-title"><span class="dot"></span> Demo: hız ve gecikme hesaplayıcı</div>
+        <div class="btn-row presets" id="rc-presets"></div>
+        <div class="rc-controls">
+          <div class="field"><label for="rc-mts">Hız: <span class="val" id="rc-mts-v"></span> MT/s</label><input type="range" id="rc-mts" min="2000" max="8400" step="100" value="3200"></div>
+          <div class="field"><label for="rc-cl">CL (CAS gecikmesi): <span class="val" id="rc-cl-v"></span></label><input type="range" id="rc-cl" min="10" max="48" step="1" value="16"></div>
+          <div class="field"><label for="rc-ch">Kanal sayısı</label><select id="rc-ch"><option value="1">1 kanal (tek çubuk)</option><option value="2" selected>2 kanal (dual channel)</option></select></div>
+        </div>
+        <div class="rc-results" id="rc-results"></div>
+        <p class="demo-note" id="rc-note"></p>
+      </div>
+
+      <div class="grid c2">
+        <div class="card reveal">
+          <h3>Neden yeni nesil bazen daha yavaş yanıtlar?</h3>
+          <p>DDR5'in CL değeri DDR4'ten yüksektir (30-40 gibi) ama saat de çok daha hızlıdır. Bu yüzden nanosaniye cinsinden gecikme çoğu zaman benzer kalır (yaklaşık 10 ns civarı). DDR5'in gerçek kazancı, daha yüksek bant genişliği ve daha fazla eşzamanlı işlemdir.</p>
+        </div>
+        <div class="card reveal d1">
+          <h3>XMP / EXPO</h3>
+          <p>RAM'ler varsayılan olarak güvenli, düşük bir hızda açılır. Kutudaki hızı elde etmek için BIOS'tan <strong>XMP</strong> (Intel) veya <strong>EXPO</strong> (AMD) profilini açmak gerekir. Bir kere açarsın, geri kalanını anakart halleder.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KANAL ================= -->
+  <section class="section" id="kanal">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">şerit sayısı</span>
+        <h2>Dual channel neden önemli?</h2>
+        <p>İşlemci ile RAM arasındaki yolda her <strong>kanal</strong> 64 bit genişliğindedir. Tek çubuk takarsan tek kanal, doğru yuvalara iki çubuk takarsan iki kanal çalışır ve <strong>bant genişliği ikiye katlanır</strong>.</p>
+      </div>
+      <div class="demo reveal" id="lanes">
+        <div class="demo-title"><span class="dot"></span> Demo: tek kanal / çift kanal</div>
+        <div class="tabs" id="lane-tabs">
+          <button class="tab" data-c="1">Tek kanal</button>
+          <button class="tab active" data-c="2">Dual channel</button>
+        </div>
+        <div class="lane-view">
+          <div class="lane-cpu">CPU</div>
+          <div class="lane-roads" id="lane-roads"></div>
+          <div class="lane-ram" id="lane-ram"></div>
+        </div>
+        <p class="demo-note" id="lane-note"></p>
+      </div>
+      <div class="callout reveal">
+        <span class="callout-title">Pratik ipucu</span>
+        İki çubuk takacaksan anakart kılavuzunda gösterilen yuvalara (genelde A2 ve B2, yani birer boşluk bırakarak) tak. Yan yana takarsan çoğu zaman tek kanal çalışır. Ayrıca 1×32 GB yerine 2×16 GB almak genelde daha hızlıdır.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RAM DOLUNCA ================= -->
+  <section class="section" id="dolu">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">masa taşınca</span>
+        <h2>RAM dolarsa ne olur?</h2>
+        <p>RAM dolduğunda bilgisayar çökmez; işletim sistemi az kullanılan verileri <strong>diske (sayfa dosyası / swap)</strong> taşır. Bu çalışır ama RAM yüzlerce kat daha hızlı olduğu için sistem belirgin şekilde yavaşlar. Aşağıda programları aç, ne olduğuna bak.</p>
+      </div>
+      <div class="demo reveal" id="swap">
+        <div class="demo-title"><span class="dot"></span> Demo: açık programlar ve RAM kapasitesi (yaklaşık değerler)</div>
+        <div class="field" style="max-width:260px"><label for="sw-cap">Toplam RAM</label>
+          <select id="sw-cap"><option value="8">8 GB</option><option value="16" selected>16 GB</option><option value="32">32 GB</option></select></div>
+        <div class="sw-apps" id="sw-apps"></div>
+        <div class="sw-bar"><div class="sw-ram" id="sw-ram"></div><div class="sw-disk" id="sw-disk"></div></div>
+        <div class="sw-legend" id="sw-legend"></div>
+        <div class="callout mt1" id="sw-note"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">kendini dene</span>
+        <h2>Mini quiz</h2>
+        <p>Öğrendiklerini pekiştir. Cevaplara tıkladığında açıklamayı da görürsün.</p>
+      </div>
+      <div class="quiz" id="ram-quiz"></div>
+      <script type="application/json" id="quiz-data">[{"q": "RAM'in \"uçucu (volatile)\" olması ne demek?", "o": ["Çok hızlı çalışır", "Elektrik kesilince içindeki veriler kaybolur", "Isındıkça buharlaşır", "Sadece okunabilir"], "a": 1, "e": "DRAM bitleri kapasitörlerde yük olarak tutar. Güç gidince yükler sızıp biter; bu yüzden kalıcı saklama için SSD/HDD kullanılır."}, {"q": "DRAM'de tek bir bit fiziksel olarak nasıl saklanır?", "o": ["Bir mıknatısın yönüyle", "Bir transistör ve bir kapasitördeki yükle", "Ayna gibi bir yüzeydeki çukurla", "6 transistörlük bir kilitle"], "a": 1, "e": "DRAM hücresi 1 transistör + 1 kapasitördür (1T1C). 6 transistörlü yapı, işlemci cache'inde kullanılan SRAM'e aittir."}, {"q": "DRAM neden sürekli \"yenilenmek (refresh)\" zorunda?", "o": ["Kapasitörler zamanla yük sızdırır", "Işık gecikmesi yüzünden", "İşlemci öyle istediği için", "Yeni verilerle değiştirilmesi gerektiği için"], "a": 0, "e": "Kapasitörlerin yükü kendiliğinden azalır. Yaklaşık her 64 ms'de bir okunup geri yazılmazsa bit kaybolur. Demoda yenilemeyi kapatınca bunu gördün."}, {"q": "3200 MT/s hızındaki bir DDR bellek gerçekte kaç MHz saatle çalışır?", "o": ["800 MHz", "1600 MHz", "3200 MHz", "6400 MHz"], "a": 1, "e": "DDR (Double Data Rate) saat sinyalinin hem yükselen hem düşen kenarında veri aktarır. Yani MT/s = 2 × saat (MHz)."}, {"q": "DDR5-6000 CL30 belleğin gerçek gecikmesi yaklaşık kaç nanosaniyedir?", "o": ["5 ns", "10 ns", "30 ns", "60 ns"], "a": 1, "e": "Gecikme (ns) = CL × 2000 ÷ MT/s = 30 × 2000 ÷ 6000 = 10 ns."}, {"q": "Dual channel çalışmanın etkisi nedir?", "o": ["RAM kapasitesini iki katına çıkarır", "Bant genişliğini (teorik olarak) iki katına çıkarır", "Gecikmeyi sıfırlar", "Elektrik tüketimini yarıya indirir"], "a": 1, "e": "Her kanal 64 bit genişliğinde bir yol. İki kanal aynı anda çalışınca aktarılabilen veri miktarı iki katına çıkar. Kapasite değişmez, sadece toplanır."}, {"q": "DDR4 modülünü DDR5 yuvasına takabilir miyim?", "o": ["Evet, sadece biraz yavaş çalışır", "Evet, adaptörle", "Hayır, çentik konumu ve elektriksel yapı farklı", "Sadece laptopta"], "a": 2, "e": "Çentik farklı yerde olduğu için fiziksel olarak takılamaz. Bu bilinçli bir tasarım: yanlış gerilimle modül yanmasın."}, {"q": "RAM tamamen dolarsa ne olur?", "o": ["Bilgisayar hemen kapanır", "Az kullanılan veriler diske (sayfa dosyası) taşınır ve sistem yavaşlar", "İşlemci otomatik hızlanır", "Hiçbir şey olmaz"], "a": 1, "e": "İşletim sistemi RAM'i boşaltmak için verileri diske yazar. Disk RAM'den çok daha yavaş olduğu için takılmalar başlar. Bu yüzden yeterli RAM önemli."}]</script>
+      <div id="pager"></div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/site.js"></script>
+<script src="js/ram.js"></script>
+</body>
+</html>

@@ -135,6 +135,30 @@
   }
   window.PP.reveal = initReveal;
 
+  /* ---------- sayaçlar (GSAP olmayan sayfalar için; GSAP'lılarda gsap-common.js yapar) ---------- */
+  function initCounters() {
+    if (window.gsap) return;
+    const els = document.querySelectorAll(".stat b[data-count]");
+    if (!els.length) return;
+    function run(el) {
+      const end = parseFloat(el.dataset.count);
+      const dec = parseInt(el.dataset.dec || "0", 10);
+      const suf = el.dataset.suffix || "", pre = el.dataset.prefix || "";
+      const t0 = performance.now(), dur = 1400;
+      (function tick(now) {
+        const k = Math.min(1, (now - t0) / dur);
+        const v = end * (1 - Math.pow(1 - k, 3));
+        el.textContent = pre + (dec ? v.toFixed(dec).replace(".", ",") : Math.round(v).toLocaleString("tr-TR")) + suf;
+        if (k < 1) requestAnimationFrame(tick);
+      })(t0);
+    }
+    if (!("IntersectionObserver" in window)) { els.forEach(run); return; }
+    const io2 = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { io2.unobserve(en.target); run(en.target); } });
+    }, { threshold: 0.5 });
+    els.forEach(function (el) { io2.observe(el); });
+  }
+
   /* ---------- quiz ---------- */
   function initQuiz() {
     const root = document.querySelector(".quiz");
@@ -190,5 +214,6 @@
   buildPager();
   initProgress();
   initReveal();
+  initCounters();
   initQuiz();
 })();
